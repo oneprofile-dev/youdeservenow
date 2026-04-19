@@ -32,19 +32,31 @@ async function tryGeminiModel(modelId: string, prompt: string): Promise<string> 
   const client = getClient();
   const model = client.getGenerativeModel({
     model: modelId,
-    generationConfig: { maxOutputTokens: 200, temperature: 0.9 },
+    generationConfig: { maxOutputTokens: 400, temperature: 0.9 },
   });
 
   const result = await Promise.race([
     model.generateContent(prompt),
     new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error("timeout")), 10_000)
+      setTimeout(() => reject(new Error("timeout")), 12_000)
     ),
   ]);
 
-  const text = (result as Awaited<ReturnType<typeof model.generateContent>>)
-    .response.text()
-    .trim();
+  const response = (result as Awaited<ReturnType<typeof model.generateContent>>).response;
+  const candidate = response.candidates?.[0];
+
+  if (!candidate) throw new Error("no candidates returned");
+
+  // Log finish reason to help diagnose truncations
+  const finishReason = candidate.finishReason;
+  if (finishReason && finishReason !== "STOP" && finishReason !== "MAX_TOKENS") {
+    throw new Error(`blocked: finishReason=${finishReason}`);
+  }
+
+  // Extract text robustly from parts
+  const text =
+    candidate.content?.parts?.map((p) => ("text" in p ? p.text : "")).join("").trim() ||
+    response.text().trim();
 
   if (!text) throw new Error("empty response");
   return text;
