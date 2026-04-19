@@ -11,7 +11,8 @@ function getClient(): GoogleGenerativeAI {
 }
 
 // Tried in order — first success wins
-// gemini-2.0-flash has quota 0 on free tier; gemini-1.5-flash is 404 on v1beta
+// 2.5-flash: disable thinking (thinkingBudget:0) to avoid token truncation
+// 2.0-flash-lite: no thinking mode, fast, free tier
 const GEMINI_MODELS = [
   "gemini-2.5-flash",
   "gemini-2.0-flash-lite",
@@ -30,9 +31,15 @@ function getFallback(): string {
 
 async function tryGeminiModel(modelId: string, prompt: string): Promise<string> {
   const client = getClient();
+  const is25Flash = modelId.startsWith("gemini-2.5");
   const model = client.getGenerativeModel({
     model: modelId,
-    generationConfig: { maxOutputTokens: 400, temperature: 0.9 },
+    generationConfig: {
+      maxOutputTokens: 400,
+      temperature: 0.9,
+      // Disable thinking on 2.5-flash — thinking tokens eat the output budget
+      ...(is25Flash ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
+    } as Parameters<typeof client.getGenerativeModel>[0]["generationConfig"],
   });
 
   const result = await Promise.race([
@@ -53,10 +60,13 @@ async function tryGeminiModel(modelId: string, prompt: string): Promise<string> 
     throw new Error(`blocked: finishReason=${finishReason}`);
   }
 
-  // Extract text robustly from parts
+  // Extract text — filter thought parts (used by 2.5-flash thinking mode)
   const text =
-    candidate.content?.parts?.map((p) => ("text" in p ? p.text : "")).join("").trim() ||
-    response.text().trim();
+    candidate.content?.parts
+      ?.filter((p) => !("thought" in p && p.thought))
+      .map((p) => ("text" in p ? p.text : ""))
+      .join("")
+      .trim() || response.text().trim();
 
   if (!text) throw new Error("empty response");
   return text;
