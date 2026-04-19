@@ -30,9 +30,6 @@ export default function Header() {
           >
             YouDeserveNow
           </span>
-          <span className="text-xs text-[var(--color-accent)] font-medium uppercase tracking-widest opacity-70">
-            .com
-          </span>
         </Link>
 
         <nav className="flex items-center gap-6">
