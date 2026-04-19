@@ -6,6 +6,7 @@ import type { Result } from "@/lib/db";
 import LoadingAnimation from "./LoadingAnimation";
 import ResultCard from "./ResultCard";
 import EmailCapture from "./EmailCapture";
+import StreakBadge from "./StreakBadge";
 
 const PLACEHOLDERS = [
   "I survived a 3-hour meeting without falling asleep...",
@@ -182,6 +183,9 @@ export default function Hero({ referralResult }: HeroProps) {
       {/* Headline — hydrated with time/day context on the client */}
       {!result && (
         <div className="text-center mb-10 pt-12 sm:pt-16 animate-[fade-in_0.5s_ease-out]">
+          <div className="flex justify-center mb-4">
+            <StreakBadge />
+          </div>
           <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-4">
             {heroCtx.label}
           </p>

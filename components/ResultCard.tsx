@@ -6,6 +6,8 @@ import ProductRecommendation from "./ProductRecommendation";
 import ShareButtons from "./ShareButtons";
 import ShareCard from "./ShareCard";
 import CertificateDownload from "./CertificateDownload";
+import RewardPersonality from "./RewardPersonality";
+import { getPersonalityType } from "@/lib/personality";
 
 interface ResultCardProps {
   result: Result;
@@ -14,6 +16,7 @@ interface ResultCardProps {
 
 export default function ResultCard({ result, showShareCard = true }: ResultCardProps) {
   const shareCardRef = useRef<HTMLDivElement>(null);
+  const personality = getPersonalityType(result.product.category, result.input);
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-[slide-up_0.5s_ease-out]">
@@ -50,6 +53,12 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Product */}
         <ProductRecommendation product={result.product} />
+
+        {/* Divider */}
+        <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
+
+        {/* Reward Personality */}
+        <RewardPersonality personality={personality} resultId={result.id} />
 
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
