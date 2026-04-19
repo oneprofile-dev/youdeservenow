@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { buildPrompt } from "@/lib/prompt";
+import { matchProduct } from "@/lib/products";
 
 const SECRET = "ydn2026";
 
@@ -11,9 +13,15 @@ export async function GET(req: NextRequest) {
   if (!key) return NextResponse.json({ keyPresent: false });
 
   const client = new GoogleGenerativeAI(key);
-  const testPrompt = `You are a scientist. Write 3 funny sentences about why someone who cleaned their house deserves a scented candle. Be specific and deadpan. Under 200 words.`;
-  const results: Record<string, string> = {
-    keyPresent: `yes (len=${key.length}, prefix=${key.slice(0, 8)}...)`,
+
+  // Use the real prompt from the app
+  const testInput = "I finished a difficult project at work after weeks of effort";
+  const product = matchProduct(testInput);
+  const realPrompt = buildPrompt(testInput, product);
+
+  const results: Record<string, unknown> = {
+    promptLength: realPrompt.length,
+    product: product.name,
   };
 
   for (const modelId of ["gemini-2.0-flash-lite", "gemini-2.5-flash"]) {
@@ -23,14 +31,19 @@ export async function GET(req: NextRequest) {
         generationConfig: { maxOutputTokens: 500, temperature: 0.9 },
       });
       const result = await Promise.race([
-        model.generateContent(testPrompt),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("timeout")), 10000)),
+        model.generateContent(realPrompt),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("timeout")), 12000)),
       ]);
-      const response = (result as Awaited<ReturnType<typeof model.generateContent>>).response;
-      const text = response.text();
-      results[modelId] = `OK (${text.length} chars): ${text.slice(0, 300)}`;
+      const res = (result as Awaited<ReturnType<typeof model.generateContent>>).response;
+      const candidate = res.candidates?.[0];
+      const text = res.text();
+      results[modelId] = {
+        finishReason: candidate?.finishReason,
+        chars: text.length,
+        text,
+      };
     } catch (err) {
-      results[modelId] = `FAIL: ${err instanceof Error ? err.message.slice(0, 200) : String(err)}`;
+      results[modelId] = { error: err instanceof Error ? err.message.slice(0, 300) : String(err) };
     }
   }
 
