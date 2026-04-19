@@ -72,7 +72,7 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
     }
   }
 
-  const xUrl = `https://x.com/intent/post?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`;
+  const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
   const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
 
   return (
