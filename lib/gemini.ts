@@ -26,7 +26,7 @@ export async function generateJustification(prompt: string): Promise<string> {
     try {
       const client = getClient();
       const model = client.getGenerativeModel({
-        model: "gemini-2.0-flash-lite",
+        model: "gemini-1.5-flash",
         generationConfig: { maxOutputTokens: 200, temperature: 0.9 },
       });
 
