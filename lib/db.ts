@@ -1,4 +1,5 @@
 import type { Product } from "./products";
+import { getKV } from "./kv";
 
 export interface Result {
   id: string;
@@ -7,6 +8,7 @@ export interface Result {
   product: Product;
   shareUrl: string;
   createdAt: string;
+  ogImageUrl?: string; // Vercel Blob CDN URL — undefined for pre-Sprint-2 results
 }
 
 // In-memory fallback — attached to global so all route modules share the same instance
@@ -18,16 +20,6 @@ if (!globalRef.__ydnStore) globalRef.__ydnStore = new Map<string, string>();
 if (!globalRef.__ydnList) globalRef.__ydnList = [];
 const memoryStore = globalRef.__ydnStore;
 const memoryList = globalRef.__ydnList;
-
-async function getKV() {
-  if (!process.env.KV_REST_API_URL) return null;
-  try {
-    const { kv } = await import("@vercel/kv");
-    return kv;
-  } catch {
-    return null;
-  }
-}
 
 export async function saveResult(result: Result): Promise<void> {
   const kv = await getKV();
@@ -99,4 +91,15 @@ export async function getAllResultIds(): Promise<string[]> {
     return kv.lrange<string>("results:list", 0, -1);
   }
   return [...memoryList];
+}
+
+// Update a result in-place without touching the list (used to patch ogImageUrl)
+export async function updateResult(result: Result): Promise<void> {
+  const kv = await getKV();
+  const serialized = JSON.stringify(result);
+  if (kv) {
+    await kv.set(`result:${result.id}`, serialized, { ex: 60 * 60 * 24 * 90 });
+  } else {
+    memoryStore.set(result.id, serialized);
+  }
 }

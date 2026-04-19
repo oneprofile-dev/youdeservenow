@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
 
 interface ProductRecommendationProps {
@@ -34,6 +37,13 @@ export default function ProductRecommendation({ product }: ProductRecommendation
         href={product.affiliateUrl}
         target="_blank"
         rel="noopener noreferrer sponsored"
+        onClick={() =>
+          track("affiliate_click", {
+            product_id: product.id,
+            price: product.price,
+            category: product.category,
+          })
+        }
         className="flex-shrink-0 px-4 py-2.5 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 transition-all whitespace-nowrap"
       >
         Claim Reward →

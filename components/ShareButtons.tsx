@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { track } from "@vercel/analytics/react";
 import type { Result } from "@/lib/db";
 import { getSiteUrl } from "@/lib/utils";
 
@@ -13,29 +14,46 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
   const [copied, setCopied] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
-  const shareUrl = `${getSiteUrl()}/result/${result.id}`;
+  // Append ?ref= so landing friends see a personalised teaser on the homepage
+  const shareUrl = `${getSiteUrl()}/result/${result.id}?ref=${result.id}`;
   const shareText = `Science says I deserve ${result.product.name} after what I accomplished today. Get your scientific justification 👇 #YouDeserveNow`;
 
   async function copyLink() {
+    track("share_click", { method: "copy" });
     try {
       await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback
       const input = document.createElement("input");
       input.value = shareUrl;
       document.body.appendChild(input);
       input.select();
       document.execCommand("copy");
       document.body.removeChild(input);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
     }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
+
+  async function copyForInstagram() {
+    track("share_click", { method: "instagram" });
+    const instagramCopyText = `${shareText} ${shareUrl}`;
+    try {
+      await navigator.clipboard.writeText(instagramCopyText);
+    } catch {
+      const input = document.createElement("input");
+      input.value = instagramCopyText;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("copy");
+      document.body.removeChild(input);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   async function downloadImage() {
     if (!shareCardRef?.current) return;
+    track("share_click", { method: "download" });
     setDownloading(true);
     try {
       const { toPng } = await import("html-to-image");
@@ -56,24 +74,6 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
 
   const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
   const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-  const instagramCopyText = `${shareText} ${shareUrl}`;
-
-  async function copyForInstagram() {
-    try {
-      await navigator.clipboard.writeText(instagramCopyText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      const input = document.createElement("input");
-      input.value = instagramCopyText;
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand("copy");
-      document.body.removeChild(input);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  }
 
   return (
     <div className="flex flex-wrap gap-2 justify-center">
@@ -81,6 +81,7 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
         href={xUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track("share_click", { method: "x" })}
         className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -93,6 +94,7 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
         href={facebookUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track("share_click", { method: "facebook" })}
         className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -106,8 +108,19 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
         title="Copy link + text to paste in Instagram"
         className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all"
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
         </svg>
         Instagram
       </button>
@@ -118,15 +131,34 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
       >
         {copied ? (
           <>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <polyline points="20 6 9 17 4 12" />
             </svg>
             Copied!
           </>
         ) : (
           <>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
             Copy Link
           </>
@@ -139,8 +171,19 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
           disabled={downloading}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all disabled:opacity-50"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
           </svg>
           {downloading ? "Saving..." : "Download Image"}
         </button>

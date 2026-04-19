@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { track } from "@vercel/analytics/react";
 import type { Result } from "@/lib/db";
 import LoadingAnimation from "./LoadingAnimation";
 import ResultCard from "./ResultCard";
@@ -76,7 +77,11 @@ function getContextualHero(): HeroContext {
   };
 }
 
-export default function Hero() {
+interface HeroProps {
+  referralResult?: Result;
+}
+
+export default function Hero({ referralResult }: HeroProps) {
   const [input, setInput] = useState("");
   const [placeholder, setPlaceholder] = useState(PLACEHOLDERS[0]);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +93,10 @@ export default function Hero() {
     sub: "Tell us. We'll tell you exactly what you deserve — with citations.",
   });
 
-  // Hydrate with time/day context client-side (no FOUC — server renders the default)
+  // useRef so confetti only fires once without triggering re-render
+  const hasConfettiFired = useRef(false);
+
+  // Hydrate with time/day context client-side (server renders the safe default, no FOUC)
   useEffect(() => {
     setHeroCtx(getContextualHero());
   }, []);
@@ -100,41 +108,67 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    const trimmed = input.trim();
-    if (!trimmed || isLoading) return;
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const trimmed = input.trim();
+      if (!trimmed || isLoading) return;
 
-    setIsLoading(true);
-    setError(null);
-    setResult(null);
+      setIsLoading(true);
+      setError(null);
+      setResult(null);
 
-    try {
-      const res = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: trimmed }),
-      });
+      try {
+        const res = await fetch("/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input: trimmed }),
+        });
 
-      if (res.status === 429) {
-        setError("You've been very productive today — slow down! (Rate limit: 5 requests/minute)");
-        return;
+        if (res.status === 429) {
+          setError(
+            "You've been very productive today — slow down! (Rate limit: 5 requests/minute)"
+          );
+          return;
+        }
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          setError(data.error ?? "Something went wrong. The scientists are baffled.");
+          return;
+        }
+
+        const data: Result = await res.json();
+        setResult(data);
+
+        // Track funnel event
+        track("generate_success", {
+          category: data.product.category,
+          product_id: data.product.id,
+        });
+
+        // Confetti — fires only on the first result reveal ever in this session
+        if (!hasConfettiFired.current) {
+          hasConfettiFired.current = true;
+          import("canvas-confetti").then(({ default: confetti }) => {
+            confetti({
+              particleCount: 120,
+              spread: 75,
+              origin: { y: 0.55 },
+              colors: ["#C8963E", "#1A1814", "#FBF8F3", "#E8E0D6", "#B8862E"],
+            });
+          });
+        }
+      } catch {
+        setError(
+          "The institute's servers are momentarily overwhelmed by achievement. Try again."
+        );
+      } finally {
+        setIsLoading(false);
       }
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setError(data.error ?? "Something went wrong. The scientists are baffled.");
-        return;
-      }
-
-      const data: Result = await res.json();
-      setResult(data);
-    } catch {
-      setError("The institute's servers are momentarily overwhelmed by achievement. Try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, [input, isLoading]);
+    },
+    [input, isLoading]
+  );
 
   function reset() {
     setResult(null);
@@ -158,6 +192,26 @@ export default function Hero() {
           </h1>
           <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] text-base sm:text-lg max-w-lg mx-auto">
             {heroCtx.sub}
+          </p>
+        </div>
+      )}
+
+      {/* Referral teaser — shown when landing from a friend's share link */}
+      {referralResult && !result && (
+        <div className="mb-6 flex items-start gap-3 p-4 rounded-xl border border-[var(--color-accent)] bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)]">
+          <span className="text-lg flex-shrink-0 mt-0.5">🔬</span>
+          <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] leading-relaxed">
+            The Institute prescribed{" "}
+            <span className="font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+              {referralResult.product.name}
+            </span>{" "}
+            to someone who{" "}
+            <span className="italic">
+              {referralResult.input.toLowerCase().replace(/^i /, "").slice(0, 60)}
+              {referralResult.input.length > 60 ? "…" : ""}
+            </span>
+            . What will they prescribe for{" "}
+            <span className="font-semibold text-[var(--color-accent)]">you?</span>
           </p>
         </div>
       )}
@@ -186,8 +240,18 @@ export default function Hero() {
               className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-30 transition-all"
               aria-label="Get my justification"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
               </svg>
             </button>
           </div>

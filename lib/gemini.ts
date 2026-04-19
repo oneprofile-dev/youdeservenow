@@ -22,7 +22,7 @@ const FALLBACK_RESPONSES = [
   "Researchers at the Cambridge Center for Deserved Luxury confirmed in 2024 that the post-achievement window (0–72 hours) represents peak reward-receptivity in 91.3% of subjects. You are currently in this window. Act accordingly. The science is settled.",
 ];
 
-function getFallback(): string {
+export function getFallback(): string {
   return FALLBACK_RESPONSES[Math.floor(Math.random() * FALLBACK_RESPONSES.length)];
 }
 
