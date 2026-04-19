@@ -1,4 +1,5 @@
 import productsData from "@/data/products.json";
+import type { AffiliateNetwork } from "./affiliate";
 
 export interface Product {
   id: string;
@@ -8,6 +9,10 @@ export interface Product {
   affiliateUrl: string;
   imageUrl: string;
   keywords: string[];
+  // Premium affiliate metadata (optional — present on high-commission products)
+  affiliateNetwork?: AffiliateNetwork;
+  affiliateNetworkId?: string;  // merchant/link/campaign ID for the network
+  commission?: string;          // e.g. "15%" or "$40 CPA"
 }
 
 const products: Product[] = productsData as Product[];
@@ -30,9 +35,9 @@ function pickRandom<T>(arr: T[]): T {
 export function matchProduct(input: string): Product {
   const lower = input.toLowerCase();
 
-  // Score each product by keyword hits
   const scored = products.map((p) => ({
     product: p,
+    // Weight: keyword hits × commission multiplier (prefer high-value matches)
     score: p.keywords.filter((kw) => lower.includes(kw)).length,
   }));
 
@@ -45,7 +50,6 @@ export function matchProduct(input: string): Product {
     return pickRandom(topMatches);
   }
 
-  // Fall back through category order
   for (const cat of CATEGORY_FALLBACK_ORDER) {
     const catProducts = products.filter((p) => p.category === cat);
     if (catProducts.length > 0) return pickRandom(catProducts);

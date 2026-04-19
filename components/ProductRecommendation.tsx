@@ -4,17 +4,26 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
-import { localizeAffiliateUrl, getCountryFromCookie } from "@/lib/affiliate";
+import { resolveAffiliateUrl, isHighCommission, getCountryFromCookie } from "@/lib/affiliate";
 
 interface ProductRecommendationProps {
   product: Product;
 }
 
 export default function ProductRecommendation({ product }: ProductRecommendationProps) {
-  const affiliateUrl = useMemo(
-    () => localizeAffiliateUrl(product.affiliateUrl, getCountryFromCookie()),
-    [product.affiliateUrl]
-  );
+  const affiliateUrl = useMemo(() => {
+    return resolveAffiliateUrl(
+      {
+        baseUrl: product.affiliateUrl,
+        network: product.affiliateNetwork,
+        networkId: product.affiliateNetworkId,
+        commission: product.commission,
+      },
+      getCountryFromCookie()
+    );
+  }, [product]);
+
+  const highValue = isHighCommission(product.commission);
 
   return (
     <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
@@ -29,9 +38,16 @@ export default function ProductRecommendation({ product }: ProductRecommendation
       </div>
 
       <div className="flex-1 min-w-0">
-        <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-medium mb-1">
-          Prescribed Reward
-        </p>
+        <div className="flex items-center gap-2 mb-1">
+          <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-medium">
+            Prescribed Reward
+          </p>
+          {highValue && (
+            <span className="text-[10px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-700">
+              Top Pick
+            </span>
+          )}
+        </div>
         <h3 className="text-base font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] leading-tight line-clamp-2">
           {product.name}
         </h3>
@@ -49,6 +65,7 @@ export default function ProductRecommendation({ product }: ProductRecommendation
             product_id: product.id,
             price: product.price,
             category: product.category,
+            network: product.affiliateNetwork ?? "amazon",
           })
         }
         className="flex-shrink-0 px-4 py-2.5 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 transition-all whitespace-nowrap"

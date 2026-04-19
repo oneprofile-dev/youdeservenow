@@ -39,6 +39,12 @@ export default function Header() {
           >
             Gallery
           </Link>
+          <Link
+            href="/shop"
+            className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] transition-colors"
+          >
+            Shop
+          </Link>
           <button
             onClick={toggleDark}
             aria-label="Toggle dark mode"
