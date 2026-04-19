@@ -8,6 +8,7 @@ import ShareCard from "./ShareCard";
 import CertificateDownload from "./CertificateDownload";
 import RewardPersonality from "./RewardPersonality";
 import { getPersonalityType } from "@/lib/personality";
+import LikeButton from "./LikeButton";
 
 interface ResultCardProps {
   result: Result;
@@ -22,15 +23,15 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
     <div className="w-full max-w-2xl mx-auto animate-[slide-up_0.5s_ease-out]">
       {/* Gift banner */}
       {result.gift && (
-        <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-[#ff6b6b]/30 bg-[#ff6b6b]/5">
-          <span className="text-xl flex-shrink-0">💌</span>
+        <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border-2 border-[#ff6b6b] bg-[#ff6b6b]/15">
+          <span className="text-3xl flex-shrink-0 leading-none">💌</span>
           <div>
-            <p className="text-sm font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+            <p className="text-sm font-bold text-[#ff5252]">
               {result.gift.senderName
                 ? `${result.gift.senderName} thinks science agrees:`
                 : "Science agrees:"}
             </p>
-            <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mt-0.5">
+            <p className="text-sm font-medium text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] mt-0.5">
               {result.gift.recipientName} deserves this. The evidence is overwhelming.
             </p>
           </div>
@@ -82,6 +83,9 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Share + Certificate */}
         <div className="text-center space-y-3">
+          <div className="flex justify-center mb-1">
+            <LikeButton resultId={result.id} />
+          </div>
           <p className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
             Share your diagnosis
           </p>
