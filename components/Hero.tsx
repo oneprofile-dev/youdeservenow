@@ -5,6 +5,7 @@ import { track } from "@vercel/analytics/react";
 import type { Result } from "@/lib/db";
 import LoadingAnimation from "./LoadingAnimation";
 import ResultCard from "./ResultCard";
+import EmailCapture from "./EmailCapture";
 
 const PLACEHOLDERS = [
   "I survived a 3-hour meeting without falling asleep...",
@@ -275,6 +276,7 @@ export default function Hero({ referralResult }: HeroProps) {
       {result && !isLoading && (
         <div className="space-y-6">
           <ResultCard result={result} />
+          <EmailCapture />
           <div className="text-center">
             <button
               onClick={reset}

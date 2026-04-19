@@ -1,14 +1,21 @@
 "use client";
 
 import Image from "next/image";
+import { useMemo } from "react";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
+import { localizeAffiliateUrl, getCountryFromCookie } from "@/lib/affiliate";
 
 interface ProductRecommendationProps {
   product: Product;
 }
 
 export default function ProductRecommendation({ product }: ProductRecommendationProps) {
+  const affiliateUrl = useMemo(
+    () => localizeAffiliateUrl(product.affiliateUrl, getCountryFromCookie()),
+    [product.affiliateUrl]
+  );
+
   return (
     <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
       <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-white">
@@ -34,7 +41,7 @@ export default function ProductRecommendation({ product }: ProductRecommendation
       </div>
 
       <a
-        href={product.affiliateUrl}
+        href={affiliateUrl}
         target="_blank"
         rel="noopener noreferrer sponsored"
         onClick={() =>

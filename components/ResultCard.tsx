@@ -5,6 +5,7 @@ import type { Result } from "@/lib/db";
 import ProductRecommendation from "./ProductRecommendation";
 import ShareButtons from "./ShareButtons";
 import ShareCard from "./ShareCard";
+import CertificateDownload from "./CertificateDownload";
 
 interface ResultCardProps {
   result: Result;
@@ -53,12 +54,15 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
 
-        {/* Share */}
+        {/* Share + Certificate */}
         <div className="text-center space-y-3">
           <p className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
             Share your diagnosis
           </p>
           <ShareButtons result={result} shareCardRef={shareCardRef} />
+          <div className="pt-1">
+            <CertificateDownload result={result} />
+          </div>
         </div>
       </div>
 
