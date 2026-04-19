@@ -42,6 +42,30 @@ export default async function Home({ searchParams }: HomeProps) {
       <main className="flex-1">
         <Hero referralResult={referralResult} />
 
+        {/* Video — "See the science in action" */}
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 mt-16 mb-4">
+          <div className="text-center mb-5">
+            <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-2">
+              The Institute in Action
+            </p>
+            <h2
+              className="text-2xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              See the science work
+            </h2>
+          </div>
+          <div className="relative w-full rounded-2xl overflow-hidden border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] shadow-lg" style={{ paddingBottom: "56.25%" }}>
+            <iframe
+              src="https://www.youtube.com/embed/hpI76kEKE5I?rel=0&modestbranding=1"
+              title="YouDeserveNow — The Institute in Action"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        </section>
+
         {/* Gallery preview */}
         {results.length > 0 && (
           <section className="max-w-5xl mx-auto px-4 sm:px-6 mt-20 mb-8">
