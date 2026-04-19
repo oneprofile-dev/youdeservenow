@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Use class-based dark mode — .dark on <html> triggers dark: variants */
+@variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* Colors */
   --color-bg-primary: #FBF8F3;
