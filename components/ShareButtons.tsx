@@ -17,7 +17,9 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
 
   // Append ?ref= so landing friends see a personalised teaser on the homepage
   const shareUrl = `${getSiteUrl()}/result/${result.id}?ref=${result.id}`;
-  const shareText = `Science says I deserve ${result.product.name} after what I accomplished today. Get your scientific justification 👇 #YouDeserveNow`;
+  const shareText = result.gift
+    ? `I used science to prove ${result.gift.recipientName} deserves ${result.product.name}. The evidence is overwhelming. 🔬 #YouDeserveNow`
+    : `Science says I deserve ${result.product.name} after what I accomplished today. Get your scientific justification 👇 #YouDeserveNow`;
 
   async function copyLink() {
     track("share_click", { method: "copy" });

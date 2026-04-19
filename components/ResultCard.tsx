@@ -20,6 +20,23 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-[slide-up_0.5s_ease-out]">
+      {/* Gift banner */}
+      {result.gift && (
+        <div className="mb-6 flex items-start gap-3 p-4 rounded-2xl border border-[#ff6b6b]/30 bg-[#ff6b6b]/5">
+          <span className="text-xl flex-shrink-0">💌</span>
+          <div>
+            <p className="text-sm font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+              {result.gift.senderName
+                ? `${result.gift.senderName} thinks science agrees:`
+                : "Science agrees:"}
+            </p>
+            <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mt-0.5">
+              {result.gift.recipientName} deserves this. The evidence is overwhelming.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Science verdict header */}
       <div className="text-center mb-6">
         <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-2">
@@ -29,7 +46,7 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
           className="text-3xl sm:text-4xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          You Deserve This.
+          {result.gift ? `${result.gift.recipientName} Deserves This.` : "You Deserve This."}
         </h2>
       </div>
 

@@ -34,6 +34,13 @@ export default function Header() {
 
         <nav className="flex items-center gap-6">
           <Link
+            href="/gift"
+            className="text-sm font-medium text-[#ff6b6b] hover:text-[#ff5252] transition-colors flex items-center gap-1"
+          >
+            <span>💌</span>
+            <span>Gift</span>
+          </Link>
+          <Link
             href="/gallery"
             className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] transition-colors"
           >

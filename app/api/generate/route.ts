@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const BadWordsFilter = require("bad-words");
 import { sanitizeInput, generateId, getSiteUrl } from "@/lib/utils";
 import { matchProduct } from "@/lib/products";
-import { buildPrompt } from "@/lib/prompt";
+import { buildPrompt, buildGiftPrompt } from "@/lib/prompt";
 import { generateJustification, getFallback } from "@/lib/gemini";
 import { checkRateLimit, trackAiCall } from "@/lib/rate-limit";
 import { saveResult, updateResult } from "@/lib/db";
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Parse body
-  let body: { input?: unknown };
+  let body: { input?: unknown; recipientName?: unknown; senderName?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -47,6 +47,9 @@ export async function POST(req: NextRequest) {
   if (typeof body.input !== "string" || !body.input.trim()) {
     return NextResponse.json({ error: "Input is required." }, { status: 400 });
   }
+
+  const recipientName = typeof body.recipientName === "string" ? body.recipientName.trim().slice(0, 50) : undefined;
+  const senderName = typeof body.senderName === "string" ? body.senderName.trim().slice(0, 50) : undefined;
 
   // Sanitize
   const clean = sanitizeInput(body.input);
@@ -75,7 +78,9 @@ export async function POST(req: NextRequest) {
     justification = getFallback();
     console.warn("[CircuitBreaker] Served static fallback, AI calls suspended");
   } else {
-    const prompt = buildPrompt(safeInput, product);
+    const prompt = recipientName
+      ? buildGiftPrompt(safeInput, product, recipientName)
+      : buildPrompt(safeInput, product);
     justification = await generateJustification(prompt);
 
     // Quality gate: reject placeholder-contaminated or truncated outputs
@@ -93,7 +98,15 @@ export async function POST(req: NextRequest) {
   const shareUrl = `${siteUrl}/result/${id}`;
   const createdAt = new Date().toISOString();
 
-  const result: Result = { id, input: safeInput, justification, product, shareUrl, createdAt };
+  const result: Result = {
+    id,
+    input: safeInput,
+    justification,
+    product,
+    shareUrl,
+    createdAt,
+    ...(recipientName ? { gift: { recipientName, ...(senderName ? { senderName } : {}) } } : {}),
+  };
 
   // Save immediately so the result is durable regardless of what follows
   await saveResult(result);

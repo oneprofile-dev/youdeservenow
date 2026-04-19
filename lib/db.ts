@@ -9,6 +9,10 @@ export interface Result {
   shareUrl: string;
   createdAt: string;
   ogImageUrl?: string; // Vercel Blob CDN URL — undefined for pre-Sprint-2 results
+  gift?: {
+    recipientName: string;
+    senderName?: string;
+  };
 }
 
 // In-memory fallback — attached to global so all route modules share the same instance

@@ -1,5 +1,29 @@
 import type { Product } from "./products";
 
+export function buildGiftPrompt(input: string, product: Product, recipientName: string): string {
+  return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
+
+${recipientName} accomplished something today: "${input}"
+
+Based on this achievement, write a SHORT (3-4 sentences max) pseudo-scientific justification for why ${recipientName} absolutely MUST receive: ${product.name} (${product.price}) as a gift.
+
+RULES:
+- Address the gift-giver directly ("The data confirms your instinct…", "You are correct to feel this…")
+- Invent a fake but realistic-sounding study, journal name, or institute
+- Use scientific-sounding language but make it absurd and funny
+- Include a fake specific statistic (e.g. "91.2% of recipients", "3.8x gratitude spike")
+- The tone is DEADPAN and completely authoritative — you are a serious scientist confirming the gift is medically necessary
+- End with a dramatic one-liner that reads like a doctor's co-signature: e.g. "This gift is not optional. It is protocol."
+- Do NOT use emojis
+- Do NOT break character — never wink at the joke
+- Keep the entire response under 300 characters if possible (for tweet shareability)
+
+EXAMPLE OUTPUT:
+"Peer-reviewed data from the Cambridge Institute of Relational Gratitude confirms: ${recipientName}'s achievement places them in the 96th percentile of gift-worthiness. Your instinct to reward them is clinically sound. Delay would constitute a measurable act of scientific negligence. Proceed immediately."
+
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):`;
+}
+
 export function buildPrompt(userInput: string, product: Product): string {
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
 
