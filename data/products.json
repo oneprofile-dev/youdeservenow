@@ -1,0 +1,560 @@
+[
+  {
+    "id": "weighted-blanket-gravity",
+    "name": "Gravity Weighted Blanket 15lb",
+    "category": "comfort",
+    "price": "$79.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07NY4FYYQ?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/blanket1/400/400",
+    "keywords": ["stressed", "anxious", "tired", "exhausted", "survived", "monday", "rough", "hard day", "long day", "difficult"]
+  },
+  {
+    "id": "yankee-candle-vanilla",
+    "name": "Yankee Candle Vanilla Cupcake (3-Wick)",
+    "category": "comfort",
+    "price": "$29.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B001G57ZDI?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/candle1/400/400",
+    "keywords": ["cleaned", "organized", "laundry", "chores", "dishes", "tidied", "scrubbed", "mopped", "vacuumed"]
+  },
+  {
+    "id": "bath-bomb-set-lush",
+    "name": "Lush-Style Bath Bomb Gift Set (12-Pack)",
+    "category": "comfort",
+    "price": "$24.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07QDZXXXX?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/bathbomb/400/400",
+    "keywords": ["survived", "meeting", "presentation", "boss", "coworker", "office", "work", "deadline", "project", "stress"]
+  },
+  {
+    "id": "silk-pillowcase-slip",
+    "name": "Slip Pure Silk Pillowcase (Queen)",
+    "category": "comfort",
+    "price": "$89.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B0009RHKZE?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/pillowcase/400/400",
+    "keywords": ["woke up early", "early morning", "slept", "tired", "exhausted", "late night", "pulled an all-nighter"]
+  },
+  {
+    "id": "cozy-socks-falke",
+    "name": "FALKE Cosy Wool Blend Slipper Socks",
+    "category": "comfort",
+    "price": "$34.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B001E5Z0X2?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/socks/400/400",
+    "keywords": ["walked", "hiked", "feet", "commute", "standing", "retail", "long shift", "on my feet"]
+  },
+  {
+    "id": "eye-mask-bucky",
+    "name": "Bucky 40 Blinks Contoured Sleep Mask",
+    "category": "comfort",
+    "price": "$18.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B000EUAK6S?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/eyemask/400/400",
+    "keywords": ["late", "night", "overtime", "shift", "worked late", "can't sleep", "insomnia"]
+  },
+  {
+    "id": "sony-headphones-xm5",
+    "name": "Sony WH-1000XM5 Noise-Canceling Headphones",
+    "category": "tech",
+    "price": "$278.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B09XS7JWHH?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/headphones1/400/400",
+    "keywords": ["meeting", "call", "zoom", "teams", "conference", "presentation", "noise", "open office", "coworkers", "boss"]
+  },
+  {
+    "id": "kindle-paperwhite",
+    "name": "Kindle Paperwhite (16 GB)",
+    "category": "tech",
+    "price": "$139.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B09TMF6742?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/kindle/400/400",
+    "keywords": ["studied", "read", "finished", "book", "exam", "homework", "essay", "thesis", "paper", "research"]
+  },
+  {
+    "id": "airpods-pro-2",
+    "name": "Apple AirPods Pro (2nd Generation)",
+    "category": "tech",
+    "price": "$189.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B0BDHWDR12?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/airpods/400/400",
+    "keywords": ["commute", "drive", "train", "bus", "subway", "walked", "ran", "podcast", "music", "gym"]
+  },
+  {
+    "id": "ipad-mini-6",
+    "name": "Apple iPad mini (6th Generation)",
+    "category": "tech",
+    "price": "$399.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B09G9HD3P7?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/ipad/400/400",
+    "keywords": ["worked", "job", "project", "freelance", "client", "design", "code", "programming", "developed", "built"]
+  },
+  {
+    "id": "ring-light-selfie",
+    "name": "Neewer 18-inch LED Ring Light Kit",
+    "category": "tech",
+    "price": "$45.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B01LXDNNBW?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/ringlight/400/400",
+    "keywords": ["video call", "zoom", "teams", "presentation", "recorded", "podcast", "stream", "tiktok", "content", "youtube"]
+  },
+  {
+    "id": "desk-lamp-benq",
+    "name": "BenQ ScreenBar Halo Monitor Light",
+    "category": "tech",
+    "price": "$129.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B08WT889VL?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/desklamp/400/400",
+    "keywords": ["worked late", "night", "dark", "overtime", "computer", "coding", "studying", "homework", "wrote"]
+  },
+  {
+    "id": "massage-gun-theragun",
+    "name": "Theragun Prime Percussive Massage Gun",
+    "category": "fitness",
+    "price": "$199.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B082FG3M83?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/massagegun/400/400",
+    "keywords": ["workout", "gym", "ran", "exercise", "lifted", "yoga", "crossfit", "hiit", "training", "race", "marathon", "5k"]
+  },
+  {
+    "id": "foam-roller-trigger",
+    "name": "TriggerPoint GRID Foam Roller",
+    "category": "fitness",
+    "price": "$34.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B0040EGNIU?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/foamroller/400/400",
+    "keywords": ["ran", "jogged", "hiked", "walked", "workout", "sore", "legs", "back pain", "stretch", "yoga"]
+  },
+  {
+    "id": "water-bottle-hydro",
+    "name": "Hydro Flask 40 oz Wide Mouth Water Bottle",
+    "category": "fitness",
+    "price": "$44.95",
+    "affiliateUrl": "https://www.amazon.com/dp/B01ACAXIRU?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/hydroflask/400/400",
+    "keywords": ["workout", "gym", "ran", "exercise", "hiked", "bike", "cycling", "yoga", "hot", "summer", "sweated"]
+  },
+  {
+    "id": "resistance-bands-set",
+    "name": "Fit Simplify Resistance Loop Bands (5-Pack)",
+    "category": "fitness",
+    "price": "$10.95",
+    "affiliateUrl": "https://www.amazon.com/dp/B01AVDVHTI?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/resistancebands/400/400",
+    "keywords": ["home workout", "exercised", "stretched", "physical therapy", "rehab", "injured", "recovery"]
+  },
+  {
+    "id": "protein-powder-optimum",
+    "name": "Optimum Nutrition Gold Standard 100% Whey",
+    "category": "fitness",
+    "price": "$59.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B000QSNYGI?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/protein/400/400",
+    "keywords": ["gym", "lifted", "workout", "gains", "training", "bulking", "muscle", "protein", "fitness", "athlete"]
+  },
+  {
+    "id": "yoga-mat-lululemon",
+    "name": "Lululemon The Reversible Mat 5mm",
+    "category": "fitness",
+    "price": "$88.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B07MLSWTJP?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/yogamat/400/400",
+    "keywords": ["yoga", "meditation", "stretching", "pilates", "mindful", "breathed", "relaxed", "calm", "centered"]
+  },
+  {
+    "id": "instant-pot-duo",
+    "name": "Instant Pot Duo 7-in-1 (6 Quart)",
+    "category": "kitchen",
+    "price": "$89.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00FLYWNYQ?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/instantpot/400/400",
+    "keywords": ["cooked", "meal prep", "recipe", "dinner", "lunch", "made food", "baked", "kitchen", "chef", "cooking"]
+  },
+  {
+    "id": "air-fryer-cosori",
+    "name": "COSORI Air Fryer 5.8 Qt (130 Recipes)",
+    "category": "kitchen",
+    "price": "$69.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07GJBBGHG?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/airfryer/400/400",
+    "keywords": ["cooked", "meal prep", "dinner", "made food", "healthy eating", "diet", "cooking", "fried", "crispy"]
+  },
+  {
+    "id": "coffee-maker-nespresso",
+    "name": "Nespresso Vertuo Next Coffee Machine",
+    "category": "kitchen",
+    "price": "$149.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B08CTPJ8N5?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/nespresso/400/400",
+    "keywords": ["early", "woke up", "morning", "coffee", "tired", "work", "monday", "long day", "grind"]
+  },
+  {
+    "id": "vitamix-blender",
+    "name": "Vitamix E310 Explorian Blender",
+    "category": "kitchen",
+    "price": "$349.95",
+    "affiliateUrl": "https://www.amazon.com/dp/B079JF2VB1?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/vitamix/400/400",
+    "keywords": ["healthy", "smoothie", "diet", "clean eating", "meal prep", "nutrition", "vegetables", "salad", "vegan", "workout"]
+  },
+  {
+    "id": "kitchen-scale-ozeri",
+    "name": "Ozeri Pronto Digital Kitchen Scale",
+    "category": "kitchen",
+    "price": "$11.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B004164SRA?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/kitchenscale/400/400",
+    "keywords": ["baked", "cooking", "recipe", "meal prep", "diet", "counted calories", "nutrition", "portion"]
+  },
+  {
+    "id": "spice-rack-kamenstein",
+    "name": "Kamenstein Revolving 20-Jar Spice Rack",
+    "category": "kitchen",
+    "price": "$45.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B001VOVLKY?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/spicerack/400/400",
+    "keywords": ["organized", "cleaned", "kitchen", "cooked", "meal prep", "chef", "cooking", "tidied", "reorganized"]
+  },
+  {
+    "id": "face-serum-retinol",
+    "name": "TruSkin Vitamin C Serum for Face",
+    "category": "selfcare",
+    "price": "$22.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B01M0NAWK0?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/serum/400/400",
+    "keywords": ["worked", "long day", "tired", "stressed", "skin", "glow", "face", "healthy", "selfcare", "routine"]
+  },
+  {
+    "id": "jade-roller-facial",
+    "name": "Authentic Jade Roller & Gua Sha Set",
+    "category": "selfcare",
+    "price": "$12.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07HBQTS1M?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/jaderoller/400/400",
+    "keywords": ["stressed", "tense", "face", "headache", "tired", "long day", "relaxed", "self care", "wellness"]
+  },
+  {
+    "id": "epsom-salt-dr-teal",
+    "name": "Dr Teal's Epsom Salt Soaking Solution (3-Pack)",
+    "category": "selfcare",
+    "price": "$21.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00XQFQR0O?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/epsomsalt/400/400",
+    "keywords": ["ran", "hiked", "stood", "walked", "gym", "sore", "ached", "feet", "body", "tired", "exhausted"]
+  },
+  {
+    "id": "sheet-mask-skinfood",
+    "name": "SKINFOOD Black Sugar Mask Wash Off",
+    "category": "selfcare",
+    "price": "$14.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00AKD7TUE?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/sheetmask/400/400",
+    "keywords": ["long day", "stressed", "worked", "tired", "meeting", "presentation", "survived", "face", "skin"]
+  },
+  {
+    "id": "hair-mask-olaplex",
+    "name": "Olaplex No. 3 Hair Perfector (3.3 oz)",
+    "category": "selfcare",
+    "price": "$28.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B01CO45BTI?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/hairmask/400/400",
+    "keywords": ["styled", "presentation", "looked good", "meeting", "interview", "date", "event", "worked hard", "effort"]
+  },
+  {
+    "id": "diffuser-essential-oil",
+    "name": "URPOWER 500ml Aromatherapy Essential Oil Diffuser",
+    "category": "selfcare",
+    "price": "$21.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B01D9ZRTCK?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/diffuser/400/400",
+    "keywords": ["stressed", "anxious", "overwhelmed", "home", "office", "worked from home", "desk", "meditation", "calm"]
+  },
+  {
+    "id": "snack-box-graze",
+    "name": "Graze Mindful Variety Snack Box (24-Count)",
+    "category": "snacks",
+    "price": "$28.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07XBPXXXXK?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/snackbox/400/400",
+    "keywords": ["worked", "busy", "no time", "skipped lunch", "forgot to eat", "hungry", "office", "desk", "long day"]
+  },
+  {
+    "id": "chocolate-lindt-truffles",
+    "name": "Lindt Lindor Assorted Chocolate Truffles (60-Count)",
+    "category": "snacks",
+    "price": "$24.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B000FOCNEW?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/chocolates/400/400",
+    "keywords": ["survived", "difficult", "hard", "tough", "meeting", "confrontation", "argument", "emotional", "sad", "bad day"]
+  },
+  {
+    "id": "tea-sampler-harney",
+    "name": "Harney & Sons Fine Teas Sampler (50 Sachets)",
+    "category": "snacks",
+    "price": "$16.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B00BRRFCQ4?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/teabox/400/400",
+    "keywords": ["calm", "relaxed", "meditated", "breathed", "yoga", "quiet", "peace", "morning", "evening", "wellness"]
+  },
+  {
+    "id": "popcorn-kernels-premium",
+    "name": "Orville Redenbacher's Gourmet Popcorn Kernels (30lb)",
+    "category": "snacks",
+    "price": "$22.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B001EN5XMK?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/popcorn/400/400",
+    "keywords": ["movie", "watched", "binge", "netflix", "relaxed", "weekend", "couch", "chill", "lazy day"]
+  },
+  {
+    "id": "charcuterie-board-set",
+    "name": "Bamboo Charcuterie Board and Knife Set",
+    "category": "snacks",
+    "price": "$34.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07PBMHRYZ?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/charcuterie/400/400",
+    "keywords": ["hosted", "entertained", "party", "dinner party", "guests", "cooked for", "impressed", "gathering"]
+  },
+  {
+    "id": "gummy-vitamins-olly",
+    "name": "OLLY Goodbye Stress Gummy (60 Count)",
+    "category": "snacks",
+    "price": "$13.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00U0LYIOM?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/gummies/400/400",
+    "keywords": ["stressed", "anxious", "overwhelmed", "worried", "nervous", "anxiety", "deadline", "pressure", "tense"]
+  },
+  {
+    "id": "lego-botanical-set",
+    "name": "LEGO Icons Flower Bouquet Building Set",
+    "category": "home",
+    "price": "$49.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B08ZNHLMHF?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/lego/400/400",
+    "keywords": ["organized", "creative", "built", "made", "crafted", "project", "finished", "completed", "accomplished", "art"]
+  },
+  {
+    "id": "plant-monstera",
+    "name": "Costa Farms Monstera Deliciosa Live Plant",
+    "category": "home",
+    "price": "$29.98",
+    "affiliateUrl": "https://www.amazon.com/dp/B07VX7MBBS?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/monstera/400/400",
+    "keywords": ["organized", "cleaned", "apartment", "home", "decorating", "moved", "new place", "settled", "nesting"]
+  },
+  {
+    "id": "picture-frames-set",
+    "name": "Americanflat 4x6 Picture Frames (10-Pack)",
+    "category": "home",
+    "price": "$29.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B08P5ZVKXT?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/frames/400/400",
+    "keywords": ["decorated", "organized", "moved", "new home", "photo", "memory", "milestone", "graduated", "achievement"]
+  },
+  {
+    "id": "bookshelf-decorative",
+    "name": "Nathan James Theo 5-Shelf Bookcase",
+    "category": "home",
+    "price": "$119.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07Q2WLFQD?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/bookshelf/400/400",
+    "keywords": ["organized", "cleaned", "read", "books", "studied", "decluttered", "tidied", "reorganized", "home", "office"]
+  },
+  {
+    "id": "throw-blanket-chunky",
+    "name": "Chunky Knit Throw Blanket (50x60 inches)",
+    "category": "home",
+    "price": "$39.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B08LTRPB1K?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/throwblanket/400/400",
+    "keywords": ["cold", "winter", "cozy", "home", "couch", "relaxed", "watched", "movie", "binge", "sunday"]
+  },
+  {
+    "id": "scented-candle-homesick",
+    "name": "Homesick Premium Scented Candle (13.75 oz)",
+    "category": "home",
+    "price": "$34.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00BW9H1XY?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/homesick/400/400",
+    "keywords": ["homesick", "miss", "lonely", "traveled", "commuted", "moved", "far", "away", "nostalgic", "memory"]
+  },
+  {
+    "id": "journal-leuchtturm",
+    "name": "Leuchtturm1917 Hardcover A5 Notebook",
+    "category": "trending",
+    "price": "$24.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B002TSIMW4?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/journal/400/400",
+    "keywords": ["wrote", "journaled", "creative", "planned", "organized", "goal", "reflection", "meditated", "therapy", "processed"]
+  },
+  {
+    "id": "stanley-tumbler-40oz",
+    "name": "Stanley Quencher H2.0 FlowState Tumbler 40oz",
+    "category": "trending",
+    "price": "$45.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B09H3KBHYM?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/stanley/400/400",
+    "keywords": ["hydrated", "workout", "gym", "ran", "office", "desk", "work", "commute", "meeting", "productive"]
+  },
+  {
+    "id": "mini-projector-anker",
+    "name": "Anker Nebula Capsule Mini Projector",
+    "category": "trending",
+    "price": "$349.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07Q4GBWHB?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/projector/400/400",
+    "keywords": ["movie night", "presentation", "finished project", "weekend", "celebrate", "achieved", "deserved", "netflix", "fun"]
+  },
+  {
+    "id": "polaroid-camera-now",
+    "name": "Polaroid Now Instant Film Camera",
+    "category": "trending",
+    "price": "$99.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B09VBGSF2P?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/polaroid/400/400",
+    "keywords": ["memory", "adventure", "traveled", "trip", "event", "party", "birthday", "graduated", "milestone", "celebration"]
+  },
+  {
+    "id": "wireless-charger-magsafe",
+    "name": "Apple MagSafe Charger (1 m)",
+    "category": "trending",
+    "price": "$39.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B08L5NP6NG?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/magsafe/400/400",
+    "keywords": ["phone", "iphone", "tech", "productive", "worked", "connected", "battery", "charged", "plugged in", "desk"]
+  },
+  {
+    "id": "slippers-ugg-scuff",
+    "name": "UGG Men's/Women's Scuff Slipper",
+    "category": "trending",
+    "price": "$69.95",
+    "affiliateUrl": "https://www.amazon.com/dp/B001GAX35S?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/uggslippers/400/400",
+    "keywords": ["home", "wfh", "remote", "work from home", "feet", "walked", "tired", "long day", "comfortable", "relaxed"]
+  },
+  {
+    "id": "nice-pen-lamy",
+    "name": "LAMY Safari Fountain Pen (Special Edition)",
+    "category": "trending",
+    "price": "$32.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B000UPPWH4?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/fountainpen/400/400",
+    "keywords": ["wrote", "signed", "finished report", "essay", "thesis", "journal", "notes", "contract", "document", "paperwork"]
+  },
+  {
+    "id": "puzzle-1000pc-ravensburger",
+    "name": "Ravensburger 1000 Piece Jigsaw Puzzle",
+    "category": "home",
+    "price": "$18.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B08FKQPKBS?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/puzzle/400/400",
+    "keywords": ["focused", "concentration", "patient", "mindful", "weekend", "rainy day", "relaxed", "stayed home", "productive"]
+  },
+  {
+    "id": "board-game-catan",
+    "name": "Catan Board Game (Base Game)",
+    "category": "home",
+    "price": "$44.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00U26V4VQ?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/catan/400/400",
+    "keywords": ["friends", "family", "social", "hosted", "game night", "fun", "laughed", "hung out", "gathered", "party"]
+  },
+  {
+    "id": "standing-desk-converter",
+    "name": "FlexiSpot Standing Desk Converter",
+    "category": "tech",
+    "price": "$109.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07ZXRM7HC?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/standingdesk/400/400",
+    "keywords": ["worked all day", "desk job", "sitting", "back pain", "office", "wfh", "remote", "productive", "long hours"]
+  },
+  {
+    "id": "laptop-stand-nexstand",
+    "name": "Nexstand Laptop Stand (Portable & Adjustable)",
+    "category": "tech",
+    "price": "$29.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00TFYF8YE?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/laptopstand/400/400",
+    "keywords": ["worked", "coding", "laptop", "desk", "computer", "meeting", "presentation", "zoom", "remote", "wfh"]
+  },
+  {
+    "id": "blue-light-glasses",
+    "name": "TIJN Blue Light Blocking Glasses (4-Pack)",
+    "category": "selfcare",
+    "price": "$34.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B07HFQYDFZ?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/bluelightglasses/400/400",
+    "keywords": ["screen", "computer", "worked", "coding", "wrote", "late night", "tired eyes", "headache", "zoom", "remote"]
+  },
+  {
+    "id": "meditation-app-headspace",
+    "name": "Calm Premium Weighted Aromatherapy Eye Pillow",
+    "category": "selfcare",
+    "price": "$19.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B01LZ1NFLT?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/eyepillow/400/400",
+    "keywords": ["meditation", "breathed", "yoga", "mindful", "stressed", "anxious", "calm", "centered", "present", "wellbeing"]
+  },
+  {
+    "id": "posture-corrector",
+    "name": "Evoke Pro Back Posture Corrector",
+    "category": "selfcare",
+    "price": "$29.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B01MFBGCN5?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/posture/400/400",
+    "keywords": ["back pain", "sitting", "desk", "worked", "slouched", "long hours", "computer", "office", "hunched"]
+  },
+  {
+    "id": "collagen-powder-vital",
+    "name": "Vital Proteins Collagen Peptides Powder (20oz)",
+    "category": "selfcare",
+    "price": "$43.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B00K6KS2ZI?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/collagen/400/400",
+    "keywords": ["healthy", "wellness", "skin", "workout", "fitness", "nutrition", "recovery", "morning routine", "selfcare"]
+  },
+  {
+    "id": "smart-scale-withings",
+    "name": "Withings Body+ Smart WiFi Scale",
+    "category": "fitness",
+    "price": "$99.95",
+    "affiliateUrl": "https://www.amazon.com/dp/B01N1UX8RW?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/smartscale/400/400",
+    "keywords": ["fitness", "diet", "health", "weight", "goal", "tracking", "progress", "gym", "workout", "transformation"]
+  },
+  {
+    "id": "sleep-supplement-olly",
+    "name": "OLLY Sleep Gummy Melatonin (100 Count)",
+    "category": "selfcare",
+    "price": "$14.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B00SOXMCFW?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/sleepgummies/400/400",
+    "keywords": ["tired", "insomnia", "can't sleep", "stressed", "anxious", "worked late", "overthinking", "night", "rest"]
+  },
+  {
+    "id": "planner-passion",
+    "name": "Passion Planner Daily Life Planner (Undated)",
+    "category": "trending",
+    "price": "$30.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B087NXLH7Z?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/planner/400/400",
+    "keywords": ["organized", "planned", "goal", "productive", "schedule", "managed", "task", "list", "efficient", "accomplished"]
+  },
+  {
+    "id": "electric-kettle-fellow",
+    "name": "Fellow Stagg EKG Electric Pour-Over Kettle",
+    "category": "kitchen",
+    "price": "$165.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B07WTJKXTK?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/kettle/400/400",
+    "keywords": ["coffee", "tea", "morning", "ritual", "brewed", "made coffee", "caffeine", "focused", "work", "early"]
+  },
+  {
+    "id": "backpack-cotopaxi",
+    "name": "Cotopaxi Allpa 35L Travel Pack",
+    "category": "trending",
+    "price": "$279.00",
+    "affiliateUrl": "https://www.amazon.com/dp/B07PF3SLTR?tag=youdeservenow-20",
+    "imageUrl": "https://picsum.photos/seed/backpack/400/400",
+    "keywords": ["traveled", "trip", "adventure", "commuted", "hike", "flew", "packed", "explored", "journey", "road trip"]
+  }
+]

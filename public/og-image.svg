@@ -1,0 +1,32 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#FBF8F3"/>
+  <rect x="48" y="48" width="1104" height="534" rx="16" fill="#F3EDE4"/>
+
+  <!-- Accent bar -->
+  <rect x="48" y="48" width="4" height="534" rx="2" fill="#C8963E"/>
+
+  <!-- Logo -->
+  <text x="80" y="110" font-family="Georgia, serif" font-size="28" font-weight="400" fill="#9C9590" letter-spacing="2">YOUDESERVENOW.COM</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="130" x2="1120" y2="130" stroke="#E8E0D6" stroke-width="1"/>
+
+  <!-- Main headline -->
+  <text x="80" y="260" font-family="Georgia, serif" font-size="72" font-weight="400" fill="#1A1814">You Deserve This.</text>
+
+  <!-- Subheadline -->
+  <text x="80" y="320" font-family="Arial, sans-serif" font-size="28" fill="#6B6560">Tell us what you accomplished.</text>
+  <text x="80" y="360" font-family="Arial, sans-serif" font-size="28" fill="#6B6560">We'll give you the scientific justification.</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="420" x2="1120" y2="420" stroke="#E8E0D6" stroke-width="1"/>
+
+  <!-- Footer tag -->
+  <text x="80" y="460" font-family="Arial, sans-serif" font-size="18" fill="#C8963E" letter-spacing="2">BACKED BY ABSOLUTELY NO REAL SCIENCE</text>
+
+  <!-- Badge -->
+  <rect x="820" y="200" width="280" height="140" rx="12" fill="#1A1814"/>
+  <text x="960" y="258" font-family="Georgia, serif" font-size="16" fill="#C8963E" text-anchor="middle" letter-spacing="2">THE INSTITUTE OF</text>
+  <text x="960" y="285" font-family="Georgia, serif" font-size="20" fill="#FBF8F3" text-anchor="middle">Deserved Rewards</text>
+  <text x="960" y="316" font-family="Arial, sans-serif" font-size="13" fill="#9C9590" text-anchor="middle">Est. Today · Peer-Reviewed</text>
+</svg>

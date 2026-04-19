@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-bg-primary: #FBF8F3;
+  --color-bg-secondary: #F3EDE4;
+  --color-text-primary: #1A1814;
+  --color-text-secondary: #6B6560;
+  --color-text-tertiary: #9C9590;
+  --color-accent: #C8963E;
+  --color-accent-hover: #B8862E;
+  --color-card-bg: #FFFFFF;
+  --color-card-border: #E8E0D6;
+  --color-cta-bg: #1A1814;
+  --color-cta-text: #FBF8F3;
+
+  /* Dark mode */
+  --color-dark-bg: #121210;
+  --color-dark-surface: #1E1D1A;
+  --color-dark-text: #F0EBE3;
+  --color-dark-border: #2E2D2A;
+
+  /* Fonts — --font-instrument-serif and --font-jakarta injected by next/font */
+  --font-display: var(--font-instrument-serif, "Instrument Serif", serif);
+  --font-body: var(--font-jakarta, "Plus Jakarta Sans", sans-serif);
+  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+
+  /* Animations */
+  --animate-fade-in: fade-in 0.4s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--color-dark-bg);
+    color: var(--color-dark-text);
+  }
+}
+
+.dark body {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-text);
+}
+
+/* Typography helpers */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono-science {
+  font-family: var(--font-mono);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-card-border);
+  border-radius: 3px;
+}
