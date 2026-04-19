@@ -8,46 +8,31 @@ export async function GET(req: NextRequest) {
   if (secret !== SECRET) return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
   const key = process.env.GEMINI_API_KEY;
-  if (!key) return NextResponse.json({ error: "no key" });
+  if (!key) return NextResponse.json({ keyPresent: false });
 
   const client = new GoogleGenerativeAI(key);
-  const testPrompt = `You are a scientist. Write 3 funny sentences about why someone who cleaned their apartment deserves a scented candle. Be specific and deadpan.`;
+  const testPrompt = `You are a scientist. Write 3 funny sentences about why someone who cleaned their house deserves a scented candle. Be specific and deadpan. Under 200 words.`;
+  const results: Record<string, string> = {
+    keyPresent: `yes (len=${key.length}, prefix=${key.slice(0, 8)}...)`,
+  };
 
-  const model = client.getGenerativeModel({
-    model: "gemini-2.5-flash",
-    generationConfig: {
-      maxOutputTokens: 400,
-      temperature: 0.9,
-      // @ts-expect-error thinkingConfig not in SDK types yet
-      thinkingConfig: { thinkingBudget: 0 },
-    },
-  });
+  for (const modelId of ["gemini-2.0-flash-lite", "gemini-2.5-flash"]) {
+    try {
+      const model = client.getGenerativeModel({
+        model: modelId,
+        generationConfig: { maxOutputTokens: 500, temperature: 0.9 },
+      });
+      const result = await Promise.race([
+        model.generateContent(testPrompt),
+        new Promise<never>((_, reject) => setTimeout(() => reject(new Error("timeout")), 10000)),
+      ]);
+      const response = (result as Awaited<ReturnType<typeof model.generateContent>>).response;
+      const text = response.text();
+      results[modelId] = `OK (${text.length} chars): ${text.slice(0, 300)}`;
+    } catch (err) {
+      results[modelId] = `FAIL: ${err instanceof Error ? err.message.slice(0, 200) : String(err)}`;
+    }
+  }
 
-  const result = await model.generateContent(testPrompt);
-  const response = result.response;
-  const candidate = response.candidates?.[0];
-
-  const parts = candidate?.content?.parts ?? [];
-  const partsInfo = parts.map((p, i) => ({
-    index: i,
-    hasText: "text" in p,
-    isThought: "thought" in p ? (p as { thought?: boolean }).thought : false,
-    textLength: "text" in p ? (p as { text: string }).text.length : 0,
-    textPreview: "text" in p ? (p as { text: string }).text.slice(0, 200) : null,
-  }));
-
-  const nonThoughtText = parts
-    .filter((p) => !("thought" in p && (p as { thought?: boolean }).thought))
-    .map((p) => ("text" in p ? (p as { text: string }).text : ""))
-    .join("");
-
-  return NextResponse.json({
-    finishReason: candidate?.finishReason,
-    totalParts: parts.length,
-    parts: partsInfo,
-    nonThoughtTextLength: nonThoughtText.length,
-    nonThoughtText,
-    responseTextLength: response.text().length,
-    responseText: response.text(),
-  });
+  return NextResponse.json(results);
 }

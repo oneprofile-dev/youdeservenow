@@ -10,12 +10,12 @@ function getClient(): GoogleGenerativeAI {
   return genAI;
 }
 
-// Tried in order — first success wins
-// 2.5-flash: disable thinking (thinkingBudget:0) to avoid token truncation
-// 2.0-flash-lite: no thinking mode, fast, free tier
+// 2.0-flash-lite: no thinking mode, stable, free tier, fast
+// 2.5-flash: more capable but uses thinking tokens (may truncate without budget control)
+// 2.0-flash-exp: experimental fallback
 const GEMINI_MODELS = [
-  "gemini-2.5-flash",
   "gemini-2.0-flash-lite",
+  "gemini-2.5-flash",
   "gemini-2.0-flash-exp",
 ];
 
@@ -31,15 +31,9 @@ function getFallback(): string {
 
 async function tryGeminiModel(modelId: string, prompt: string): Promise<string> {
   const client = getClient();
-  const is25Flash = modelId.startsWith("gemini-2.5");
   const model = client.getGenerativeModel({
     model: modelId,
-    generationConfig: {
-      maxOutputTokens: 400,
-      temperature: 0.9,
-      // Disable thinking on 2.5-flash — thinking tokens eat the output budget
-      ...(is25Flash ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
-    } as Parameters<typeof client.getGenerativeModel>[0]["generationConfig"],
+    generationConfig: { maxOutputTokens: 500, temperature: 0.9 },
   });
 
   const result = await Promise.race([
@@ -50,35 +44,17 @@ async function tryGeminiModel(modelId: string, prompt: string): Promise<string> 
   ]);
 
   const response = (result as Awaited<ReturnType<typeof model.generateContent>>).response;
-  const candidate = response.candidates?.[0];
-
-  if (!candidate) throw new Error("no candidates returned");
-
-  // Log finish reason to help diagnose truncations
-  const finishReason = candidate.finishReason;
-  if (finishReason && finishReason !== "STOP" && finishReason !== "MAX_TOKENS") {
-    throw new Error(`blocked: finishReason=${finishReason}`);
-  }
-
-  // Extract text — filter thought parts (used by 2.5-flash thinking mode)
-  const text =
-    candidate.content?.parts
-      ?.filter((p) => !("thought" in p && p.thought))
-      .map((p) => ("text" in p ? p.text : ""))
-      .join("")
-      .trim() || response.text().trim();
-
+  const text = response.text().trim();
   if (!text) throw new Error("empty response");
   return text;
 }
 
 export async function generateJustification(prompt: string): Promise<string> {
-  // Try each Gemini model in order
   if (process.env.GEMINI_API_KEY) {
     for (const modelId of GEMINI_MODELS) {
       try {
         const text = await tryGeminiModel(modelId, prompt);
-        console.log(`[Gemini] success with ${modelId}`);
+        console.log(`[Gemini] success with ${modelId} (${text.length} chars)`);
         return text;
       } catch (err) {
         console.error(`[Gemini] ${modelId} failed:`, err instanceof Error ? err.message : err);
@@ -88,7 +64,6 @@ export async function generateJustification(prompt: string): Promise<string> {
     console.warn("[Gemini] GEMINI_API_KEY not set");
   }
 
-  // Try Groq
   if (process.env.GROQ_API_KEY) {
     try {
       const text = await generateWithGroq(prompt);
@@ -97,8 +72,6 @@ export async function generateJustification(prompt: string): Promise<string> {
     } catch (err) {
       console.error("[Groq] failed:", err instanceof Error ? err.message : err);
     }
-  } else {
-    console.warn("[Groq] GROQ_API_KEY not set");
   }
 
   console.warn("[AI] all providers failed, using hardcoded fallback");
