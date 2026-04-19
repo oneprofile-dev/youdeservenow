@@ -10,7 +10,7 @@ function getClient(): GoogleGenerativeAI {
   return genAI;
 }
 
-// gemini-2.5-flash: 20 req/day free tier, resets at midnight UTC
+// gemini-2.5-flash: 500 req/day free tier (10 RPM), resets at midnight UTC
 // others removed: 2.0-flash-lite has quota=0, 2.0-flash-exp is 404
 const GEMINI_MODELS = [
   "gemini-2.5-flash",

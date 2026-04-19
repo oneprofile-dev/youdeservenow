@@ -15,7 +15,7 @@ export async function generateWithGroq(prompt: string): Promise<string> {
   const completion = await client.chat.completions.create({
     model: "llama-3.3-70b-versatile",
     messages: [{ role: "user", content: prompt }],
-    max_tokens: 200,
+    max_tokens: 600,
     temperature: 0.9,
   });
 
