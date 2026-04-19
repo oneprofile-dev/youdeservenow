@@ -11,10 +11,11 @@ function getClient(): GoogleGenerativeAI {
 }
 
 // Tried in order — first success wins
+// gemini-2.0-flash has quota 0 on free tier; gemini-1.5-flash is 404 on v1beta
 const GEMINI_MODELS = [
   "gemini-2.5-flash",
-  "gemini-2.0-flash",
-  "gemini-1.5-flash",
+  "gemini-2.0-flash-lite",
+  "gemini-2.0-flash-exp",
 ];
 
 const FALLBACK_RESPONSES = [
