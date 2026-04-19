@@ -33,7 +33,8 @@ async function tryGeminiModel(modelId: string, prompt: string): Promise<string> 
   const client = getClient();
   const model = client.getGenerativeModel({
     model: modelId,
-    generationConfig: { maxOutputTokens: 500, temperature: 0.9 },
+    // 1000 tokens gives 2.5-flash's thinking mode enough budget + room for full response
+    generationConfig: { maxOutputTokens: 1000, temperature: 0.9 },
   });
 
   const result = await Promise.race([
