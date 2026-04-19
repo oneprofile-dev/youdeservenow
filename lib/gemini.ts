@@ -10,13 +10,10 @@ function getClient(): GoogleGenerativeAI {
   return genAI;
 }
 
-// 2.0-flash-lite: no thinking mode, stable, free tier, fast
-// 2.5-flash: more capable but uses thinking tokens (may truncate without budget control)
-// 2.0-flash-exp: experimental fallback
+// gemini-2.5-flash: 20 req/day free tier, resets at midnight UTC
+// others removed: 2.0-flash-lite has quota=0, 2.0-flash-exp is 404
 const GEMINI_MODELS = [
-  "gemini-2.0-flash-lite",
   "gemini-2.5-flash",
-  "gemini-2.0-flash-exp",
 ];
 
 const FALLBACK_RESPONSES = [
