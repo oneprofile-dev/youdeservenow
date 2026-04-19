@@ -21,6 +21,8 @@ function getFallback(): string {
 }
 
 export async function generateJustification(prompt: string): Promise<string> {
+  const debug = process.env.AI_DEBUG === "true";
+
   // Try Gemini first
   if (process.env.GEMINI_API_KEY) {
     try {
@@ -30,33 +32,38 @@ export async function generateJustification(prompt: string): Promise<string> {
         generationConfig: { maxOutputTokens: 200, temperature: 0.9 },
       });
 
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10_000);
+      const result = await Promise.race([
+        model.generateContent(prompt),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Gemini timeout")), 10_000)
+        ),
+      ]);
 
-      try {
-        const result = await model.generateContent(prompt);
-        clearTimeout(timeout);
-        const text = result.response.text().trim();
-        if (text) return text;
-      } catch (geminiErr: unknown) {
-        clearTimeout(timeout);
-        const status = (geminiErr as { status?: number })?.status;
-        // Only fall through to Groq on rate limit or quota errors
-        if (status !== 429 && status !== 503) throw geminiErr;
-      }
-    } catch {
+      const text = (result as Awaited<ReturnType<typeof model.generateContent>>)
+        .response.text()
+        .trim();
+
+      if (text) return text;
+      throw new Error("Gemini returned empty text");
+    } catch (err) {
+      console.error("[Gemini] failed:", err instanceof Error ? err.message : err);
       // Fall through to Groq
     }
+  } else {
+    console.warn("[Gemini] GEMINI_API_KEY not set");
   }
 
   // Try Groq fallback
   if (process.env.GROQ_API_KEY) {
     try {
       return await generateWithGroq(prompt);
-    } catch {
-      // Fall through to hardcoded fallback
+    } catch (err) {
+      console.error("[Groq] failed:", err instanceof Error ? err.message : err);
     }
+  } else {
+    console.warn("[Groq] GROQ_API_KEY not set");
   }
 
+  if (debug) console.warn("[AI] both providers failed, using hardcoded fallback");
   return getFallback();
 }
