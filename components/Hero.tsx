@@ -16,7 +16,65 @@ const PLACEHOLDERS = [
   "I finally organized my closet...",
   "I made it through a Monday without complaining...",
   "I finished a project two days early...",
+  "I prepped meals for the whole week...",
+  "I sent a difficult email I'd been avoiding for days...",
+  "I made it to the gym before 7am...",
+  "I drank 8 glasses of water today...",
 ];
+
+interface HeroContext {
+  label: string;
+  headline: string;
+  sub: string;
+}
+
+function getContextualHero(): HeroContext {
+  const now = new Date();
+  const hour = now.getHours();
+  const day = now.getDay(); // 0=Sun, 1=Mon … 6=Sat
+
+  if (day === 1)
+    return {
+      label: "Monday Achievement Protocol",
+      headline: "Survived Monday.",
+      sub: "That alone is clinical proof you deserve something. Tell us what you did.",
+    };
+  if (day === 5)
+    return {
+      label: "Friday Reward Clearance",
+      headline: "You made it to Friday.",
+      sub: "The peer-reviewed consensus: this week earned a treat. What did you accomplish?",
+    };
+  if (day === 0 || day === 6)
+    return {
+      label: "Weekend Research Division",
+      headline: "Even weekends deserve recognition.",
+      sub: "Rest is productive. Rest counts. What did you do — or beautifully not do?",
+    };
+  if (hour >= 5 && hour < 12)
+    return {
+      label: "Morning Achievement Scan",
+      headline: "Early riser detected.",
+      sub: "Research shows morning accomplishments earn 2× the reward. What have you done so far?",
+    };
+  if (hour >= 12 && hour < 17)
+    return {
+      label: "Peer-Reviewed Self-Reward Science",
+      headline: "What did you accomplish today?",
+      sub: "Tell us. We'll tell you exactly what you deserve — with citations.",
+    };
+  if (hour >= 17 && hour < 21)
+    return {
+      label: "End-of-Day Analysis",
+      headline: "Long day. You earned something.",
+      sub: "Post-5pm achievers require immediate reward stimulation. What did you do today?",
+    };
+  return {
+    label: "Late-Night Achievement Lab",
+    headline: "Still going at this hour?",
+    sub: "The Institute of Nocturnal Productivity says you have unambiguously earned a treat.",
+  };
+}
 
 export default function Hero() {
   const [input, setInput] = useState("");
@@ -24,6 +82,16 @@ export default function Hero() {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [heroCtx, setHeroCtx] = useState<HeroContext>({
+    label: "Peer-Reviewed Self-Reward Science",
+    headline: "What did you accomplish today?",
+    sub: "Tell us. We'll tell you exactly what you deserve — with citations.",
+  });
+
+  // Hydrate with time/day context client-side (no FOUC — server renders the default)
+  useEffect(() => {
+    setHeroCtx(getContextualHero());
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -76,20 +144,20 @@ export default function Hero() {
 
   return (
     <section className="w-full max-w-3xl mx-auto px-4 sm:px-6">
-      {/* Headline */}
+      {/* Headline — hydrated with time/day context on the client */}
       {!result && (
         <div className="text-center mb-10 pt-12 sm:pt-16 animate-[fade-in_0.5s_ease-out]">
           <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-4">
-            Peer-Reviewed Self-Reward Science
+            {heroCtx.label}
           </p>
           <h1
             className="text-4xl sm:text-5xl lg:text-6xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] leading-[1.1] mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            What did you accomplish today?
+            {heroCtx.headline}
           </h1>
           <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] text-base sm:text-lg max-w-lg mx-auto">
-            Tell us. We'll tell you exactly what you deserve — with citations.
+            {heroCtx.sub}
           </p>
         </div>
       )}

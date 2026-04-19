@@ -11,6 +11,14 @@ import type { Result } from "@/lib/db";
 
 const filter = new BadWordsFilter();
 
+function isValidJustification(text: string): boolean {
+  if (text.trim().length < 60) return false;
+  if (/\[(?:insert|your|name|product|here|xxx)[^\]]*\]/i.test(text)) return false;
+  if (/https?:\/\/(?:example\.com|placeholder\.|lorem\.)/i.test(text)) return false;
+  if (/\.\.\.$/.test(text.trim()) && text.trim().length < 100) return false; // truncated
+  return true;
+}
+
 export async function POST(req: NextRequest) {
   // Get IP for rate limiting
   const ip =
@@ -60,7 +68,13 @@ export async function POST(req: NextRequest) {
 
   // Build prompt and generate
   const prompt = buildPrompt(safeInput, product);
-  const justification = await generateJustification(prompt);
+  let justification = await generateJustification(prompt);
+
+  // Quality gate: reject placeholder-contaminated or truncated outputs
+  if (!isValidJustification(justification)) {
+    console.warn("[Validator] Output failed quality check, using fallback");
+    justification = await generateJustification(prompt + "\n\nIMPORTANT: Respond ONLY with the justification paragraph. No placeholders, no brackets, no incomplete sentences.");
+  }
 
   // Save to DB
   const id = generateId();
