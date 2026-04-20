@@ -8,6 +8,8 @@ import ShareCard from "./ShareCard";
 import CertificateDownload from "./CertificateDownload";
 import RewardPersonality from "./RewardPersonality";
 import { RankingBadge } from "./RankingBadge";
+import { RealtimeMetrics } from "./RealtimeMetrics";
+import { AffiliateDashboard } from "./AffiliateDashboard";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
 
@@ -77,6 +79,18 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Product */}
         <ProductRecommendation product={result.product} />
+
+        {/* Divider */}
+        <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
+
+        {/* Real-time Metrics */}
+        <RealtimeMetrics resultId={result.id} category={result.product.category} />
+
+        {/* Divider */}
+        <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
+
+        {/* Affiliate Dashboard */}
+        <AffiliateDashboard resultId={result.id} />
 
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
