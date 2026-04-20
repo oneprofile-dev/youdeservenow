@@ -1,4 +1,14 @@
 {
+  "crons": [
+    {
+      "path": "/api/cron/rotate-challenges",
+      "schedule": "0 0 * * 1"
+    },
+    {
+      "path": "/api/cron/cleanup-expired",
+      "schedule": "0 3 * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -107,3 +107,83 @@ export async function updateResult(result: Result): Promise<void> {
     memoryStore.set(result.id, serialized);
   }
 }
+
+/**
+ * Store result metadata for leaderboard tracking
+ * Called when result is generated
+ */
+export async function storeResultMetadata(
+  resultId: string,
+  metadata: {
+    category?: string;
+    isGift?: boolean;
+    giftType?: string;
+    createdAt: string;
+  }
+): Promise<void> {
+  const kv = await getKV();
+  if (!kv) return;
+
+  try {
+    const key = `result:${resultId}:metadata`;
+    await kv.set(key, JSON.stringify(metadata), { ex: 60 * 60 * 24 * 90 });
+
+    // Initialize metrics
+    await kv.set(`result:${resultId}:likes`, "0", { ex: 60 * 60 * 24 * 90 });
+    await kv.set(`result:${resultId}:shares`, "0", { ex: 60 * 60 * 24 * 90 });
+    await kv.set(`result:${resultId}:affiliate_clicks`, "0", { ex: 60 * 60 * 24 * 90 });
+
+    // Add to category-specific lists for ranking
+    if (metadata.category) {
+      await kv.zadd(`results:by:likes:category:${metadata.category}:zset`, {
+        score: 0,
+        member: resultId,
+      });
+      await kv.zadd(`results:by:shares:category:${metadata.category}:zset`, {
+        score: 0,
+        member: resultId,
+      });
+      await kv.zadd(`results:by:affiliate_clicks:category:${metadata.category}:zset`, {
+        score: 0,
+        member: resultId,
+      });
+    }
+
+    // Add to global ranking lists
+    await kv.zadd(`results:by:likes:zset`, { score: 0, member: resultId });
+    await kv.zadd(`results:by:shares:zset`, { score: 0, member: resultId });
+    await kv.zadd(`results:by:affiliate_clicks:zset`, { score: 0, member: resultId });
+
+    // Store creation timestamp for cleanup
+    await kv.zadd("results:created:zset", { score: new Date(metadata.createdAt).getTime(), member: resultId });
+  } catch (error) {
+    console.error("[db] Error storing result metadata:", error);
+  }
+}
+
+/**
+ * Get result metrics (likes, shares, affiliate clicks)
+ */
+export async function getResultMetrics(
+  resultId: string
+): Promise<{ likes: number; shares: number; affiliateClicks: number }> {
+  const kv = await getKV();
+  if (!kv) return { likes: 0, shares: 0, affiliateClicks: 0 };
+
+  try {
+    const [likes, shares, affiliateClicks] = await Promise.all([
+      kv.get<number>(`result:${resultId}:likes`),
+      kv.get<number>(`result:${resultId}:shares`),
+      kv.get<number>(`result:${resultId}:affiliate_clicks`),
+    ]);
+
+    return {
+      likes: likes || 0,
+      shares: shares || 0,
+      affiliateClicks: affiliateClicks || 0,
+    };
+  } catch (error) {
+    console.error("[db] Error fetching metrics:", error);
+    return { likes: 0, shares: 0, affiliateClicks: 0 };
+  }
+}

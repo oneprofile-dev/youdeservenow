@@ -1,6 +1,6 @@
 {
   "name": "youdeservenow",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "check-links": "node scripts/check-amazon-links.mjs",
-    "fix-links": "node scripts/check-amazon-links.mjs --fix"
+    "fix-links": "node scripts/check-amazon-links.mjs --fix",
+    "bootstrap": "node scripts/bootstrap-challenges.js",
+    "generate-codes": "node scripts/generate-reward-codes.js",
+    "seed": "node scripts/seed-sample-data.js",
+    "setup": "npm install && npm run bootstrap && npm run generate-codes",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
@@ -18,6 +23,7 @@
     "@vercel/kv": "^3.0.0",
     "bad-words": "^3.0.4",
     "canvas-confetti": "^1.9.4",
+    "date-fns": "^3.3.1",
     "groq-sdk": "^0.9.0",
     "html-to-image": "^1.11.11",
     "jspdf": "^4.2.1",
@@ -25,7 +31,9 @@
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "resend": "^6.12.0"
+    "resend": "^6.12.0",
+    "swr": "^2.2.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

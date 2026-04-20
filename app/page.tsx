@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
+import { TrendingSection } from "@/components/TrendingSection";
 import { getRecentResults, getResult } from "@/lib/db";
 import type { Result } from "@/lib/db";
 import Link from "next/link";
@@ -65,6 +66,11 @@ export default async function Home({ searchParams }: HomeProps) {
             />
           </div>
         </section>
+
+        {/* Trending section */}
+        <Suspense fallback={null}>
+          <TrendingSection />
+        </Suspense>
 
         {/* Gallery preview */}
         {results.length > 0 && (

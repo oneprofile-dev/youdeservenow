@@ -6,7 +6,7 @@ import { matchProduct } from "@/lib/products";
 import { buildPrompt, buildGiftPrompt } from "@/lib/prompt";
 import { generateJustification, getFallback } from "@/lib/gemini";
 import { checkRateLimit, trackAiCall } from "@/lib/rate-limit";
-import { saveResult, updateResult } from "@/lib/db";
+import { saveResult, updateResult, storeResultMetadata } from "@/lib/db";
 import type { Result } from "@/lib/db";
 import { generateAndUploadOgImage } from "@/lib/og-generator";
 
@@ -110,6 +110,14 @@ export async function POST(req: NextRequest) {
 
   // Save immediately so the result is durable regardless of what follows
   await saveResult(result);
+
+  // Store result metadata for leaderboard tracking
+  await storeResultMetadata(result.id, {
+    category: product.category,
+    isGift: !!recipientName,
+    giftType: recipientName ? "loved_one" : "self",
+    createdAt: result.createdAt,
+  });
 
   // Generate and upload OG image to Vercel Blob (best-effort — never blocks the response)
   const ogImageUrl = await generateAndUploadOgImage(result);

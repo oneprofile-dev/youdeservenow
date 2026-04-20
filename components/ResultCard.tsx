@@ -7,6 +7,7 @@ import ShareButtons from "./ShareButtons";
 import ShareCard from "./ShareCard";
 import CertificateDownload from "./CertificateDownload";
 import RewardPersonality from "./RewardPersonality";
+import { RankingBadge } from "./RankingBadge";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
 
@@ -68,6 +69,11 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
+
+        {/* Ranking badge */}
+        <div className="flex justify-center">
+          <RankingBadge resultId={result.id} />
+        </div>
 
         {/* Product */}
         <ProductRecommendation product={result.product} />
