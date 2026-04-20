@@ -1,17 +1,35 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Suspense, lazy } from "react";
 import type { Result } from "@/lib/db";
-import ProductRecommendation from "./ProductRecommendation";
-import ShareButtons from "./ShareButtons";
+import dynamic from "next/dynamic";
 import ShareCard from "./ShareCard";
-import CertificateDownload from "./CertificateDownload";
-import RewardPersonality from "./RewardPersonality";
 import { RankingBadge } from "./RankingBadge";
 import { RealtimeMetrics } from "./RealtimeMetrics";
 import { AffiliateDashboard } from "./AffiliateDashboard";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
+
+// Lazy load heavy components (below the fold)
+const ProductRecommendation = dynamic(() => import("./ProductRecommendation"), {
+  loading: () => <div className="h-20 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
+  ssr: false,
+});
+
+const RewardPersonality = dynamic(() => import("./RewardPersonality"), {
+  loading: () => <div className="h-16 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
+  ssr: false,
+});
+
+const CertificateDownload = dynamic(() => import("./CertificateDownload"), {
+  loading: () => <div className="h-10 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
+  ssr: false,
+});
+
+const ShareButtons = dynamic(() => import("./ShareButtons"), {
+  loading: () => <div className="h-10 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
+  ssr: false,
+});
 
 interface ResultCardProps {
   result: Result;
