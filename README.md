@@ -83,3 +83,16 @@ components/             # React components
 lib/                    # Core logic (AI, DB, products)
 data/products.json      # 60 curated products
 ```
+
+
+TODO:
+Next step for you: Sign up for ShareASale, Impact, and CJ, apply to the programs for AG1, MasterClass, Skillshare, Bearaby, and Parachute — those five alone represent 10-40% commissions vs Amazon's 1-4%.
+
+Merchandise shop (youdeservenow.com/shop)
+
+4 branded products: Official Prescription Print, Institute Mug, Prescription Notepad, Diagnosis Tote — each with on-brand SVG illustrations and full product copy.
+"Notify Me" captures email per item into your Resend audience — building the waitlist before the store opens.
+When you set up a Printful store, just paste the product URLs into NEXT_PUBLIC_SHOP_PRINT_URL etc. in Vercel — the Buy Now buttons go live immediately.
+Shop linked in the header nav and indexed in the sitemap.
+
+The system now routes to premium affiliate URLs automatically — when you add NEXT_PUBLIC_SHAREASALE_USER_ID, NEXT_PUBLIC_CJ_PUBLISHER_ID, or NEXT_PUBLIC_IMPACT_ACCOUNT_SID
