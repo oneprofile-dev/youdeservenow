@@ -31,6 +31,11 @@ const ShareButtons = dynamic(() => import("./ShareButtons"), {
   ssr: false,
 });
 
+const RewardsShowcase = dynamic(() => import("./RewardsShowcase").then((m) => ({ default: m.RewardsShowcase })), {
+  loading: () => <div className="h-24 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
+  ssr: false,
+});
+
 interface ResultCardProps {
   result: Result;
   showShareCard?: boolean;
@@ -109,6 +114,12 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Affiliate Dashboard */}
         <AffiliateDashboard resultId={result.id} />
+
+        {/* Divider */}
+        <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
+
+        {/* Rewards Showcase */}
+        <RewardsShowcase resultId={result.id} />
 
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
