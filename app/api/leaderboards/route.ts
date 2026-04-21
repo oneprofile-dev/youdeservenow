@@ -8,6 +8,7 @@ import {
 } from "@/lib/leaderboards";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic"; // This route uses query params, must be dynamic
 export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export async function GET(req: NextRequest) {
