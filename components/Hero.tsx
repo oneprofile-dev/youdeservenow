@@ -10,23 +10,6 @@ import StreakBadge from "./StreakBadge";
 import { useLanguage } from "@/lib/useLanguage";
 import { getT } from "@/lib/i18n";
 
-const PLACEHOLDERS = [
-  "I survived a 3-hour meeting without falling asleep...",
-  "I woke up before my alarm for the first time in years...",
-  "I actually did my laundry AND put it away...",
-  "I ran 5 miles even though I really didn't want to...",
-  "I cooked a real meal instead of ordering takeout...",
-  "I replied to every email in my inbox...",
-  "I went to the gym twice this week...",
-  "I finally organized my closet...",
-  "I made it through a Monday without complaining...",
-  "I finished a project two days early...",
-  "I prepped meals for the whole week...",
-  "I sent a difficult email I'd been avoiding for days...",
-  "I made it to the gym before 7am...",
-  "I drank 8 glasses of water today...",
-];
-
 interface HeroContext {
   label: string;
   headline: string;
@@ -89,7 +72,8 @@ export default function Hero({ referralResult }: HeroProps) {
   const { lang } = useLanguage();
   const t = getT(lang);
   const [input, setInput] = useState("");
-  const [placeholder, setPlaceholder] = useState(PLACEHOLDERS[0]);
+  const placeholderPool = t.heroPlaceholders && t.heroPlaceholders.length > 0 ? t.heroPlaceholders : ["Tell us what you accomplished today..."];
+  const [placeholder, setPlaceholder] = useState(placeholderPool[0]);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -116,12 +100,13 @@ export default function Hero({ referralResult }: HeroProps) {
   }, []);
 
   useEffect(() => {
-    const pool = t.heroPlaceholders.length ? t.heroPlaceholders : PLACEHOLDERS;
+    const pool = t.heroPlaceholders && t.heroPlaceholders.length > 0 ? t.heroPlaceholders : ["Tell us what you accomplished today..."];
+    setPlaceholder(pool[0]);
     const interval = setInterval(() => {
       setPlaceholder(pool[Math.floor(Math.random() * pool.length)]);
     }, 3500);
     return () => clearInterval(interval);
-  }, [t.heroPlaceholders]);
+  }, [t.heroPlaceholders, lang]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {

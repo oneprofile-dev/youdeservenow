@@ -112,8 +112,39 @@ export default function Header() {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden border-t border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)] animate-[slide-down_0.2s_ease-out]">
-          <nav className="px-4 py-4 space-y-1 flex flex-col">
+        <div className="sm:hidden border-t border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)] animate-[slide-down_0.2s_ease-out]">          {/* Language selector for mobile - moved out of menu for accessibility */}
+          <div className="px-4 py-3 border-b border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] flex items-center gap-2">
+            <label htmlFor="mobile-lang-header" className="text-xs font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] flex-shrink-0 min-w-max">
+              Language:
+            </label>
+            <select
+              id="mobile-lang-header"
+              value={lang}
+              onChange={(e) => setLang(e.target.value as typeof lang)}
+              className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] bg-transparent border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] rounded-lg px-2 py-1 cursor-pointer hover:border-[var(--color-accent)] transition-colors focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] flex-1"
+            >
+              {SUPPORTED_LANGS.map((l) => (
+                <option key={l} value={l} className="bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+                  {LANG_NAMES[l]}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={toggleDark}
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              className="w-10 h-10 rounded-lg flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-surface)] transition-colors flex-shrink-0"
+            >
+              {isDark ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              )}
+            </button>
+          </div>          <nav className="px-4 py-4 space-y-1 flex flex-col">
             <Link
               href="/gift"
               onClick={() => setMobileMenuOpen(false)}
@@ -137,50 +168,6 @@ export default function Header() {
               Shop
             </Link>
             <div className="border-t border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] my-2" />
-            <div className="flex items-center gap-2 px-3 py-3">
-              <label htmlFor="mobile-lang" className="text-xs font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] flex-shrink-0">
-                Language:
-              </label>
-              <select
-                id="mobile-lang"
-                value={lang}
-                onChange={(e) => {
-                  setLang(e.target.value as typeof lang);
-                  setMobileMenuOpen(false);
-                }}
-                className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] rounded px-2 py-1 cursor-pointer flex-1"
-              >
-                {SUPPORTED_LANGS.map((l) => (
-                  <option key={l} value={l}>
-                    {LANG_NAMES[l]}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button
-              onClick={() => {
-                toggleDark();
-                setMobileMenuOpen(false);
-              }}
-              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-              className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-surface)] transition-colors px-3 py-3 rounded-lg flex items-center gap-2"
-            >
-              {isDark ? (
-                <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                  </svg>
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                  </svg>
-                  <span>Dark Mode</span>
-                </>
-              )}
-            </button>
           </nav>
         </div>
       )}
