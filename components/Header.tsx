@@ -35,7 +35,7 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="flex items-center gap-3 sm:gap-6">
           <Link
             href="/gift"
             className="text-sm font-medium text-[#ff6b6b] hover:text-[#ff5252] transition-colors flex items-center gap-1"

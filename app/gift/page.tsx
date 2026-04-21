@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import GiftHero from "@/components/GiftHero";
 import PageViewTracker from "@/components/PageViewTracker";
 
@@ -14,9 +16,13 @@ export const metadata: Metadata = {
 
 export default function GiftPage() {
   return (
-    <main className="min-h-screen bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)]">
-      <PageViewTracker event="gift_link_opened" />
-      <GiftHero />
-    </main>
+    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)]">
+      <Header />
+      <main className="flex-1">
+        <PageViewTracker event="gift_link_opened" />
+        <GiftHero />
+      </main>
+      <Footer />
+    </div>
   );
 }

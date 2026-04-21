@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import Link from "next/link";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { LeaderboardContent } from "@/components/LeaderboardContent";
 import { LeaderboardSkeleton } from "@/components/LeaderboardSkeleton";
 
@@ -10,61 +11,56 @@ export const metadata = {
 
 export default function LeaderboardsPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                Leaderboards
-              </h1>
-              <p className="text-gray-600">
-                Discover the most loved gifts and inspire others
-              </p>
+    <div className="min-h-screen flex flex-col bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)]">
+      <Header />
+      <main className="flex-1">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+          {/* Header */}
+          <div className="mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h1
+                  className="text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] mb-2"
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  Leaderboards
+                </h1>
+                <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                  Discover the most loved gifts and inspire others
+                </p>
+              </div>
             </div>
-            <Link
-              href="/"
-              className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-            >
-              ← Back to home
-            </Link>
+
+            {/* Info cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
+              <div className="bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] rounded-lg p-3 sm:p-4 border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
+                <div className="text-2xl sm:text-3xl mb-1">💝</div>
+                <div className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                  Most Loved
+                </div>
+              </div>
+              <div className="bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] rounded-lg p-3 sm:p-4 border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
+                <div className="text-2xl sm:text-3xl mb-1">🔄</div>
+                <div className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                  Most Shared
+                </div>
+              </div>
+              <div className="bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] rounded-lg p-3 sm:p-4 border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
+                <div className="text-2xl sm:text-3xl mb-1">⭐</div>
+                <div className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                  Top Quality
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Info cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
-            <div className="bg-blue-50 rounded-lg p-3 sm:p-4 border border-blue-100">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-600 mb-1">
-                💝
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-gray-700">
-                Most Loved
-              </div>
-            </div>
-            <div className="bg-green-50 rounded-lg p-3 sm:p-4 border border-green-100">
-              <div className="text-2xl sm:text-3xl font-bold text-green-600 mb-1">
-                🔄
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-gray-700">
-                Most Shared
-              </div>
-            </div>
-            <div className="bg-purple-50 rounded-lg p-3 sm:p-4 border border-purple-100">
-              <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">
-                ⭐
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-gray-700">
-                Top Quality
-              </div>
-            </div>
-          </div>
+          {/* Leaderboard content with suspense fallback */}
+          <Suspense fallback={<LeaderboardSkeleton />}>
+            <LeaderboardContent />
+          </Suspense>
         </div>
-
-        {/* Leaderboard content with suspense fallback */}
-        <Suspense fallback={<LeaderboardSkeleton />}>
-          <LeaderboardContent />
-        </Suspense>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 }

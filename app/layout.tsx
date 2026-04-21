@@ -80,6 +80,7 @@ export default function RootLayout({
       className={`${instrumentSerif.variable} ${plusJakartaSans.variable}`}
     >
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#C8963E" />
