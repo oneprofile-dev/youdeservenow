@@ -1,15 +1,19 @@
 "use client";
 
-import { useRef, Suspense, lazy } from "react";
+import { useRef } from "react";
 import type { Result } from "@/lib/db";
 import dynamic from "next/dynamic";
 import ShareCard from "./ShareCard";
 import { RankingBadge } from "./RankingBadge";
-import { RealtimeMetrics } from "./RealtimeMetrics";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
 
 // Lazy load heavy components (below the fold)
+const RealtimeMetrics = dynamic(() => import("./RealtimeMetrics").then((m) => ({ default: m.RealtimeMetrics })), {
+  loading: () => <div className="h-20 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
+  ssr: false,
+});
+
 const ProductRecommendation = dynamic(() => import("./ProductRecommendation"), {
   loading: () => <div className="h-20 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded animate-pulse" />,
   ssr: false,

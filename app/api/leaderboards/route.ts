@@ -12,12 +12,11 @@ export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const sort = (searchParams.get("sort") as LeaderboardSort) || "likes";
-    const category = (searchParams.get("category") as LeaderboardCategory) || "all";
-    const limit = Math.min(parseInt(searchParams.get("limit") || "100"), 500); // Max 500
-    const action = searchParams.get("action");
-    const resultId = searchParams.get("resultId");
+    const sort = (req.nextUrl.searchParams.get("sort") as LeaderboardSort) || "likes";
+    const category = (req.nextUrl.searchParams.get("category") as LeaderboardCategory) || "all";
+    const limit = Math.min(parseInt(req.nextUrl.searchParams.get("limit") || "100"), 500); // Max 500
+    const action = req.nextUrl.searchParams.get("action");
+    const resultId = req.nextUrl.searchParams.get("resultId");
 
     // Trending results for homepage
     if (action === "trending") {

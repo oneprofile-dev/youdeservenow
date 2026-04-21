@@ -1,13 +1,19 @@
 import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
 import { TrendingSection } from "@/components/TrendingSection";
 import { getRecentResults, getResult } from "@/lib/db";
 import type { Result } from "@/lib/db";
 import Link from "next/link";
 import PageViewTracker from "@/components/PageViewTracker";
+
+// Lazy load Gallery - heavy component with many images
+const Gallery = dynamic(() => import("@/components/Gallery"), {
+  loading: () => <div className="h-96 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] rounded-lg animate-pulse" />,
+  ssr: true,
+});
 
 interface HomeProps {
   searchParams: Promise<{ ref?: string }>;

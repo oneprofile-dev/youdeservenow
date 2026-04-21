@@ -1,32 +1,326 @@
 [
   {
-    "id": "jade-roller-facial",
-    "name": "Authentic Jade Roller & Gua Sha Set",
-    "was": "https://www.amazon.com/dp/B07HBQTS1M?tag=youdeserven07-20",
-    "replacement": "https://www.amazon.com/s?k=authentic%20jade%20roller%20%26%20gua%20sha%20set&tag=youdeserven07-20"
+    "id": "weighted-blanket-gravity",
+    "name": "Gravity Weighted Blanket 15lb",
+    "was": "https://www.amazon.com/dp/B07NY4FYYQ?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=gravity%20weighted%20blanket%2015lb&tag=youdeserven07-20"
   },
   {
-    "id": "popcorn-kernels-premium",
-    "name": "Orville Redenbacher's Gourmet Popcorn Kernels (30lb)",
-    "was": "https://www.amazon.com/dp/B001EN5XMK?tag=youdeserven07-20",
-    "replacement": "https://www.amazon.com/s?k=orville%20redenbacher's%20gourmet%20popcorn%20kernels%20(30lb)&tag=youdeserven07-20"
+    "id": "bath-bomb-set-lush",
+    "name": "LifeAround2Angels Bath Bombs Gift Set (12-Pack)",
+    "was": "https://www.amazon.com/dp/B01MSSDEPG?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=lifearound2angels%20bath%20bombs%20gift%20set%20(12-pack)&tag=youdeserven07-20"
   },
   {
-    "id": "plant-monstera",
-    "name": "Costa Farms Monstera Deliciosa Live Plant",
-    "was": "https://www.amazon.com/dp/B07VX7MBBS?tag=youdeserven07-20",
-    "replacement": "https://www.amazon.com/s?k=costa%20farms%20monstera%20deliciosa%20live%20plant&tag=youdeserven07-20"
+    "id": "silk-pillowcase-slip",
+    "name": "Slip Pure Silk Pillowcase (Queen)",
+    "was": "https://www.amazon.com/dp/B0009RHKZE?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=slip%20pure%20silk%20pillowcase%20(queen)&tag=youdeserven07-20"
   },
   {
-    "id": "stanley-tumbler-40oz",
-    "name": "Stanley Quencher H2.0 FlowState Tumbler 40oz",
-    "was": "https://www.amazon.com/dp/B09H3KBHYM?tag=youdeserven07-20",
-    "replacement": "https://www.amazon.com/s?k=stanley%20quencher%20h2.0%20flowstate%20tumbler%2040oz&tag=youdeserven07-20"
+    "id": "cozy-socks-falke",
+    "name": "FALKE Cosy Wool Blend Slipper Socks",
+    "was": "https://www.amazon.com/dp/B001E5Z0X2?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=falke%20cosy%20wool%20blend%20slipper%20socks&tag=youdeserven07-20"
   },
   {
-    "id": "slippers-ugg-scuff",
-    "name": "UGG Men's/Women's Scuff Slipper",
-    "was": "https://www.amazon.com/dp/B001GAX35S?tag=youdeserven07-20",
-    "replacement": "https://www.amazon.com/s?k=ugg%20men's%2Fwomen's%20scuff%20slipper&tag=youdeserven07-20"
+    "id": "eye-mask-bucky",
+    "name": "Bucky 40 Blinks Contoured Sleep Mask",
+    "was": "https://www.amazon.com/dp/B000EUAK6S?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=bucky%2040%20blinks%20contoured%20sleep%20mask&tag=youdeserven07-20"
+  },
+  {
+    "id": "kindle-paperwhite",
+    "name": "Kindle Paperwhite (16 GB)",
+    "was": "https://www.amazon.com/dp/B09TMF6742?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=kindle%20paperwhite%20(16%20gb)&tag=youdeserven07-20"
+  },
+  {
+    "id": "desk-lamp-benq",
+    "name": "BenQ ScreenBar Halo Monitor Light",
+    "was": "https://www.amazon.com/dp/B08WT889VL?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=benq%20screenbar%20halo%20monitor%20light&tag=youdeserven07-20"
+  },
+  {
+    "id": "yoga-mat-lululemon",
+    "name": "Lululemon The Reversible Mat 5mm",
+    "was": "https://www.amazon.com/dp/B07MLSWTJP?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=lululemon%20the%20reversible%20mat%205mm&tag=youdeserven07-20"
+  },
+  {
+    "id": "vitamix-blender",
+    "name": "Vitamix E310 Explorian Blender",
+    "was": "https://www.amazon.com/dp/B079JF2VB1?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=vitamix%20e310%20explorian%20blender&tag=youdeserven07-20"
+  },
+  {
+    "id": "spice-rack-kamenstein",
+    "name": "Kamenstein Revolving 20-Jar Spice Rack",
+    "was": "https://www.amazon.com/dp/B001VOVLKY?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=kamenstein%20revolving%2020-jar%20spice%20rack&tag=youdeserven07-20"
+  },
+  {
+    "id": "epsom-salt-dr-teal",
+    "name": "Dr Teal's Epsom Salt Soaking Solution (3-Pack)",
+    "was": "https://www.amazon.com/dp/B00XQFQR0O?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=dr%20teal's%20epsom%20salt%20soaking%20solution%20(3-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "sheet-mask-skinfood",
+    "name": "SKINFOOD Black Sugar Mask Wash Off",
+    "was": "https://www.amazon.com/dp/B00AKD7TUE?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=skinfood%20black%20sugar%20mask%20wash%20off&tag=youdeserven07-20"
+  },
+  {
+    "id": "hair-mask-olaplex",
+    "name": "Olaplex No. 3 Hair Perfector (3.3 oz)",
+    "was": "https://www.amazon.com/dp/B01CO45BTI?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=olaplex%20no.%203%20hair%20perfector%20(3.3%20oz)&tag=youdeserven07-20"
+  },
+  {
+    "id": "snack-box-graze",
+    "name": "Frito-Lay Classic Mix Variety Snack Pack (40-Count)",
+    "was": "https://www.amazon.com/dp/B07QF1N52Y?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=frito-lay%20classic%20mix%20variety%20snack%20pack%20(40-count)&tag=youdeserven07-20"
+  },
+  {
+    "id": "chocolate-lindt-truffles",
+    "name": "Lindt Lindor Assorted Chocolate Truffles (60-Count)",
+    "was": "https://www.amazon.com/dp/B000FOCNEW?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=lindt%20lindor%20assorted%20chocolate%20truffles%20(60-count)&tag=youdeserven07-20"
+  },
+  {
+    "id": "charcuterie-board-set",
+    "name": "Bamboo Charcuterie Board and Knife Set",
+    "was": "https://www.amazon.com/dp/B07PBMHRYZ?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=bamboo%20charcuterie%20board%20and%20knife%20set&tag=youdeserven07-20"
+  },
+  {
+    "id": "gummy-vitamins-olly",
+    "name": "OLLY Goodbye Stress Gummy (60 Count)",
+    "was": "https://www.amazon.com/dp/B00U0LYIOM?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=olly%20goodbye%20stress%20gummy%20(60%20count)&tag=youdeserven07-20"
+  },
+  {
+    "id": "picture-frames-set",
+    "name": "Americanflat 4x6 Picture Frames (10-Pack)",
+    "was": "https://www.amazon.com/dp/B08P5ZVKXT?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=americanflat%204x6%20picture%20frames%20(10-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "bookshelf-decorative",
+    "name": "Nathan James Theo 5-Shelf Bookcase",
+    "was": "https://www.amazon.com/dp/B07Q2WLFQD?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=nathan%20james%20theo%205-shelf%20bookcase&tag=youdeserven07-20"
+  },
+  {
+    "id": "throw-blanket-chunky",
+    "name": "Chunky Knit Throw Blanket (50x60 inches)",
+    "was": "https://www.amazon.com/dp/B08LTRPB1K?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=chunky%20knit%20throw%20blanket%20(50x60%20inches)&tag=youdeserven07-20"
+  },
+  {
+    "id": "scented-candle-homesick",
+    "name": "Homesick Premium Scented Candle (13.75 oz)",
+    "was": "https://www.amazon.com/dp/B00BW9H1XY?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=homesick%20premium%20scented%20candle%20(13.75%20oz)&tag=youdeserven07-20"
+  },
+  {
+    "id": "mini-projector-anker",
+    "name": "Anker Nebula Capsule Mini Projector",
+    "was": "https://www.amazon.com/dp/B07Q4GBWHB?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=anker%20nebula%20capsule%20mini%20projector&tag=youdeserven07-20"
+  },
+  {
+    "id": "polaroid-camera-now",
+    "name": "Polaroid Now Instant Film Camera",
+    "was": "https://www.amazon.com/dp/B09VBGSF2P?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=polaroid%20now%20instant%20film%20camera&tag=youdeserven07-20"
+  },
+  {
+    "id": "puzzle-1000pc-ravensburger",
+    "name": "Ravensburger 1000 Piece Jigsaw Puzzle",
+    "was": "https://www.amazon.com/dp/B08FKQPKBS?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=ravensburger%201000%20piece%20jigsaw%20puzzle&tag=youdeserven07-20"
+  },
+  {
+    "id": "blue-light-glasses",
+    "name": "TIJN Blue Light Blocking Glasses (4-Pack)",
+    "was": "https://www.amazon.com/dp/B07HFQYDFZ?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=tijn%20blue%20light%20blocking%20glasses%20(4-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "meditation-app-headspace",
+    "name": "Calm Premium Weighted Aromatherapy Eye Pillow",
+    "was": "https://www.amazon.com/dp/B01LZ1NFLT?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=calm%20premium%20weighted%20aromatherapy%20eye%20pillow&tag=youdeserven07-20"
+  },
+  {
+    "id": "posture-corrector",
+    "name": "Evoke Pro Back Posture Corrector",
+    "was": "https://www.amazon.com/dp/B01MFBGCN5?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=evoke%20pro%20back%20posture%20corrector&tag=youdeserven07-20"
+  },
+  {
+    "id": "sleep-supplement-olly",
+    "name": "OLLY Sleep Gummy Melatonin (100 Count)",
+    "was": "https://www.amazon.com/dp/B00SOXMCFW?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=olly%20sleep%20gummy%20melatonin%20(100%20count)&tag=youdeserven07-20"
+  },
+  {
+    "id": "himalayan-salt-lamp",
+    "name": "LEVOIT Himalayan Salt Lamp (Natural Pink)",
+    "was": "https://www.amazon.com/dp/B0794TV8XQ?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=levoit%20himalayan%20salt%20lamp%20(natural%20pink)&tag=youdeserven07-20"
+  },
+  {
+    "id": "reading-light-glocusent",
+    "name": "Glocusent LED Neck Reading Light",
+    "was": "https://www.amazon.com/dp/B074YLJB3Y?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=glocusent%20led%20neck%20reading%20light&tag=youdeserven07-20"
+  },
+  {
+    "id": "foot-spa-kendal",
+    "name": "Kendal All-in-One Foot Spa Bath Massager",
+    "was": "https://www.amazon.com/dp/B07BSKM1TW?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=kendal%20all-in-one%20foot%20spa%20bath%20massager&tag=youdeserven07-20"
+  },
+  {
+    "id": "desk-mat-mroco",
+    "name": "MROCO Extra Large Mouse Pad (35.4x15.7in)",
+    "was": "https://www.amazon.com/dp/B07D4FDWYQ?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=mroco%20extra%20large%20mouse%20pad%20(35.4x15.7in)&tag=youdeserven07-20"
+  },
+  {
+    "id": "jump-rope-crossrope",
+    "name": "WOD Nation Speed Jump Rope",
+    "was": "https://www.amazon.com/dp/B07X7J4GHM?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=wod%20nation%20speed%20jump%20rope&tag=youdeserven07-20"
+  },
+  {
+    "id": "blender-bottle-classic",
+    "name": "BlenderBottle Classic 28oz Shaker Bottle",
+    "was": "https://www.amazon.com/dp/B001IGUTGU?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=blenderbottle%20classic%2028oz%20shaker%20bottle&tag=youdeserven07-20"
+  },
+  {
+    "id": "meal-prep-containers-glass",
+    "name": "PREP NATURALS Glass Meal Prep Containers (20-Pack)",
+    "was": "https://www.amazon.com/dp/B01N37TK4Y?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=prep%20naturals%20glass%20meal%20prep%20containers%20(20-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "cold-brew-maker-oxo",
+    "name": "OXO Good Grips Cold Brew Coffee Maker",
+    "was": "https://www.amazon.com/dp/B01N1U26L9?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=oxo%20good%20grips%20cold%20brew%20coffee%20maker&tag=youdeserven07-20"
+  },
+  {
+    "id": "silicone-baking-mat",
+    "name": "AmazonBasics Silicone Baking Mat (2-Pack)",
+    "was": "https://www.amazon.com/dp/B00PCFPQTS?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=amazonbasics%20silicone%20baking%20mat%20(2-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "foreo-luna-mini",
+    "name": "FOREO LUNA Mini 3 Facial Cleansing Brush",
+    "was": "https://www.amazon.com/dp/B08GHCQNBL?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=foreo%20luna%20mini%203%20facial%20cleansing%20brush&tag=youdeserven07-20"
+  },
+  {
+    "id": "scalp-massager-heeta",
+    "name": "Heeta Hair Scalp Massager Shampoo Brush",
+    "was": "https://www.amazon.com/dp/B07VCCZ7QK?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=heeta%20hair%20scalp%20massager%20shampoo%20brush&tag=youdeserven07-20"
+  },
+  {
+    "id": "burts-bees-lip-set",
+    "name": "Burt's Bees Lip Balm 4-Pack (All Natural)",
+    "was": "https://www.amazon.com/dp/B00FLVQMT0?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=burt's%20bees%20lip%20balm%204-pack%20(all%20natural)&tag=youdeserven07-20"
+  },
+  {
+    "id": "loccitane-hand-cream",
+    "name": "L'Occitane Shea Butter Intensive Hand Cream",
+    "was": "https://www.amazon.com/dp/B001BKRFZ0?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=l'occitane%20shea%20butter%20intensive%20hand%20cream&tag=youdeserven07-20"
+  },
+  {
+    "id": "gua-sha-tool",
+    "name": "Herbivore Botanicals Rose Quartz Gua Sha",
+    "was": "https://www.amazon.com/dp/B07X3YZMKN?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=herbivore%20botanicals%20rose%20quartz%20gua%20sha&tag=youdeserven07-20"
+  },
+  {
+    "id": "spindrift-sparkling-water",
+    "name": "Spindrift Sparkling Water Variety Pack (24-Can)",
+    "was": "https://www.amazon.com/dp/B07HJG738Y?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=spindrift%20sparkling%20water%20variety%20pack%20(24-can)&tag=youdeserven07-20"
+  },
+  {
+    "id": "clif-bar-variety",
+    "name": "CLIF BAR Energy Bar Variety Pack (24-Count)",
+    "was": "https://www.amazon.com/dp/B004MEKFFW?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=clif%20bar%20energy%20bar%20variety%20pack%20(24-count)&tag=youdeserven07-20"
+  },
+  {
+    "id": "dark-chocolate-endangered",
+    "name": "Endangered Species Dark Chocolate Bar Variety (12-Pack)",
+    "was": "https://www.amazon.com/dp/B00FNFXBEM?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=endangered%20species%20dark%20chocolate%20bar%20variety%20(12-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "string-lights-brightown",
+    "name": "Brightown Globe String Lights 25ft (50 LED)",
+    "was": "https://www.amazon.com/dp/B01M7WUYOU?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=brightown%20globe%20string%20lights%2025ft%20(50%20led)&tag=youdeserven07-20"
+  },
+  {
+    "id": "desk-organizer-simple",
+    "name": "SimpleHouseware Mesh Desk Organizer Set",
+    "was": "https://www.amazon.com/dp/B07MKJGBT5?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=simplehouseware%20mesh%20desk%20organizer%20set&tag=youdeserven07-20"
+  },
+  {
+    "id": "succulent-set-costa",
+    "name": "Costa Farms Succulent Rooted Live Plants (4-Pack)",
+    "was": "https://www.amazon.com/dp/B07DML2GJQ?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=costa%20farms%20succulent%20rooted%20live%20plants%20(4-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "sunset-lamp-projection",
+    "name": "Sunset Projection Rainbow Lamp",
+    "was": "https://www.amazon.com/dp/B08DCWYX42?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=sunset%20projection%20rainbow%20lamp&tag=youdeserven07-20"
+  },
+  {
+    "id": "tile-mate-tracker",
+    "name": "Tile Mate (2022) Bluetooth Tracker (4-Pack)",
+    "was": "https://www.amazon.com/dp/B09B2V1NF6?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=tile%20mate%20(2022)%20bluetooth%20tracker%20(4-pack)&tag=youdeserven07-20"
+  },
+  {
+    "id": "mini-fridge-chefman",
+    "name": "Chefman Mini Portable Compact Fridge (4L)",
+    "was": "https://www.amazon.com/dp/B07R7BFZGT?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=chefman%20mini%20portable%20compact%20fridge%20(4l)&tag=youdeserven07-20"
+  },
+  {
+    "id": "trx-pro-suspension-trainer",
+    "name": "TRX PRO4 Suspension Training System",
+    "was": "https://www.amazon.com/dp/B079BPMBCK?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=trx%20pro4%20suspension%20training%20system&tag=youdeserven07-20"
+  },
+  {
+    "id": "drunk-elephant-c-firma",
+    "name": "Drunk Elephant C-Firma Fresh Day Serum",
+    "was": "https://www.amazon.com/dp/B00PBXZHOE?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=drunk%20elephant%20c-firma%20fresh%20day%20serum&tag=youdeserven07-20"
+  },
+  {
+    "id": "magic-spoon-cereal",
+    "name": "Magic Spoon Variety Pack (4 Boxes)",
+    "was": "https://www.amazon.com/dp/B07QRQX5ZX?tag=youdeserven07-20",
+    "replacement": "https://www.amazon.com/s?k=magic%20spoon%20variety%20pack%20(4%20boxes)&tag=youdeserven07-20"
   }
 ]

@@ -1,24 +1,47 @@
-import { notFound } from "next/navigation";
-import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
+"use client";
+
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-export const metadata = {
-  title: "Analytics Dashboard - YouDeserveNow",
-  description: "Real-time analytics and engagement metrics",
-  robots: { index: false, follow: false },
-};
+// Lazy load AnalyticsDashboard - heavy component with charts
+const AnalyticsDashboard = dynamic(() => import("@/components/AnalyticsDashboard").then((m) => ({ default: m.AnalyticsDashboard })), {
+  loading: () => <div className="h-[600px] bg-gray-100 rounded-lg animate-pulse" />,
+  ssr: false,
+});
 
-interface Props {
-  searchParams: Promise<{ secret?: string }>;
-}
+export default function AnalyticsPage() {
+  const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default async function AnalyticsPage({ searchParams }: Props) {
-  const { secret } = await searchParams;
-  const adminSecret = process.env.ANALYTICS_SECRET;
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const secret = params.get("secret");
+    const adminSecret = process.env.NEXT_PUBLIC_ANALYTICS_SECRET;
 
-  if (!adminSecret || secret !== adminSecret) {
-    notFound();
+    if (!adminSecret || secret !== adminSecret) {
+      setIsLoading(false);
+      router.push("/not-found");
+      return;
+    }
+
+    setIsAuthorized(true);
+    setIsLoading(false);
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-pulse text-gray-500">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
+    return null;
   }
 
   return (

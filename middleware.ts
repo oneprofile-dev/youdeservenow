@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  // Security headers
+  // Security headers with improved CSP (no unsafe-inline for scripts)
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-XSS-Protection", "1; mode=block");
@@ -24,13 +24,15 @@ export function middleware(request: NextRequest) {
     "Content-Security-Policy",
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://va.vercel-scripts.com",
+      "script-src 'self' https://www.googletagmanager.com https://va.vercel-scripts.com https://analytics.tiktok.com https://connect.facebook.net",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src * data: blob:",
       "connect-src * blob:",
       "frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com",
       "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
     ].join("; ")
   );
   
