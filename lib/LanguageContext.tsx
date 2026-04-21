@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react";
+import { track } from "@vercel/analytics/react";
 import { SUPPORTED_LANGS, type Lang } from "./i18n";
 
 function detectLanguage(): Lang {
@@ -12,6 +13,7 @@ function detectLanguage(): Lang {
   if (l.startsWith("fr")) return "fr";
   if (l.startsWith("de")) return "de";
   if (l.startsWith("hi")) return "hi";
+  if (l.startsWith("te")) return "te";
   if (l.startsWith("ja")) return "ja";
   if (l.startsWith("ar")) return "ar";
   if (l.startsWith("ko")) return "ko";
@@ -42,6 +44,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   function setLang(l: Lang) {
     setLangState(l);
     try { localStorage.setItem("ydnLang", l); } catch { /* ignore */ }
+    // Track language change
+    try {
+      track("language_changed", { from_language: lang, to_language: l });
+    } catch { /* ignore tracking errors */ }
   }
 
   return (

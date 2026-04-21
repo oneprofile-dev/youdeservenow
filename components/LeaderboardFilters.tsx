@@ -71,7 +71,7 @@ export function LeaderboardFilters({
     <div className="space-y-4">
       {/* Sort buttons - horizontal scroll on mobile */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
-        <div className="text-sm font-medium text-gray-700 flex items-center">
+        <div className="text-sm font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] flex items-center">
           Sort by:
         </div>
         <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
@@ -79,10 +79,11 @@ export function LeaderboardFilters({
             <button
               key={option.value}
               onClick={() => onSortChange(option.value)}
-              className={`flex-shrink-0 px-3 sm:px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 whitespace-nowrap ${
+              aria-label={`Sort by ${option.label}`}
+              className={`flex-shrink-0 px-3 sm:px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 whitespace-nowrap min-h-11 ${
                 sort === option.value
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? "bg-[var(--color-accent)] text-white shadow-md"
+                  : "bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
               }`}
               title={option.description}
             >
@@ -99,18 +100,21 @@ export function LeaderboardFilters({
         <div className="relative">
           <button
             onClick={() => setShowCategoryMenu(!showCategoryMenu)}
-            className="w-full sm:w-auto px-4 py-2.5 bg-white border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-between gap-2"
+            aria-expanded={showCategoryMenu}
+            aria-label="Filter by category"
+            className="w-full sm:w-auto px-4 py-2.5 min-h-11 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] rounded-lg font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] transition-colors flex items-center justify-between gap-2"
           >
             <span>
               {currentCategory?.icon} {currentCategory?.label}
             </span>
             <svg
-              className={`w-4 h-4 transition-transform ${
+              className={`w-4 h-4 transition-transform flex-shrink-0 ${
                 showCategoryMenu ? "rotate-180" : ""
               }`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -123,7 +127,7 @@ export function LeaderboardFilters({
 
           {/* Category menu */}
           {showCategoryMenu && (
-            <div className="absolute top-full left-0 mt-1 w-full sm:w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+            <div className="absolute top-full left-0 mt-1 w-full sm:w-48 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] rounded-lg shadow-lg z-10">
               <div className="py-1">
                 {categories.map((cat) => (
                   <button
@@ -132,10 +136,10 @@ export function LeaderboardFilters({
                       onCategoryChange(cat.value);
                       setShowCategoryMenu(false);
                     }}
-                    className={`w-full px-4 py-2.5 text-left text-sm transition-colors ${
+                    className={`w-full px-4 py-3 text-left text-sm transition-colors min-h-11 ${
                       category === cat.value
-                        ? "bg-blue-50 text-blue-700 font-medium"
-                        : "text-gray-700 hover:bg-gray-50"
+                        ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-medium"
+                        : "text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-border)]"
                     }`}
                   >
                     <span className="mr-2">{cat.icon}</span>
@@ -151,7 +155,8 @@ export function LeaderboardFilters({
         <select
           value={limit}
           onChange={(e) => onLimitChange(Number(e.target.value))}
-          className="px-4 py-2.5 bg-white border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+          aria-label="Results per page"
+          className="px-4 py-2.5 min-h-11 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] rounded-lg font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)] transition-colors cursor-pointer"
         >
           <option value={10}>Show 10</option>
           <option value={25}>Show 25</option>
@@ -161,11 +166,12 @@ export function LeaderboardFilters({
       </div>
 
       {/* Info bar */}
-      <div className="flex items-center gap-2 text-xs text-gray-500 bg-blue-50 rounded-lg p-3 border border-blue-200">
+      <div className="flex items-start gap-2 text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] rounded-lg p-4 border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
         <svg
-          className="w-4 h-4 flex-shrink-0"
+          className="w-4 h-4 flex-shrink-0 mt-0.5"
           fill="currentColor"
           viewBox="0 0 20 20"
+          aria-hidden="true"
         >
           <path
             fillRule="evenodd"

@@ -44,6 +44,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* Base */
 html {
   scroll-behavior: smooth;
@@ -84,6 +89,44 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Enhanced form inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  min-height: 44px;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Button base styles for consistency */
+button {
+  min-height: 44px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Improve link focus states */
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Better button active states */
+button:active:not(:disabled) {
+  transform: scale(0.98);
+  transition: transform 0.1s ease-out;
 }
 
 /* Scrollbar */

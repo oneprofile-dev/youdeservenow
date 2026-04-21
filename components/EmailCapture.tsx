@@ -48,35 +48,52 @@ export default function EmailCapture() {
   }
 
   return (
-    <div className="py-4 px-5 rounded-2xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
+    <div className="py-6 px-5 rounded-2xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
       <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-1">
         Institute Mailing List
       </p>
-      <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-3">
+      <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-4">
         Get your next scientific justification delivered. No spam — only peer-reviewed rewards.
       </p>
 
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
-          required
-          className="flex-1 min-w-0 px-3 py-2 rounded-lg border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] text-sm text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
-        />
-        <button
-          type="submit"
-          disabled={status === "loading" || !email.trim()}
-          className="flex-shrink-0 px-4 py-2 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 disabled:opacity-40 transition-all whitespace-nowrap"
-        >
-          {status === "loading" ? "..." : "Subscribe"}
-        </button>
-      </form>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div>
+          <label htmlFor="newsletter-email" className="block text-xs font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-1.5">
+            Email address
+          </label>
+          <div className="flex gap-2">
+            <input
+              id="newsletter-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+              aria-label="Email address for newsletter"
+              aria-invalid={status === "error"}
+              className="flex-1 min-w-0 px-3 py-2.5 min-h-11 rounded-lg border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] text-sm text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] placeholder:text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)]/20 transition-all"
+            />
+            <button
+              type="submit"
+              disabled={status === "loading" || !email.trim()}
+              aria-busy={status === "loading"}
+              className="flex-shrink-0 px-6 py-2.5 min-h-11 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+            >
+              {status === "loading" ? (
+                <span className="inline-block">Subscribing…</span>
+              ) : (
+                "Subscribe"
+              )}
+            </button>
+          </div>
+        </div>
 
-      {status === "error" && (
-        <p className="text-xs text-red-500 mt-2">Something went wrong — try again.</p>
-      )}
+        {status === "error" && (
+          <p className="text-xs text-red-600 dark:text-red-400 font-medium" role="alert">
+            Something went wrong — try again.
+          </p>
+        )}
+      </form>
     </div>
   );
 }

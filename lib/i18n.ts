@@ -1,4 +1,4 @@
-export const SUPPORTED_LANGS = ["en","es","pt","fr","de","hi","ja","ar","zh","ko"] as const;
+export const SUPPORTED_LANGS = ["en","es","pt","fr","de","hi","ja","ar","zh","ko","te"] as const;
 export type Lang = typeof SUPPORTED_LANGS[number];
 
 export const LANG_NAMES: Record<Lang, string> = {
@@ -12,6 +12,7 @@ export const LANG_NAMES: Record<Lang, string> = {
   ar: "العربية",
   zh: "中文",
   ko: "한국어",
+  te: "తెలుగు",
 };
 
 export interface T {
@@ -436,6 +437,45 @@ const translations: Record<Lang, T> = {
     viralLoopButton: "누군가에게 선물하기 →",
     rateLimit: "오늘 정말 생산적이셨네요 — 잠깐 쉬세요! (제한: 분당 5회 요청)",
   },
+
+  te: {
+    heroLabel: "సహచర-సమీక్ష స్వయం-ప్రతిఫల సైన్స్",
+    heroHeadline: "ఈ రోజు మీరు ఏమి సాధించారు?",
+    heroSub: "మాకు చెప్పండి. మీరు ఖచ్చితంగా ఏమి కూడుకుంటారో శాస్త్ర ఆధారాలతో చెప్పుతాము.",
+    heroPlaceholders: [
+      "3 గంటల సమావేశం నుండి నిద్ర లేకుండా బయటపడ్డాను…",
+      "సంవత్సరాల తర్వాత మేల్కోలేనికి ముందే లేచిపోయాను…",
+      "బట్టలు ఉతికి ఉబ్బిపెట్టా నిల్చాను…",
+      "చేయాలని నిరుత్సాహం ఉన్నా 8 కి.మీ. పరిగెత్తాను…",
+      "డెలివరీ చేయించటకు బదులు వంటలు చేసాను…",
+      "ఇన్‌బాక్స్‌లోని సమస్త ఈమెయిల్‌లకు సమాధానమిచ్చాను…",
+    ],
+    heroButton: "నా శాస్త్రీయ కారణాలను పొందండి →",
+    heroDisclaimer: "పూర్తిగా నిజమైన శాస్త్రం ద్వారా సమర్థించబడలేదు.",
+    heroReset: "మరొక సాధన ప్రయత్నించండి →",
+    giftBadge: "ఖాతా లేదు. లాగిన్ లేదు. పూర్తిగా నిరాపద్.",
+    giftHeadline1: "ఎక్కడో ఒకరు",
+    giftHeadline2: "దీన్ని తెలుసుకోవడానికి అర్హులు.",
+    giftSub: "వారు ఏమి చేశారో చెప్పండి. మేము సహచర-సమీక్ష శాస్త్రీయ సూచనను సృష్టిస్తాము.",
+    giftAnonNote: "దీన్ని పంపండి. లేదా పంపవద్దు. వారు ఎవరు పంపించారో తెలుసుకోవలసిన అవసరం లేదు.",
+    giftTheirName: "వారి పేరు",
+    giftTheirPlaceholder: "అలెక్స్, నా సహకర్మి…",
+    giftSignAs: "సంతకం చేయండి",
+    giftSignPlaceholder: "రహస్య ఆరాధకుడు…",
+    giftWhatDid: "వారు ఏమి చేశారు?",
+    giftTextareaPlaceholder: "ఆమె తన మొదటి మారథాన్‌ను నిర్ధారించింది… అతను సహోద్యోగికి కవర్ చేయడానికి చాలా సేపు ఉన్నాడు… వారు ఒంటరిగా కొత్త దేశానికి మారారు…",
+    giftButton: "వారి సూచనను సృష్టించండి →",
+    giftReset: "వేరొకరికి సూచన చేయండి →",
+    giftDisclaimer: "సంస్థ యొక్క ఫలితాలు 100% సహచర-సమీక్ష చేయబడ్డాయి మరియు 0% చట్టబద్ధంగా బంధయుక్తం.",
+    trustAnonymous: "నిరాపద",
+    trustInstant: "తక్షణం",
+    trustFree: "ఎప్పటికీ ఉచితం",
+    trustGlobal: "ఎక్కడైనా పనిచేస్తుంది",
+    viralLoopHeadline: "ఇప్పుడు — మీ జీవితంలో ఎవరు దీని కోసం అర్హులు?",
+    viralLoopSub: "వారికి సూచన పంపండి. సంపూర్ణంగా. 30 సెకన్లు పడుతుంది.",
+    viralLoopButton: "ఎవరికైనా అందించండి →",
+    rateLimit: "మీరు చాలా ఉత్పాదకంగా ఉన్నారు — క్రిందికి ఆసన్నమైనట్లు చేయండి! (పరిమితి: నిమిషానికి 5 అభ్యర్థనలు)",
+  },
 };
 
 export function getT(lang: Lang): T {
@@ -453,4 +493,5 @@ export const LANG_PROMPT_SUFFIX: Record<Lang, string> = {
   ar: "IMPORTANT: Write your entire response in Arabic. Invent Arabic-sounding fake scientific institute names (e.g. 'معهد القاهرة لعلم المكافآت المستحقة', 'مجلة الكيمياء العصبية لما بعد الجهد').",
   zh: "IMPORTANT: Write your entire response in Simplified Chinese. Invent Chinese-sounding fake scientific institute names (e.g. '北京应得奖励神经科学研究所', '努力后满足感期刊').",
   ko: "IMPORTANT: Write your entire response in Korean. Invent Korean-sounding fake scientific institute names (e.g. '서울 보상 신경과학 연구소', '노력 후 만족감 저널').",
+  te: "IMPORTANT: Write your entire response in Telugu. Invent Telugu-sounding fake scientific institute names (e.g. 'హైదరాబాద్ పురస్కార విజ్ఞాన సంస్థ', 'ప్రయత్న-పరిణతి సైన్సు జర్నల్').",
 };

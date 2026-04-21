@@ -46,10 +46,10 @@ export function ToastContainer() {
   if (!toast) return null;
 
   const bgColor = {
-    success: "bg-green-500",
-    error: "bg-red-500",
-    info: "bg-blue-500",
-    warning: "bg-yellow-500",
+    success: "bg-emerald-600 dark:bg-emerald-700",
+    error: "bg-red-600 dark:bg-red-700",
+    info: "bg-blue-600 dark:bg-blue-700",
+    warning: "bg-amber-600 dark:bg-amber-700",
   }[toast.type];
 
   const icon = {
@@ -59,13 +59,22 @@ export function ToastContainer() {
     warning: "⚠",
   }[toast.type];
 
+  const label = {
+    success: "Success",
+    error: "Error",
+    info: "Info",
+    warning: "Warning",
+  }[toast.type];
+
   return (
     <div className="fixed bottom-4 right-4 z-50 animate-pop">
       <div
-        className={`${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 max-w-sm`}
+        className={`${bgColor} text-white px-4 py-3 rounded-lg shadow-lg flex items-center gap-3 max-w-sm min-h-11`}
+        role="status"
+        aria-label={`${label}: ${toast.message}`}
       >
-        <span className="text-lg font-bold">{icon}</span>
-        <span className="text-sm">{toast.message}</span>
+        <span className="text-lg font-bold flex-shrink-0" aria-hidden="true">{icon}</span>
+        <span className="text-sm font-medium">{toast.message}</span>
       </div>
     </div>
   );
