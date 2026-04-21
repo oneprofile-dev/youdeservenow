@@ -62,7 +62,7 @@ export default async function Home({ searchParams }: HomeProps) {
           </div>
           <div className="relative w-full rounded-2xl overflow-hidden border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] shadow-lg" style={{ paddingBottom: "56.25%" }}>
             <iframe
-              src="https://www.youtube.com/embed/hpI76kEKE5I?rel=0&modestbranding=1"
+              src="https://www.youtube-nocookie.com/embed/hpI76kEKE5I?rel=0&modestbranding=1"
               title="YouDeserveNow — The Institute in Action"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen

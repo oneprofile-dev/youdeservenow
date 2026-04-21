@@ -33,6 +33,7 @@ export async function saveResult(result: Result): Promise<void> {
     await kv.set(`result:${result.id}`, serialized, { ex: 60 * 60 * 24 * 90 }); // 90 days
     await kv.lpush("results:list", result.id);
     await kv.ltrim("results:list", 0, 999); // Keep latest 1000
+    await kv.incr("results:total");
   } else {
     memoryStore.set(result.id, serialized);
     memoryList.unshift(result.id);
@@ -87,6 +88,14 @@ export async function getRecentResults(
     .filter((r): r is Result => r !== null);
 
   return { results, total };
+}
+
+export async function getTotalDiagnoses(): Promise<number> {
+  const kv = await getKV();
+  if (kv) {
+    return (await kv.get<number>("results:total")) || 0;
+  }
+  return memoryList.length;
 }
 
 export async function getAllResultIds(): Promise<string[]> {

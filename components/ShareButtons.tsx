@@ -16,7 +16,10 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
   const [tiktokStep, setTiktokStep] = useState<"idle" | "saving" | "done">("idle");
 
   // Append ?ref= so landing friends see a personalised teaser on the homepage
-  const shareUrl = `${getSiteUrl()}/result/${result.id}?ref=${result.id}`;
+  const baseUrl = `${getSiteUrl()}/result/${result.id}`;
+  const shareUrl = `${baseUrl}?ref=${result.id}`;
+  const utmUrl = (source: string) =>
+    `${baseUrl}?ref=${result.id}&utm_source=${source}&utm_medium=social&utm_campaign=share`;
   const shareText = result.gift
     ? `I used science to prove ${result.gift.recipientName} deserves ${result.product.name}. The evidence is overwhelming. 🔬 #YouDeserveNow`
     : `Science says I deserve ${result.product.name} after what I accomplished today. Get your scientific justification 👇 #YouDeserveNow`;
@@ -39,7 +42,7 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
 
   async function copyForInstagram() {
     track("share_click", { method: "instagram" });
-    const instagramCopyText = `${shareText} ${shareUrl}`;
+    const instagramCopyText = `${shareText} ${utmUrl("instagram")}`;
     try {
       await navigator.clipboard.writeText(instagramCopyText);
     } catch {
@@ -94,7 +97,7 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
     }
 
     // Step 2: copy caption to clipboard
-    const caption = `${shareText} ${shareUrl}`;
+    const caption = `${shareText} ${utmUrl("tiktok")}`;
     try {
       await navigator.clipboard.writeText(caption);
     } catch {
@@ -115,9 +118,9 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
     setTimeout(() => setTiktokStep("idle"), 4000);
   }
 
-  const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
+  const xUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${shareText}\n\n${utmUrl("x")}`)}`;
+  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(utmUrl("facebook"))}`;
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n\n${utmUrl("whatsapp")}`)}`;
 
   return (
     <div className="flex flex-col items-center gap-3">

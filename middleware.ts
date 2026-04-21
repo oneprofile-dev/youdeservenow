@@ -29,6 +29,7 @@ export function middleware(request: NextRequest) {
       "font-src 'self' https://fonts.gstatic.com",
       "img-src * data: blob:",
       "connect-src * blob:",
+      "frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com",
       "frame-ancestors 'none'",
     ].join("; ")
   );

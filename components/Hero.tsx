@@ -89,6 +89,7 @@ export default function Hero({ referralResult }: HeroProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [totalDiagnoses, setTotalDiagnoses] = useState<number | null>(null);
   const [heroCtx, setHeroCtx] = useState<HeroContext>({
     label: "Peer-Reviewed Self-Reward Science",
     headline: "What did you accomplish today?",
@@ -101,6 +102,13 @@ export default function Hero({ referralResult }: HeroProps) {
   // Hydrate with time/day context client-side (server renders the safe default, no FOUC)
   useEffect(() => {
     setHeroCtx(getContextualHero());
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/social-proof")
+      .then((r) => r.json())
+      .then((d) => { if (d.totalDiagnoses) setTotalDiagnoses(d.totalDiagnoses); })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -189,6 +197,11 @@ export default function Hero({ referralResult }: HeroProps) {
           <p suppressHydrationWarning className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-4">
             {heroCtx.label}
           </p>
+          {totalDiagnoses !== null && totalDiagnoses > 0 && (
+            <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mb-3 animate-[fade-in_0.5s_ease-out]">
+              🔬 {totalDiagnoses.toLocaleString()} diagnoses prescribed
+            </p>
+          )}
           <h1
             suppressHydrationWarning
             className="text-4xl sm:text-5xl lg:text-6xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] leading-[1.1] mb-4"

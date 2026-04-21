@@ -1,12 +1,17 @@
-import { getSocialProof, calculateViralCoefficient } from "@/lib/viral";
+import { getSocialProof } from "@/lib/viral";
+import { getTotalDiagnoses } from "@/lib/db";
 
 export async function GET() {
   try {
-    const proof = await getSocialProof();
+    const [proof, totalDiagnoses] = await Promise.all([
+      getSocialProof(),
+      getTotalDiagnoses(),
+    ]);
 
     return Response.json(
       {
         success: true,
+        totalDiagnoses,
         ...proof,
       },
       {

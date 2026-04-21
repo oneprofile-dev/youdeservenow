@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { AnalyticsDashboard } from "@/components/AnalyticsDashboard";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -5,9 +6,21 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "Analytics Dashboard - YouDeserveNow",
   description: "Real-time analytics and engagement metrics",
+  robots: { index: false, follow: false },
 };
 
-export default function AnalyticsPage() {
+interface Props {
+  searchParams: Promise<{ secret?: string }>;
+}
+
+export default async function AnalyticsPage({ searchParams }: Props) {
+  const { secret } = await searchParams;
+  const adminSecret = process.env.ANALYTICS_SECRET;
+
+  if (!adminSecret || secret !== adminSecret) {
+    notFound();
+  }
+
   return (
     <>
       <Header />
