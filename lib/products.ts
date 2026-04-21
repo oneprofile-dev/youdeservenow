@@ -67,6 +67,10 @@ export function getProductsByCategory(category: string): Product[] {
   return products.filter((p) => p.category === category);
 }
 
+export function getAllProducts(): Product[] {
+  return products;
+}
+
 export function getAllCategories(): string[] {
   return Array.from(new Set(products.map((p) => p.category)));
 }
