@@ -4,6 +4,7 @@ const BadWordsFilter = require("bad-words");
 import { sanitizeInput, generateId, getSiteUrl } from "@/lib/utils";
 import { matchProduct } from "@/lib/products";
 import { buildPrompt, buildGiftPrompt } from "@/lib/prompt";
+import { SUPPORTED_LANGS, type Lang } from "@/lib/i18n";
 import { generateJustification, getFallback } from "@/lib/gemini";
 import { checkRateLimit, trackAiCall } from "@/lib/rate-limit";
 import { saveResult, updateResult, storeResultMetadata } from "@/lib/db";
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Parse body
-  let body: { input?: unknown; recipientName?: unknown; senderName?: unknown };
+  let body: { input?: unknown; recipientName?: unknown; senderName?: unknown; language?: unknown };
   try {
     body = await req.json();
   } catch {
@@ -50,6 +51,9 @@ export async function POST(req: NextRequest) {
 
   const recipientName = typeof body.recipientName === "string" ? body.recipientName.trim().slice(0, 50) : undefined;
   const senderName = typeof body.senderName === "string" ? body.senderName.trim().slice(0, 50) : undefined;
+  const language: Lang = typeof body.language === "string" && (SUPPORTED_LANGS as readonly string[]).includes(body.language)
+    ? (body.language as Lang)
+    : "en";
 
   // Sanitize
   const clean = sanitizeInput(body.input);
@@ -79,8 +83,8 @@ export async function POST(req: NextRequest) {
     console.warn("[CircuitBreaker] Served static fallback, AI calls suspended");
   } else {
     const prompt = recipientName
-      ? buildGiftPrompt(safeInput, product, recipientName)
-      : buildPrompt(safeInput, product);
+      ? buildGiftPrompt(safeInput, product, recipientName, language)
+      : buildPrompt(safeInput, product, language);
     justification = await generateJustification(prompt);
 
     // Quality gate: reject placeholder-contaminated or truncated outputs

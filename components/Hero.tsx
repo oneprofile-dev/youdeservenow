@@ -7,6 +7,8 @@ import LoadingAnimation from "./LoadingAnimation";
 import ResultCard from "./ResultCard";
 import EmailCapture from "./EmailCapture";
 import StreakBadge from "./StreakBadge";
+import { useLanguage } from "@/lib/useLanguage";
+import { getT } from "@/lib/i18n";
 
 const PLACEHOLDERS = [
   "I survived a 3-hour meeting without falling asleep...",
@@ -84,6 +86,8 @@ interface HeroProps {
 }
 
 export default function Hero({ referralResult }: HeroProps) {
+  const { lang } = useLanguage();
+  const t = getT(lang);
   const [input, setInput] = useState("");
   const [placeholder, setPlaceholder] = useState(PLACEHOLDERS[0]);
   const [isLoading, setIsLoading] = useState(false);
@@ -112,11 +116,12 @@ export default function Hero({ referralResult }: HeroProps) {
   }, []);
 
   useEffect(() => {
+    const pool = t.heroPlaceholders.length ? t.heroPlaceholders : PLACEHOLDERS;
     const interval = setInterval(() => {
-      setPlaceholder(PLACEHOLDERS[Math.floor(Math.random() * PLACEHOLDERS.length)]);
+      setPlaceholder(pool[Math.floor(Math.random() * pool.length)]);
     }, 3500);
     return () => clearInterval(interval);
-  }, []);
+  }, [t.heroPlaceholders]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -128,17 +133,20 @@ export default function Hero({ referralResult }: HeroProps) {
       setError(null);
       setResult(null);
 
+      // TikTok: Search event (funnel top)
+      if (typeof window !== "undefined" && window.ttq) {
+        window.ttq.track("Search", { query: trimmed.slice(0, 100) });
+      }
+
       try {
         const res = await fetch("/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ input: trimmed }),
+          body: JSON.stringify({ input: trimmed, language: lang }),
         });
 
         if (res.status === 429) {
-          setError(
-            "You've been very productive today — slow down! (Rate limit: 5 requests/minute)"
-          );
+          setError(t.rateLimit);
           return;
         }
 
@@ -151,11 +159,19 @@ export default function Hero({ referralResult }: HeroProps) {
         const data: Result = await res.json();
         setResult(data);
 
-        // Track funnel event
         track("generate_success", {
           category: data.product.category,
           product_id: data.product.id,
         });
+
+        // TikTok: ViewContent event (funnel middle)
+        if (typeof window !== "undefined" && window.ttq) {
+          window.ttq.track("ViewContent", {
+            content_id: data.product.id,
+            content_name: data.product.name,
+            content_category: data.product.category,
+          });
+        }
 
         // Confetti — fires only on the first result reveal ever in this session
         if (!hasConfettiFired.current) {
@@ -195,7 +211,7 @@ export default function Hero({ referralResult }: HeroProps) {
             <StreakBadge />
           </div>
           <p suppressHydrationWarning className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-4">
-            {heroCtx.label}
+            {lang !== "en" ? t.heroLabel : heroCtx.label}
           </p>
           {totalDiagnoses !== null && totalDiagnoses > 0 && (
             <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mb-3 animate-[fade-in_0.5s_ease-out]">
@@ -207,10 +223,10 @@ export default function Hero({ referralResult }: HeroProps) {
             className="text-4xl sm:text-5xl lg:text-6xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] leading-[1.1] mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            {heroCtx.headline}
+            {lang !== "en" ? t.heroHeadline : heroCtx.headline}
           </h1>
           <p suppressHydrationWarning className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] text-base sm:text-lg max-w-lg mx-auto">
-            {heroCtx.sub}
+            {lang !== "en" ? t.heroSub : heroCtx.sub}
           </p>
         </div>
       )}
@@ -276,7 +292,7 @@ export default function Hero({ referralResult }: HeroProps) {
           </div>
 
           <p className="text-center text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
-            Backed by absolutely no real science.
+            {t.heroDisclaimer}
           </p>
 
           {error && (
@@ -300,7 +316,7 @@ export default function Hero({ referralResult }: HeroProps) {
               onClick={reset}
               className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] transition-colors underline underline-offset-4"
             >
-              Try another accomplishment →
+              {t.heroReset}
             </button>
           </div>
         </div>

@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useLanguage } from "@/lib/useLanguage";
+import { LANG_NAMES, SUPPORTED_LANGS } from "@/lib/i18n";
 
 export default function Header() {
   const [isDark, setIsDark] = useState(false);
+  const { lang, setLang } = useLanguage();
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
@@ -52,6 +55,20 @@ export default function Header() {
           >
             Shop
           </Link>
+          {/* Language selector */}
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value as typeof lang)}
+            aria-label="Language"
+            className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] bg-transparent border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] rounded-lg px-2 py-1 cursor-pointer hover:border-[var(--color-accent)] transition-colors focus:outline-none"
+          >
+            {SUPPORTED_LANGS.map((l) => (
+              <option key={l} value={l} className="bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+                {LANG_NAMES[l]}
+              </option>
+            ))}
+          </select>
+
           <button
             onClick={toggleDark}
             aria-label="Toggle dark mode"

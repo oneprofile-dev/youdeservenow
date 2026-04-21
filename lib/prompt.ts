@@ -1,6 +1,8 @@
 import type { Product } from "./products";
+import { LANG_PROMPT_SUFFIX, type Lang } from "./i18n";
 
-export function buildGiftPrompt(input: string, product: Product, recipientName: string): string {
+export function buildGiftPrompt(input: string, product: Product, recipientName: string, lang: Lang = "en"): string {
+  const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
 
 ${recipientName} accomplished something today: "${input}"
@@ -21,10 +23,11 @@ RULES:
 EXAMPLE OUTPUT:
 "Peer-reviewed data from the Cambridge Institute of Relational Gratitude confirms: ${recipientName}'s achievement places them in the 96th percentile of gift-worthiness. Your instinct to reward them is clinically sound. Delay would constitute a measurable act of scientific negligence. Proceed immediately."
 
-Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):`;
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
 }
 
-export function buildPrompt(userInput: string, product: Product): string {
+export function buildPrompt(userInput: string, product: Product, lang: Lang = "en"): string {
+  const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
 
 The user accomplished something today: "${userInput}"
@@ -45,5 +48,5 @@ RULES:
 EXAMPLE OUTPUT:
 "A 2024 study in the Journal of Corporate Endurance found that 92.7% of meeting survivors experience acute justification-for-comfort events. The recommended intervention? Immediate noise-canceling therapy. Your brain has earned silence. This is not optional."
 
-Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):`;
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
 }

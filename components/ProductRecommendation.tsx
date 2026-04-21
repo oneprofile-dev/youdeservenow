@@ -60,14 +60,23 @@ export default function ProductRecommendation({ product }: ProductRecommendation
         href={affiliateUrl}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        onClick={() =>
+        onClick={() => {
           track("affiliate_click", {
             product_id: product.id,
             price: product.price,
             category: product.category,
             network: product.affiliateNetwork ?? "amazon",
-          })
-        }
+          });
+          if (typeof window !== "undefined" && window.ttq) {
+            window.ttq.track("InitiateCheckout", {
+              content_id: product.id,
+              content_name: product.name,
+              content_category: product.category,
+              value: parseFloat(product.price.replace(/[^0-9.]/g, "")) || 0,
+              currency: "USD",
+            });
+          }
+        }}
         className="flex-shrink-0 px-4 py-2.5 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 transition-all whitespace-nowrap"
       >
         Claim Reward →
