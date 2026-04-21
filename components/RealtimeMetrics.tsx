@@ -155,7 +155,7 @@ export function RealtimeMetrics({ resultId, category, showRank = true }: Realtim
       <div className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] text-center pt-1">
         {isConnected ? (
           <span className="text-green-600 dark:text-green-400 animate-pulse-slow">
-            🔴 Live • updates every 5s
+            🟢 Live • updates every 5s
           </span>
         ) : (
           <span className="animate-pulse">⚪ Polling...</span>

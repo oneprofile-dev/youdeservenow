@@ -25,9 +25,11 @@ export default function EmailCapture() {
         track("email_subscribe_success");
         setStatus("success");
       } else {
+        track("email_subscribe_failure", { status: res.status });
         setStatus("error");
       }
     } catch {
+      track("email_subscribe_failure", { status: 0 });
       setStatus("error");
     }
   }

@@ -49,6 +49,11 @@ export default function GiftHero() {
         const data: Result = await res.json();
         setResult(data);
         track("gift_generate", { category: data.product.category });
+        track("gift_result_generated", {
+          category: data.product.category,
+          product_id: data.product.id,
+          has_sender: senderName.trim() ? "yes" : "no",
+        });
 
         import("canvas-confetti").then(({ default: confetti }) => {
           confetti({

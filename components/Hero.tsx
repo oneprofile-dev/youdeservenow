@@ -186,16 +186,17 @@ export default function Hero({ referralResult }: HeroProps) {
           <div className="flex justify-center mb-4">
             <StreakBadge />
           </div>
-          <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-4">
+          <p suppressHydrationWarning className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-4">
             {heroCtx.label}
           </p>
           <h1
+            suppressHydrationWarning
             className="text-4xl sm:text-5xl lg:text-6xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] leading-[1.1] mb-4"
             style={{ fontFamily: "var(--font-display)" }}
           >
             {heroCtx.headline}
           </h1>
-          <p className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] text-base sm:text-lg max-w-lg mx-auto">
+          <p suppressHydrationWarning className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] text-base sm:text-lg max-w-lg mx-auto">
             {heroCtx.sub}
           </p>
         </div>

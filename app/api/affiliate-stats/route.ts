@@ -13,8 +13,8 @@ import { getKV } from "@/lib/kv";
 export async function GET(req: NextRequest) {
   const resultId = req.nextUrl.searchParams.get("resultId");
 
-  if (!resultId) {
-    return NextResponse.json({ error: "resultId required" }, { status: 400 });
+  if (!resultId || !/^[a-z0-9]{6,12}$/.test(resultId)) {
+    return NextResponse.json({ error: "Invalid resultId" }, { status: 400 });
   }
 
   const kv = await getKV();

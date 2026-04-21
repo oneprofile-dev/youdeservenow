@@ -7,6 +7,7 @@ import { TrendingSection } from "@/components/TrendingSection";
 import { getRecentResults, getResult } from "@/lib/db";
 import type { Result } from "@/lib/db";
 import Link from "next/link";
+import PageViewTracker from "@/components/PageViewTracker";
 
 interface HomeProps {
   searchParams: Promise<{ ref?: string }>;
@@ -41,6 +42,9 @@ export default async function Home({ searchParams }: HomeProps) {
       <Header />
 
       <main className="flex-1">
+        {ref && referralResult && (
+          <PageViewTracker event="referral_landed" props={{ ref_id: ref, category: referralResult.product.category }} />
+        )}
         <Hero referralResult={referralResult} />
 
         {/* Video — "See the science in action" */}

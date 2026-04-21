@@ -14,11 +14,24 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  // Performance headers
+  // Security headers
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-XSS-Protection", "1; mode=block");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
+  response.headers.set(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://va.vercel-scripts.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src * data: blob:",
+      "connect-src * blob:",
+      "frame-ancestors 'none'",
+    ].join("; ")
+  );
   
   // Cache control for static assets
   if (request.nextUrl.pathname.startsWith("/_next/")) {

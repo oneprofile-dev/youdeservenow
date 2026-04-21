@@ -11,16 +11,17 @@ interface TrendingResult {
     category: string;
     persona: string;
     title?: string;
+    input?: string;
+    product?: { category?: string };
   };
 }
 
 export async function TrendingSection() {
   try {
-    // Fetch top 3 by quality score (best overall quality)
     const trendingData = await getLeaderboard("quality", "all", 3);
 
     if (!trendingData || trendingData.length === 0) {
-      return null; // No trending data yet, skip section
+      return null;
     }
 
     return (
@@ -34,7 +35,7 @@ export async function TrendingSection() {
               className="text-2xl text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]"
               style={{ fontFamily: "var(--font-display)" }}
             >
-              What's trending now
+              What&apos;s trending now
             </h2>
           </div>
           <Link
@@ -45,59 +46,52 @@ export async function TrendingSection() {
           </Link>
         </div>
 
-        {/* Trending cards grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {trendingData.slice(0, 3).map((result, idx) => (
             <Link
               key={result.id}
               href={`/result/${result.id}`}
-              className="group relative overflow-hidden rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-200 bg-white"
+              className="group relative overflow-hidden rounded-lg border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] hover:border-[var(--color-accent)] hover:shadow-lg transition-all duration-200 bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)]"
             >
               <div className="p-4">
-                {/* Rank badge */}
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-2xl">
                     {idx === 0 ? "🥇" : idx === 1 ? "🥈" : "🥉"}
                   </span>
-                  <span className="text-xs font-bold text-gray-500 uppercase">
+                  <span className="text-xs font-bold text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] uppercase">
                     #{idx + 1} Trending
                   </span>
                 </div>
 
-                {/* Category */}
-                <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded mb-2 border border-blue-200">
-                  {result.result?.product?.category || "Gift"}
+                <span className="inline-block px-2 py-1 bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-bg)] text-[var(--color-accent)] text-xs font-medium rounded mb-2 border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
+                  {(result as TrendingResult).result?.product?.category || "Gift"}
                 </span>
 
-                {/* Title */}
-                <h3 className="font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                  {result.result?.input || `Gift #${result.id.slice(0, 8)}`}
+                <h3 className="font-bold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] mb-3 line-clamp-2 group-hover:text-[var(--color-accent)] transition-colors">
+                  {(result as TrendingResult).result?.input || `Result #${result.id.slice(0, 8)}`}
                 </h3>
 
-                {/* Quick metrics */}
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-center justify-between text-gray-600">
+                <div className="space-y-2 text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                  <div className="flex items-center justify-between">
                     <span>❤️ {result.likes} likes</span>
                     <span>🔄 {result.shares} shares</span>
                   </div>
-                  <div className="flex items-center justify-between text-gray-600">
+                  <div className="flex items-center justify-between">
                     <span>⭐ Quality: {result.qualityScore}</span>
                     <span>🛍️ {result.affiliateClicks} clicks</span>
                   </div>
                 </div>
               </div>
 
-              {/* Hover gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
             </Link>
           ))}
         </div>
 
-        {/* CTA */}
         <div className="mt-6 text-center">
           <Link
             href="/leaderboards"
-            className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block px-6 py-3 bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] font-semibold rounded-lg hover:opacity-90 transition-opacity"
           >
             Explore Full Leaderboards
           </Link>
@@ -105,7 +99,6 @@ export async function TrendingSection() {
       </section>
     );
   } catch {
-    // Gracefully handle errors, don't show section
     return null;
   }
 }

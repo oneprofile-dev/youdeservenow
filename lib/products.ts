@@ -1,5 +1,6 @@
 import productsData from "@/data/products.json";
 import type { AffiliateNetwork } from "./affiliate";
+import { isHighCommission } from "./affiliate";
 
 export interface Product {
   id: string;
@@ -35,11 +36,14 @@ function pickRandom<T>(arr: T[]): T {
 export function matchProduct(input: string): Product {
   const lower = input.toLowerCase();
 
-  const scored = products.map((p) => ({
-    product: p,
-    // Weight: keyword hits × commission multiplier (prefer high-value matches)
-    score: p.keywords.filter((kw) => lower.includes(kw)).length,
-  }));
+  const scored = products.map((p) => {
+    const keywordHits = p.keywords.filter((kw) => lower.includes(kw)).length;
+    // Boost high-commission products so they win ties and rank above generic Amazon items
+    const commissionBoost = p.commission
+      ? isHighCommission(p.commission) ? 2 : 0.5
+      : 0;
+    return { product: p, score: keywordHits + (keywordHits > 0 ? commissionBoost : 0) };
+  });
 
   const maxScore = Math.max(...scored.map((s) => s.score));
 

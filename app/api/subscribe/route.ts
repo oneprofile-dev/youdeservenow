@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
+import { checkRateLimitCustom } from "@/lib/rate-limit";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anon";
+  const { allowed } = await checkRateLimitCustom(`rl:subscribe:${ip}`, 3, 3600);
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
+  }
+
   const body = await req.json().catch(() => ({}));
   const email = (body.email ?? "").trim().toLowerCase();
 

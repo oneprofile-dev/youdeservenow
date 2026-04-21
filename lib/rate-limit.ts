@@ -6,6 +6,32 @@ const memoryStore = new Map<string, { count: number; resetAt: number }>();
 const MAX_REQUESTS = 5;
 const WINDOW_MS = 60_000; // 1 minute
 
+// Generic rate limiter — use for any endpoint with custom limits
+export async function checkRateLimitCustom(
+  key: string,
+  max: number,
+  windowSeconds: number
+): Promise<{ allowed: boolean; remaining: number }> {
+  const kv = await getKV();
+
+  if (kv) {
+    const current = await kv.incr(key);
+    if (current === 1) await kv.expire(key, windowSeconds);
+    const remaining = Math.max(0, max - current);
+    return { allowed: current <= max, remaining };
+  }
+
+  // In-memory fallback
+  const now = Date.now();
+  const entry = memoryStore.get(key);
+  if (!entry || now > entry.resetAt) {
+    memoryStore.set(key, { count: 1, resetAt: now + windowSeconds * 1000 });
+    return { allowed: true, remaining: max - 1 };
+  }
+  entry.count += 1;
+  return { allowed: entry.count <= max, remaining: Math.max(0, max - entry.count) };
+}
+
 export async function checkRateLimit(ip: string): Promise<{ allowed: boolean; remaining: number }> {
   const key = `rl:${ip}`;
   const kv = await getKV();

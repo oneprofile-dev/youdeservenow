@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ResultCard from "@/components/ResultCard";
 import { getResult } from "@/lib/db";
 import { getSiteUrl, truncate } from "@/lib/utils";
+import PageViewTracker from "@/components/PageViewTracker";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -54,9 +55,13 @@ export default async function ResultPage({ params }: Props) {
 
       <main className="flex-1 py-12 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto space-y-10">
+          <PageViewTracker
+            event="result_page_view"
+            props={{ product_id: result.product.id, category: result.product.category }}
+          />
           <ResultCard result={result} showShareCard />
 
-          {/* JSON-LD structured data */}
+          {/* JSON-LD structured data — escape </ to prevent script injection */}
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -67,7 +72,7 @@ export default async function ResultPage({ params }: Props) {
                 description: result.justification,
                 datePublished: result.createdAt,
                 url: `${getSiteUrl()}/result/${id}`,
-              }),
+              }).replace(/<\//g, "<\\/"),
             }}
           />
 

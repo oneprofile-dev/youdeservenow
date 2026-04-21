@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import GiftHero from "@/components/GiftHero";
+import PageViewTracker from "@/components/PageViewTracker";
 
 export const metadata: Metadata = {
   title: "Gift a Diagnosis — YouDeserveNow",
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export default function GiftPage() {
   return (
     <main className="min-h-screen bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)]">
+      <PageViewTracker event="gift_link_opened" />
       <GiftHero />
     </main>
   );
