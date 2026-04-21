@@ -1,0 +1,290 @@
+[
+  {
+    "id": "heated-eye-massager-renpho",
+    "name": "RENPHO Heated Eye Massager",
+    "category": "selfcare",
+    "price": "$69.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=renpho%20heated%20eye%20massager&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/renpho-eye-massager/400/400",
+    "keywords": [
+      "headache",
+      "migraine",
+      "eye strain",
+      "screen time",
+      "worked late",
+      "tired eyes",
+      "stress"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "sunrise-alarm-clock-hatch",
+    "name": "Sunrise Alarm Clock",
+    "category": "selfcare",
+    "price": "$59.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=sunrise%20alarm%20clock%20wake%20up%20light&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/sunrise-alarm-clock/400/400",
+    "keywords": [
+      "woke up early",
+      "morning",
+      "sleep",
+      "routine",
+      "late night",
+      "exhausted",
+      "reset"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "cooling-blanket-hot-sleepers",
+    "name": "Cooling Blanket for Hot Sleepers",
+    "category": "comfort",
+    "price": "$39.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=cooling%20blanket%20hot%20sleepers%20queen&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/cooling-blanket/400/400",
+    "keywords": [
+      "hot",
+      "sleep",
+      "summer",
+      "night sweats",
+      "rest",
+      "bedroom",
+      "exhausted"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "heated-throw-blanket",
+    "name": "Heated Throw Blanket",
+    "category": "comfort",
+    "price": "$49.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=heated%20throw%20blanket%20soft%20plush&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/heated-throw-blanket/400/400",
+    "keywords": [
+      "cold",
+      "winter",
+      "cozy",
+      "comfort",
+      "rough day",
+      "tired",
+      "stressed"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "portable-monitor-arzopa",
+    "name": "Portable Monitor 15.6-inch",
+    "category": "tech",
+    "price": "$129.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=portable%20monitor%2015.6%20inch%20usb%20c%20laptop%20monitor&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/portable-monitor/400/400",
+    "keywords": [
+      "remote work",
+      "travel",
+      "coding",
+      "project",
+      "productivity",
+      "office",
+      "built"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "label-maker-brother-ptouch",
+    "name": "Brother P-Touch Label Maker",
+    "category": "tech",
+    "price": "$39.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=brother%20p%20touch%20label%20maker&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/label-maker/400/400",
+    "keywords": [
+      "organized",
+      "decluttered",
+      "labels",
+      "pantry",
+      "office",
+      "tidied",
+      "cleaned"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "walking-pad-under-desk",
+    "name": "Walking Pad Under Desk Treadmill",
+    "category": "fitness",
+    "price": "$249.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=walking%20pad%20under%20desk%20treadmill%20compact&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/walking-pad/400/400",
+    "keywords": [
+      "steps",
+      "walked",
+      "desk job",
+      "fitness",
+      "workout",
+      "routine",
+      "stamina"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "adjustable-kettlebell",
+    "name": "Adjustable Kettlebell",
+    "category": "fitness",
+    "price": "$179.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=adjustable%20kettlebell%20home%20gym&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/adjustable-kettlebell/400/400",
+    "keywords": [
+      "workout",
+      "strength",
+      "lifted",
+      "gym",
+      "training",
+      "exercise",
+      "fitness"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "nugget-ice-maker-countertop",
+    "name": "Countertop Nugget Ice Maker",
+    "category": "home",
+    "price": "$199.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=countertop%20nugget%20ice%20maker&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/nugget-ice-maker/400/400",
+    "keywords": [
+      "hosting",
+      "party",
+      "kitchen",
+      "guests",
+      "summer",
+      "home",
+      "weekend"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "cordless-handheld-vacuum",
+    "name": "Cordless Handheld Vacuum",
+    "category": "home",
+    "price": "$89.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=cordless%20handheld%20vacuum%20car%20couch&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/handheld-vacuum/400/400",
+    "keywords": [
+      "cleaned",
+      "car",
+      "pets",
+      "crumbs",
+      "organized",
+      "house",
+      "tidied"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "electric-lunch-box",
+    "name": "Electric Lunch Box Food Warmer",
+    "category": "kitchen",
+    "price": "$34.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=electric%20lunch%20box%20food%20warmer&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/electric-lunch-box/400/400",
+    "keywords": [
+      "meal prep",
+      "office",
+      "lunch",
+      "commute",
+      "work",
+      "routine",
+      "healthy"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "milk-frother-handheld",
+    "name": "Handheld Milk Frother",
+    "category": "kitchen",
+    "price": "$14.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=handheld%20milk%20frother%20for%20coffee&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/milk-frother/400/400",
+    "keywords": [
+      "coffee",
+      "morning",
+      "latte",
+      "espresso",
+      "worked late",
+      "treat",
+      "home cafe"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "protein-bar-variety-box",
+    "name": "Protein Bar Variety Pack",
+    "category": "snacks",
+    "price": "$29.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=protein%20bar%20variety%20pack&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/protein-bar-variety/400/400",
+    "keywords": [
+      "gym",
+      "snack",
+      "protein",
+      "workout",
+      "busy",
+      "meal prep",
+      "hunger"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "electrolyte-powder-sticks",
+    "name": "Electrolyte Powder Sticks",
+    "category": "snacks",
+    "price": "$24.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=electrolyte%20powder%20sticks%20hydration&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/electrolyte-sticks/400/400",
+    "keywords": [
+      "hydration",
+      "workout",
+      "run",
+      "travel",
+      "energy",
+      "recovery",
+      "summer"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "desk-mini-fridge-skincare",
+    "name": "Mini Fridge for Desk and Skincare",
+    "category": "trending",
+    "price": "$39.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=mini%20fridge%20for%20skincare%20and%20desk%20drinks&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/desk-mini-fridge/400/400",
+    "keywords": [
+      "desk",
+      "skincare",
+      "office",
+      "wfh",
+      "bedroom",
+      "drinks",
+      "convenience"
+    ],
+    "source": "niche-seed"
+  },
+  {
+    "id": "white-noise-machine-dohm",
+    "name": "White Noise Machine",
+    "category": "trending",
+    "price": "$49.99",
+    "affiliateUrl": "https://www.amazon.com/s?k=white%20noise%20machine%20sleep%20office&tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/white-noise-machine/400/400",
+    "keywords": [
+      "sleep",
+      "focus",
+      "baby",
+      "office",
+      "noise",
+      "stress",
+      "routine"
+    ],
+    "source": "niche-seed"
+  }
+]

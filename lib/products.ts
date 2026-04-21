@@ -1,4 +1,5 @@
 import productsData from "@/data/products.json";
+import nicheProductsData from "@/data/niche-products.json";
 import type { AffiliateNetwork } from "./affiliate";
 import { isHighCommission } from "./affiliate";
 
@@ -27,10 +28,18 @@ function extractAsinFromUrl(url: string): string {
 
 export { extractAsinFromUrl as extractAsinFromUrl };
 
-const products: Product[] = (productsData as any[]).map(p => ({
-  ...p,
-  asin: p.asin || extractAsinFromUrl(p.affiliateUrl),
-})) as Product[];
+const mergedProducts = [...(productsData as any[]), ...(nicheProductsData as any[])];
+const products: Product[] = Array.from(
+  new Map(
+    mergedProducts.map((product) => [
+      product.id,
+      {
+        ...product,
+        asin: product.asin || extractAsinFromUrl(product.affiliateUrl),
+      },
+    ])
+  ).values()
+) as Product[];
 
 const CATEGORY_FALLBACK_ORDER = [
   "trending",

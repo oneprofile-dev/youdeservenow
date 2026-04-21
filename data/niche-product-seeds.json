@@ -1,0 +1,146 @@
+[
+  {
+    "id": "heated-eye-massager-renpho",
+    "name": "RENPHO Heated Eye Massager",
+    "category": "selfcare",
+    "price": "$69.99",
+    "searchQuery": "renpho heated eye massager",
+    "imageSeed": "renpho-eye-massager",
+    "keywords": ["headache", "migraine", "eye strain", "screen time", "worked late", "tired eyes", "stress"]
+  },
+  {
+    "id": "sunrise-alarm-clock-hatch",
+    "name": "Sunrise Alarm Clock",
+    "category": "selfcare",
+    "price": "$59.99",
+    "searchQuery": "sunrise alarm clock wake up light",
+    "imageSeed": "sunrise-alarm-clock",
+    "keywords": ["woke up early", "morning", "sleep", "routine", "late night", "exhausted", "reset"]
+  },
+  {
+    "id": "cooling-blanket-hot-sleepers",
+    "name": "Cooling Blanket for Hot Sleepers",
+    "category": "comfort",
+    "price": "$39.99",
+    "searchQuery": "cooling blanket hot sleepers queen",
+    "imageSeed": "cooling-blanket",
+    "keywords": ["hot", "sleep", "summer", "night sweats", "rest", "bedroom", "exhausted"]
+  },
+  {
+    "id": "heated-throw-blanket",
+    "name": "Heated Throw Blanket",
+    "category": "comfort",
+    "price": "$49.99",
+    "searchQuery": "heated throw blanket soft plush",
+    "imageSeed": "heated-throw-blanket",
+    "keywords": ["cold", "winter", "cozy", "comfort", "rough day", "tired", "stressed"]
+  },
+  {
+    "id": "portable-monitor-arzopa",
+    "name": "Portable Monitor 15.6-inch",
+    "category": "tech",
+    "price": "$129.99",
+    "searchQuery": "portable monitor 15.6 inch usb c laptop monitor",
+    "imageSeed": "portable-monitor",
+    "keywords": ["remote work", "travel", "coding", "project", "productivity", "office", "built"]
+  },
+  {
+    "id": "label-maker-brother-ptouch",
+    "name": "Brother P-Touch Label Maker",
+    "category": "tech",
+    "price": "$39.99",
+    "searchQuery": "brother p touch label maker",
+    "imageSeed": "label-maker",
+    "keywords": ["organized", "decluttered", "labels", "pantry", "office", "tidied", "cleaned"]
+  },
+  {
+    "id": "walking-pad-under-desk",
+    "name": "Walking Pad Under Desk Treadmill",
+    "category": "fitness",
+    "price": "$249.99",
+    "searchQuery": "walking pad under desk treadmill compact",
+    "imageSeed": "walking-pad",
+    "keywords": ["steps", "walked", "desk job", "fitness", "workout", "routine", "stamina"]
+  },
+  {
+    "id": "adjustable-kettlebell",
+    "name": "Adjustable Kettlebell",
+    "category": "fitness",
+    "price": "$179.99",
+    "searchQuery": "adjustable kettlebell home gym",
+    "imageSeed": "adjustable-kettlebell",
+    "keywords": ["workout", "strength", "lifted", "gym", "training", "exercise", "fitness"]
+  },
+  {
+    "id": "nugget-ice-maker-countertop",
+    "name": "Countertop Nugget Ice Maker",
+    "category": "home",
+    "price": "$199.99",
+    "searchQuery": "countertop nugget ice maker",
+    "imageSeed": "nugget-ice-maker",
+    "keywords": ["hosting", "party", "kitchen", "guests", "summer", "home", "weekend"]
+  },
+  {
+    "id": "cordless-handheld-vacuum",
+    "name": "Cordless Handheld Vacuum",
+    "category": "home",
+    "price": "$89.99",
+    "searchQuery": "cordless handheld vacuum car couch",
+    "imageSeed": "handheld-vacuum",
+    "keywords": ["cleaned", "car", "pets", "crumbs", "organized", "house", "tidied"]
+  },
+  {
+    "id": "electric-lunch-box",
+    "name": "Electric Lunch Box Food Warmer",
+    "category": "kitchen",
+    "price": "$34.99",
+    "searchQuery": "electric lunch box food warmer",
+    "imageSeed": "electric-lunch-box",
+    "keywords": ["meal prep", "office", "lunch", "commute", "work", "routine", "healthy"]
+  },
+  {
+    "id": "milk-frother-handheld",
+    "name": "Handheld Milk Frother",
+    "category": "kitchen",
+    "price": "$14.99",
+    "searchQuery": "handheld milk frother for coffee",
+    "imageSeed": "milk-frother",
+    "keywords": ["coffee", "morning", "latte", "espresso", "worked late", "treat", "home cafe"]
+  },
+  {
+    "id": "protein-bar-variety-box",
+    "name": "Protein Bar Variety Pack",
+    "category": "snacks",
+    "price": "$29.99",
+    "searchQuery": "protein bar variety pack",
+    "imageSeed": "protein-bar-variety",
+    "keywords": ["gym", "snack", "protein", "workout", "busy", "meal prep", "hunger"]
+  },
+  {
+    "id": "electrolyte-powder-sticks",
+    "name": "Electrolyte Powder Sticks",
+    "category": "snacks",
+    "price": "$24.99",
+    "searchQuery": "electrolyte powder sticks hydration",
+    "imageSeed": "electrolyte-sticks",
+    "keywords": ["hydration", "workout", "run", "travel", "energy", "recovery", "summer"]
+  },
+  {
+    "id": "desk-mini-fridge-skincare",
+    "name": "Mini Fridge for Desk and Skincare",
+    "category": "trending",
+    "price": "$39.99",
+    "searchQuery": "mini fridge for skincare and desk drinks",
+    "imageSeed": "desk-mini-fridge",
+    "keywords": ["desk", "skincare", "office", "wfh", "bedroom", "drinks", "convenience"]
+  },
+  {
+    "id": "white-noise-machine-dohm",
+    "name": "White Noise Machine",
+    "category": "trending",
+    "price": "$49.99",
+    "searchQuery": "white noise machine sleep office",
+    "imageSeed": "white-noise-machine",
+    "keywords": ["sleep", "focus", "baby", "office", "noise", "stress", "routine"]
+  }
+]
