@@ -1,11 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useEffect, useState } from "react";
+import { useMemo, useEffect } from "react";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
 import { resolveAffiliateUrl, isHighCommission, getCountryFromCookie } from "@/lib/affiliate";
-import { extractAsinFromUrl } from "@/lib/products";
 import { useLinkHealth } from "@/lib/useLink";
 import { initLinkCache } from "@/lib/client-link-cache";
 
@@ -14,8 +13,6 @@ interface ProductRecommendationProps {
 }
 
 export default function ProductRecommendation({ product }: ProductRecommendationProps) {
-  const [replacementUrl, setReplacementUrl] = useState<string>("");
-
   useEffect(() => {
     initLinkCache();
   }, []);
@@ -32,29 +29,35 @@ export default function ProductRecommendation({ product }: ProductRecommendation
     );
   }, [product]);
 
-  // Fetch replacement URL from server on component mount
-  useEffect(() => {
-    const asin = extractAsinFromUrl(affiliateUrl);
-    if (!asin) return;
-
-    fetch(`/api/products/replacement?asin=${encodeURIComponent(asin)}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.replacementUrl) {
-          setReplacementUrl(data.replacementUrl);
-        }
-      })
-      .catch(() => {
-        // Silently fail - no replacement available
-      });
+  const amazonAsin = useMemo(() => {
+    return affiliateUrl.match(/\/dp\/([A-Z0-9]+)/)?.[1] ?? null;
   }, [affiliateUrl]);
 
   const highValue = isHighCommission(product.commission);
 
-  // Use smart link with preloaded replacement URL
-  const { urlToUse, isDead } = useLinkHealth(affiliateUrl, {
-    replacementUrl: replacementUrl || undefined,
-  });
+  const { isDead } = useLinkHealth(affiliateUrl);
+
+  const ctaHref = useMemo(() => {
+    if (!amazonAsin) {
+      return affiliateUrl;
+    }
+
+    const params = new URLSearchParams({
+      asin: amazonAsin,
+      redirect: "1",
+      url: affiliateUrl,
+    });
+
+    return `/api/products/replacement?${params.toString()}`;
+  }, [affiliateUrl, amazonAsin]);
+
+  const linkStatus = useMemo(() => {
+    if (amazonAsin) {
+      return "server_checked";
+    }
+
+    return isDead ? "dead" : "direct";
+  }, [amazonAsin, isDead]);
 
   return (
     <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
@@ -88,7 +91,7 @@ export default function ProductRecommendation({ product }: ProductRecommendation
       </div>
 
       <a
-        href={urlToUse}
+        href={ctaHref}
         target="_blank"
         rel="noopener noreferrer sponsored"
         onClick={() => {
@@ -102,7 +105,7 @@ export default function ProductRecommendation({ product }: ProductRecommendation
             price: product.price,
             category: product.category,
             network: product.affiliateNetwork ?? "amazon",
-            linkStatus: isDead ? "dead" : "alive",
+            linkStatus,
           });
           if (typeof window !== "undefined" && window.ttq) {
             window.ttq.track("InitiateCheckout", {

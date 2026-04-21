@@ -21,6 +21,14 @@ interface LinkValidation {
   lastChecked?: string;
 }
 
+interface ReplacementResponse {
+  asin: string;
+  originalUrl: string;
+  replacementUrl: string;
+  replacementName: string;
+  source: string;
+}
+
 /**
  * Extract ASIN from Amazon URL
  */
@@ -46,6 +54,8 @@ function findReplacement(asin: string): DeadLinkEntry | null {
 export async function GET(request: NextRequest) {
   try {
     const asin = request.nextUrl.searchParams.get("asin");
+    const shouldRedirect = request.nextUrl.searchParams.get("redirect") === "1";
+    const fallbackUrl = request.nextUrl.searchParams.get("url");
 
     if (!asin) {
       return NextResponse.json(
@@ -54,11 +64,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const redirectToTarget = (target: string | null | undefined) => {
+      if (!target) {
+        return NextResponse.json(
+          { error: "Missing fallback URL for redirect" },
+          { status: 400 }
+        );
+      }
+
+      return NextResponse.redirect(target, 307);
+    };
+
     // Check server cache first
     const cacheKey = `link-replacement:${asin}`;
-    const cachedReplacement = await kv.get(cacheKey).catch(() => null);
+    const cachedReplacement = await kv.get<ReplacementResponse>(cacheKey).catch(() => null);
 
     if (cachedReplacement) {
+      if (shouldRedirect) {
+        return redirectToTarget(cachedReplacement.replacementUrl || fallbackUrl);
+      }
       return NextResponse.json(cachedReplacement);
     }
 
@@ -66,7 +90,7 @@ export async function GET(request: NextRequest) {
     const replacement = findReplacement(asin);
 
     if (replacement) {
-      const response = {
+      const response: ReplacementResponse = {
         asin,
         originalUrl: replacement.was,
         replacementUrl: replacement.replacement,
@@ -77,6 +101,10 @@ export async function GET(request: NextRequest) {
       // Cache for 24 hours
       await kv.setex(cacheKey, 86400, response).catch(() => {});
 
+      if (shouldRedirect) {
+        return redirectToTarget(response.replacementUrl);
+      }
+
       return NextResponse.json(response);
     }
 
@@ -85,6 +113,10 @@ export async function GET(request: NextRequest) {
     const validation = await kv.get<LinkValidation>(validationKey).catch(() => null);
 
     if (validation) {
+      if (shouldRedirect) {
+        return redirectToTarget(fallbackUrl);
+      }
+
       return NextResponse.json({
         asin,
         status: validation.status,
@@ -94,6 +126,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Not found in any cache
+    if (shouldRedirect) {
+      return redirectToTarget(fallbackUrl);
+    }
+
     return NextResponse.json(
       { asin, status: "unknown", replacementUrl: null },
       { status: 404 }

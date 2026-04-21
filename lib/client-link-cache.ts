@@ -79,6 +79,7 @@ export async function quickCheckLink(
   // Check cache first (instant response)
   const cached = getCachedLinkStatus(url);
   if (cached) {
+    onResult?.(cached);
     return cached;
   }
 

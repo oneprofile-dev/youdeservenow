@@ -6,7 +6,6 @@
 import { useEffect, useState, useRef } from "react";
 import {
   quickCheckLink,
-  getCachedLinkStatus,
   prefetchLinks,
   LinkStatus,
 } from "./client-link-cache";
@@ -27,25 +26,34 @@ export function useLinkHealth(
 ) {
   const { replacementUrl, onStatusChange, autoPrefetch = true } = options;
   const [linkStatus, setLinkStatus] = useState<LinkStatus | null>(null);
-  const [urlToUse, setUrlToUse] = useState(primaryUrl);
-  const hasCheckedRef = useRef(false);
+  const [urlToUse, setUrlToUse] = useState(replacementUrl || primaryUrl);
+  const lastCheckedUrlRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (!primaryUrl || hasCheckedRef.current) return;
-    hasCheckedRef.current = true;
+    setUrlToUse(replacementUrl || primaryUrl);
+  }, [primaryUrl, replacementUrl]);
 
-    // Quick check - returns cached result or starts background check
-    quickCheckLink(primaryUrl, (status) => {
+  useEffect(() => {
+    if (!primaryUrl || lastCheckedUrlRef.current === primaryUrl) return;
+    lastCheckedUrlRef.current = primaryUrl;
+
+    const applyStatus = (status: LinkStatus) => {
       setLinkStatus(status);
 
-      // If dead and we have replacement, use it
       if (status.status === "dead" && replacementUrl) {
         setUrlToUse(replacementUrl);
+      } else if (status.status === "alive" && !replacementUrl) {
+        setUrlToUse(primaryUrl);
       }
 
       if (onStatusChange) {
         onStatusChange(status);
       }
+    };
+
+    // Quick check - returns cached result or starts background check
+    quickCheckLink(primaryUrl, applyStatus).then(applyStatus).catch(() => {
+      // Ignore link-check failures and continue using the current URL.
     });
   }, [primaryUrl, replacementUrl, onStatusChange]);
 
