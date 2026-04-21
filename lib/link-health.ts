@@ -68,15 +68,12 @@ export async function validateAmazonLink(
         asin,
         code: response.status,
         lastChecked: new Date().toISOString(),
+        status: response.status === 200 ? "alive" : response.status === 404 ? "dead" : "unknown",
       };
 
-      if (response.status === 200) {
-        result.status = "alive";
-      } else if (response.status === 404) {
-        result.status = "dead";
+      if (response.status === 404) {
         result.error = "Product not found (404)";
-      } else {
-        result.status = "unknown";
+      } else if (response.status !== 200) {
         result.error = `HTTP ${response.status}`;
       }
 
@@ -118,7 +115,7 @@ export async function validateMultipleLinks(
 
   for (let i = 0; i < asins.length; i += batchSize) {
     const batch = asins.slice(i, Math.min(i + batchSize, asins.length));
-    const batchResults = await Promise.all(batch.map(validateAmazonLink));
+    const batchResults = await Promise.all(batch.map(asin => validateAmazonLink(asin)));
     results.push(...batchResults);
   }
 
@@ -129,23 +126,27 @@ export async function validateMultipleLinks(
  * Find the best replacement for a dead product
  * Uses metadata-based matching: category, price, keywords
  */
+type PriceableProduct = {
+  name: string;
+  category: string;
+  price?: number | string;
+  asin: string;
+};
+
+function normalizePrice(price?: number | string): number {
+  if (typeof price === "number") return price;
+  if (!price) return 0;
+  const numeric = Number(price.toString().replace(/[^0-9.]/g, ""));
+  return Number.isFinite(numeric) ? numeric : 0;
+}
+
 export function findReplacementCandidate(
-  deadProduct: {
-    name: string;
-    category: string;
-    price?: number;
-    asin: string;
-  },
-  allProducts: Array<{
-    name: string;
-    category: string;
-    price?: number;
-    asin: string;
-  }>
+  deadProduct: PriceableProduct,
+  allProducts: PriceableProduct[]
 ): ProductReplacement | null {
   const deadName = deadProduct.name.toLowerCase();
   const deadCategory = deadProduct.category.toLowerCase();
-  const deadPrice = deadProduct.price || 0;
+  const deadPrice = normalizePrice(deadProduct.price);
 
   let bestMatch: {
     product: (typeof allProducts)[0];
@@ -172,8 +173,9 @@ export function findReplacementCandidate(
     score += (commonWords / maxWords) * 40;
 
     // Price proximity (20 points)
-    if (deadPrice > 0 && product.price) {
-      const priceDiff = Math.abs(deadPrice - product.price) / deadPrice;
+    const productPrice = normalizePrice(product.price);
+    if (deadPrice > 0 && productPrice > 0) {
+      const priceDiff = Math.abs(deadPrice - productPrice) / deadPrice;
       score += Math.max(0, (1 - priceDiff) * 20);
     }
 
@@ -224,8 +226,17 @@ export async function getLinkHealthStats(): Promise<{
   lastUpdated: string;
 }> {
   try {
-    const stats = await kv.get("link-health:stats");
-    return stats || {
+    const stats = await kv.get<{
+      totalChecked: number;
+      alive: number;
+      dead: number;
+      unknown: number;
+      lastUpdated: string;
+    } | null>("link-health:stats");
+    if (stats) {
+      return stats;
+    }
+    return {
       totalChecked: 0,
       alive: 0,
       dead: 0,

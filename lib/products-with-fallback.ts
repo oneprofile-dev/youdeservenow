@@ -5,16 +5,11 @@
 
 import { kv } from "@vercel/kv";
 import productsData from "@/data/products.json";
+import type { Product } from "./products";
+import { extractAsinFromUrl } from "./products";
 
-export interface Product {
-  asin: string;
-  name: string;
-  category: string;
-  price?: number;
-  rating?: number;
-  image?: string;
-  isReplacement?: boolean;
-  originalAsin?: string;
+function extractAsin(item: any): string {
+  return item.asin || extractAsinFromUrl(item.affiliateUrl);
 }
 
 let replacementMap: Record<string, string> | null = null;
@@ -46,10 +41,13 @@ export async function getProductByAsin(
   asin: string
 ): Promise<Product | undefined> {
   // First, try to find the original product
-  let product = productsData.find((p) => p.asin === asin);
+  let product = (productsData as any[]).find((p) => extractAsin(p) === asin);
 
   if (product) {
-    return product;
+    return {
+      ...product,
+      asin: extractAsin(product),
+    };
   }
 
   // If not found, check if this ASIN has a replacement
@@ -57,10 +55,11 @@ export async function getProductByAsin(
   const replacementAsin = replacementMap[asin];
 
   if (replacementAsin) {
-    product = productsData.find((p) => p.asin === replacementAsin);
+    product = (productsData as any[]).find((p) => extractAsin(p) === replacementAsin);
     if (product) {
       return {
         ...product,
+        asin: extractAsin(product),
         isReplacement: true,
         originalAsin: asin,
       };
@@ -75,14 +74,20 @@ export async function getProductByAsin(
  */
 export function getProductsWithFallbacks(): Product[] {
   // This would need async context - for sync operations, use getProductsSync
-  return productsData;
+  return (productsData as any[]).map(p => ({
+    ...p,
+    asin: extractAsin(p),
+  }));
 }
 
 /**
  * Get products synchronously (no replacement lookup)
  */
 export function getAllProducts(): Product[] {
-  return productsData;
+  return (productsData as any[]).map(p => ({
+    ...p,
+    asin: extractAsin(p),
+  }));
 }
 
 /**
@@ -94,15 +99,18 @@ export async function getProductsByCategory(
   const replacementMap = await getReplacementMap();
   const deadAsins = Object.keys(replacementMap);
 
-  let products = productsData.filter(
+  let products = (productsData as any[]).filter(
     (p) => p.category.toLowerCase() === category.toLowerCase()
   );
 
   // Filter out dead products (unless they have a replacement)
   // Note: In real usage, you'd show the replacement instead
-  products = products.filter((p) => !deadAsins.includes(p.asin));
+  products = products.filter((p) => !deadAsins.includes(extractAsin(p)));
 
-  return products;
+  return products.map(p => ({
+    ...p,
+    asin: extractAsin(p),
+  }));
 }
 
 /**
@@ -118,12 +126,8 @@ export async function getRecommendedProduct(
     return undefined;
   }
 
-  // Return highest-rated product
-  return products.reduce((best, current) => {
-    const bestRating = best.rating || 0;
-    const currentRating = current.rating || 0;
-    return currentRating > bestRating ? current : best;
-  });
+  // Return first available product (random selection would be better, but keeping it simple)
+  return products[0];
 }
 
 /**
@@ -139,7 +143,12 @@ export async function isProductAvailable(asin: string): Promise<boolean> {
  * Useful for quick operations that don't need full fallback logic
  */
 export function getProductSync(asin: string): Product | undefined {
-  return productsData.find((p) => p.asin === asin);
+  const product = (productsData as any[]).find((p) => extractAsin(p) === asin);
+  if (!product) return undefined;
+  return {
+    ...product,
+    asin: extractAsin(product),
+  };
 }
 
 /**

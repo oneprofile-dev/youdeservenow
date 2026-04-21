@@ -4,6 +4,7 @@ import { isHighCommission } from "./affiliate";
 
 export interface Product {
   id: string;
+  asin: string;
   name: string;
   category: string;
   price: string;
@@ -16,7 +17,20 @@ export interface Product {
   commission?: string;          // e.g. "15%" or "$40 CPA"
 }
 
-const products: Product[] = productsData as Product[];
+function extractAsinFromUrl(url: string): string {
+  // Extract ASIN from Amazon URL: https://www.amazon.com/dp/B07NY4FYYQ?tag=...
+  const match = url.match(/\/dp\/([A-Z0-9]+)/);
+  if (match?.[1]) return match[1];
+  // Fallback: use a hash of the URL if ASIN cannot be extracted
+  return `asin-${url.split('/').pop()?.slice(0, 10)}`;
+}
+
+export { extractAsinFromUrl as extractAsinFromUrl };
+
+const products: Product[] = (productsData as any[]).map(p => ({
+  ...p,
+  asin: p.asin || extractAsinFromUrl(p.affiliateUrl),
+})) as Product[];
 
 const CATEGORY_FALLBACK_ORDER = [
   "trending",
