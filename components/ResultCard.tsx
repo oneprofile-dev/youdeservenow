@@ -6,7 +6,6 @@ import dynamic from "next/dynamic";
 import ShareCard from "./ShareCard";
 import { RankingBadge } from "./RankingBadge";
 import { RealtimeMetrics } from "./RealtimeMetrics";
-import { AffiliateDashboard } from "./AffiliateDashboard";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
 
@@ -108,12 +107,6 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Real-time Metrics */}
         <RealtimeMetrics resultId={result.id} category={result.product.category} />
-
-        {/* Divider */}
-        <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
-
-        {/* Affiliate Dashboard */}
-        <AffiliateDashboard resultId={result.id} />
 
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
