@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { ToastContainer } from "@/components/ToastContainer";
+import { LanguageProvider } from "@/lib/LanguageContext";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({
@@ -134,8 +135,10 @@ export default function RootLayout({
         />
       </head>
       <body>
-        {children}
-        <ToastContainer />
+        <LanguageProvider>
+          {children}
+          <ToastContainer />
+        </LanguageProvider>
         <Analytics />
       </body>
     </html>
