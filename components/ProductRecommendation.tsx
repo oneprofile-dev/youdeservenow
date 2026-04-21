@@ -1,18 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
 import { resolveAffiliateUrl, isHighCommission, getCountryFromCookie } from "@/lib/affiliate";
+import { extractAsinFromUrl } from "@/lib/products";
 import { useLinkHealth } from "@/lib/useLink";
-import { initLinkCache, prefetchLinks } from "@/lib/client-link-cache";
+import { initLinkCache } from "@/lib/client-link-cache";
 
 interface ProductRecommendationProps {
   product: Product;
 }
 
 export default function ProductRecommendation({ product }: ProductRecommendationProps) {
+  const [replacementUrl, setReplacementUrl] = useState<string>("");
+
   useEffect(() => {
     initLinkCache();
   }, []);
@@ -29,11 +32,28 @@ export default function ProductRecommendation({ product }: ProductRecommendation
     );
   }, [product]);
 
+  // Fetch replacement URL from server on component mount
+  useEffect(() => {
+    const asin = extractAsinFromUrl(affiliateUrl);
+    if (!asin) return;
+
+    fetch(`/api/products/replacement?asin=${encodeURIComponent(asin)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.replacementUrl) {
+          setReplacementUrl(data.replacementUrl);
+        }
+      })
+      .catch(() => {
+        // Silently fail - no replacement available
+      });
+  }, [affiliateUrl]);
+
   const highValue = isHighCommission(product.commission);
 
-  // Prefetch link status and get smart URL with fallback
+  // Use smart link with preloaded replacement URL
   const { urlToUse, isDead } = useLinkHealth(affiliateUrl, {
-    replacementUrl: undefined, // Will fetch server-side if needed
+    replacementUrl: replacementUrl || undefined,
   });
 
   return (
