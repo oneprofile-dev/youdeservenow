@@ -1,16 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
 import { resolveAffiliateUrl, isHighCommission, getCountryFromCookie } from "@/lib/affiliate";
+import { useLinkHealth } from "@/lib/useLink";
+import { initLinkCache, prefetchLinks } from "@/lib/client-link-cache";
 
 interface ProductRecommendationProps {
   product: Product;
 }
 
 export default function ProductRecommendation({ product }: ProductRecommendationProps) {
+  useEffect(() => {
+    initLinkCache();
+  }, []);
+
   const affiliateUrl = useMemo(() => {
     return resolveAffiliateUrl(
       {
@@ -24,6 +30,11 @@ export default function ProductRecommendation({ product }: ProductRecommendation
   }, [product]);
 
   const highValue = isHighCommission(product.commission);
+
+  // Prefetch link status and get smart URL with fallback
+  const { urlToUse, isDead } = useLinkHealth(affiliateUrl, {
+    replacementUrl: undefined, // Will fetch server-side if needed
+  });
 
   return (
     <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
@@ -57,15 +68,21 @@ export default function ProductRecommendation({ product }: ProductRecommendation
       </div>
 
       <a
-        href={affiliateUrl}
+        href={urlToUse}
         target="_blank"
         rel="noopener noreferrer sponsored"
         onClick={() => {
+          // Warn if link was detected as dead
+          if (isDead) {
+            console.warn("Product link detected as dead, showing replacement or warning");
+          }
+          
           track("affiliate_click", {
             product_id: product.id,
             price: product.price,
             category: product.category,
             network: product.affiliateNetwork ?? "amazon",
+            linkStatus: isDead ? "dead" : "alive",
           });
           if (typeof window !== "undefined" && window.ttq) {
             window.ttq.track("InitiateCheckout", {
