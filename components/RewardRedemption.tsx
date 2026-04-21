@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import useSWR from "swr";
+import { Celebration } from "./Celebration";
+import { showToast } from "./ToastContainer";
 
 interface RedeemRewardRequest {
   rewardCode: string;
@@ -37,6 +39,7 @@ export function RewardRedemption({ resultId, onClose }: RewardRedemptionProps) {
   const [code, setCode] = useState("");
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [redeemStatus, setRedeemStatus] = useState<RedeemRewardResponse | null>(null);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const handleRedeem = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,74 +61,90 @@ export function RewardRedemption({ resultId, onClose }: RewardRedemptionProps) {
 
       if (data.success) {
         setCode("");
+        setShowCelebration(true);
+        showToast("🎉 Reward redeemed successfully!", "success");
+
+        // Hide celebration after animation
+        setTimeout(() => setShowCelebration(false), 3000);
+      } else {
+        showToast(data.message, "error");
       }
     } catch (error) {
+      const errorMessage = "Failed to redeem reward. Please try again.";
       setRedeemStatus({
         success: false,
-        message: "Failed to redeem reward. Please try again.",
+        message: errorMessage,
       });
+      showToast(errorMessage, "error");
     } finally {
       setIsRedeeming(false);
     }
   };
 
   return (
-    <div className="space-y-4 p-4 rounded-lg bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
-      {/* Header */}
-      <div className="space-y-1">
-        <h3 className="text-lg font-bold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
-          🎁 Redeem Reward Code
-        </h3>
-        <p className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
-          Enter your reward code to unlock exclusive discounts
-        </p>
-      </div>
-
-      {/* Form */}
-      <form onSubmit={handleRedeem} className="space-y-2">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter reward code (e.g., YDN_SAVE_20)"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            disabled={isRedeeming}
-            className="flex-1 px-3 py-2 rounded-lg border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] disabled:opacity-50"
-          />
-          <button
-            type="submit"
-            disabled={!code.trim() || isRedeeming}
-            className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white font-semibold disabled:opacity-50 hover:opacity-90 transition-opacity"
-          >
-            {isRedeeming ? "..." : "Redeem"}
-          </button>
+    <>
+      <Celebration trigger={showCelebration} />
+      <div className="space-y-4 p-4 rounded-lg bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] animate-bounce-in">
+        {/* Header */}
+        <div className="space-y-1">
+          <h3 className="text-lg font-bold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+            🎁 Redeem Reward Code
+          </h3>
+          <p className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+            Enter your reward code to unlock exclusive discounts
+          </p>
         </div>
 
-        {/* Status messages */}
-        {redeemStatus && (
-          <div
-            className={`p-3 rounded-lg text-sm ${
-              redeemStatus.success
-                ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800"
-                : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
-            }`}
-          >
-            {redeemStatus.message}
+        {/* Form */}
+        <form onSubmit={handleRedeem} className="space-y-2">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Enter reward code (e.g., YDN_SAVE_20)"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              disabled={isRedeeming}
+              className="flex-1 px-3 py-2 rounded-lg border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-border)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] disabled:opacity-50 transition-smooth focus:ring-2 focus:ring-[var(--color-accent)] focus:border-transparent"
+            />
+            <button
+              type="submit"
+              disabled={!code.trim() || isRedeeming}
+              className="px-4 py-2 rounded-lg bg-[var(--color-accent)] text-white font-semibold disabled:opacity-50 hover:opacity-90 transition-smooth disabled:cursor-not-allowed"
+            >
+              {isRedeeming ? (
+                <div className="animate-spin-slow">⟳</div>
+              ) : (
+                "Redeem"
+              )}
+            </button>
           </div>
-        )}
 
-        {/* Reward details if redeemed */}
-        {redeemStatus?.success && redeemStatus?.reward && (
-          <div className="p-3 rounded-lg bg-[var(--color-accent)]/10 border border-[var(--color-accent)] space-y-1">
-            <div className="text-sm font-bold text-[var(--color-accent)]">
-              {redeemStatus.reward.discount}% Off
+          {/* Status messages */}
+          {redeemStatus && (
+            <div
+              className={`p-3 rounded-lg text-sm animate-slide-in-left ${
+                redeemStatus.success
+                  ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800"
+                  : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
+              }`}
+            >
+              {redeemStatus.message}
             </div>
-            <div className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
-              Expires {new Date(redeemStatus.reward.expiresAt).toLocaleDateString()}
+          )}
+
+          {/* Reward details if redeemed */}
+          {redeemStatus?.success && redeemStatus?.reward && (
+            <div className="p-3 rounded-lg bg-[var(--color-accent)]/10 border border-[var(--color-accent)] space-y-1 animate-pop">
+              <div className="text-sm font-bold text-[var(--color-accent)]">
+                {redeemStatus.reward.discount}% Off
+              </div>
+              <div className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                Expires {new Date(redeemStatus.reward.expiresAt).toLocaleDateString()}
+              </div>
             </div>
-          </div>
-        )}
-      </form>
-    </div>
+          )}
+        </form>
+      </div>
+    </>
   );
 }
