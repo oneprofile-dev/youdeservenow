@@ -297,8 +297,9 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
             <button
               type="submit"
               disabled={!input.trim()}
-              className="absolute bottom-3 right-3 w-10 h-10 rounded-xl bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-30 transition-all"
-              aria-label="Get my justification"
+              className="absolute bottom-3 right-3 z-10 w-10 h-10 rounded-xl bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] flex items-center justify-center hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed enabled:cursor-pointer enabled:hover:scale-110 transition-all"
+              aria-label="Send message"
+              title={!input.trim() ? "Type something to enable send" : "Send your accomplishment"}
             >
               <svg
                 width="18"
