@@ -7,6 +7,7 @@ import ShareCard from "./ShareCard";
 import { RankingBadge } from "./RankingBadge";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
+import UpvoteButton from "./UpvoteButton";
 import ResultClosure from "./ResultClosure";
 import PublishModal from "./PublishModal";
 
@@ -162,8 +163,10 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
 
         {/* Share + Certificate */}
         <div className="text-center space-y-3">
-          <div className="flex justify-center mb-1">
+          <div className="flex justify-center items-center gap-3 mb-1">
             <LikeButton resultId={result.id} />
+            <div className="w-px h-6 bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
+            <UpvoteButton resultId={result.id} initialLikes={0} />
           </div>
           <p className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
             Share your diagnosis

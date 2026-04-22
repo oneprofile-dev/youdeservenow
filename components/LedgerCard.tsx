@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import type { Result } from "@/lib/db";
 import { truncate, formatDate } from "@/lib/utils";
+import UpvoteButton from "./UpvoteButton";
 
 interface LedgerCardProps {
   result: Result;
@@ -17,6 +18,7 @@ interface LedgerCardProps {
 
 export default function LedgerCard({ result, rank, metrics = { likes: 0, shares: 0 } }: LedgerCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [currentLikes, setCurrentLikes] = useState(metrics.likes);
 
   // Get category color for visual variety
   const categoryColors: Record<string, { bg: string; accent: string; emoji: string }> = {
@@ -101,11 +103,26 @@ export default function LedgerCard({ result, rank, metrics = { likes: 0, shares:
         </div>
 
         {/* Footer: Date + Engagement */}
-        <div className="flex items-center justify-between text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] pt-2 border-t border-[var(--color-card-border)]/50 dark:border-[var(--color-dark-border)]/50">
-          <span>{formatDate(result.createdAt)}</span>
-          {metrics.shares > 0 && (
-            <span className="text-[var(--color-accent)]">🔄 {metrics.shares}</span>
-          )}
+        <div className="flex items-center justify-between pt-2 border-t border-[var(--color-card-border)]/50 dark:border-[var(--color-dark-border)]/50 gap-2">
+          <span className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
+            {formatDate(result.createdAt)}
+          </span>
+
+          <div className="flex items-center gap-2">
+            {/* Upvote Button */}
+            <UpvoteButton
+              resultId={result.id}
+              initialLikes={currentLikes}
+              onLikesChange={setCurrentLikes}
+            />
+
+            {/* Share metric */}
+            {metrics.shares > 0 && (
+              <span className="text-xs text-[var(--color-accent)] bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-border)] px-2 py-1 rounded-lg">
+                🔄 {metrics.shares}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </Link>
