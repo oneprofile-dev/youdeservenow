@@ -73,6 +73,12 @@ export default function Header() {
             Gallery
           </Link>
           <Link
+            href="/ledger"
+            className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] transition-colors min-h-11 px-2 flex items-center"
+          >
+            Ledger
+          </Link>
+          <Link
             href="/shop"
             className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] transition-colors min-h-11 px-2 flex items-center"
           >
@@ -159,6 +165,13 @@ export default function Header() {
               className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-surface)] transition-colors px-3 py-3 rounded-lg"
             >
               Gallery
+            </Link>
+            <Link
+              href="/ledger"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-surface)] transition-colors px-3 py-3 rounded-lg"
+            >
+              Ledger
             </Link>
             <Link
               href="/shop"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import type { Result } from "@/lib/db";
 import dynamic from "next/dynamic";
 import ShareCard from "./ShareCard";
@@ -8,6 +8,7 @@ import { RankingBadge } from "./RankingBadge";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
 import ResultClosure from "./ResultClosure";
+import PublishModal from "./PublishModal";
 
 // Lazy load heavy components (below the fold)
 const RealtimeMetrics = dynamic(() => import("./RealtimeMetrics").then((m) => ({ default: m.RealtimeMetrics })), {
@@ -48,6 +49,32 @@ interface ResultCardProps {
 export default function ResultCard({ result, showShareCard = true }: ResultCardProps) {
   const shareCardRef = useRef<HTMLDivElement>(null);
   const personality = getPersonalityType(result.product.category, result.input);
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [isPublished, setIsPublished] = useState(result.isPublic || false);
+
+  // Show publish modal after component mounts (after initial render)
+  useEffect(() => {
+    if (!isPublished) {
+      const timer = setTimeout(() => setShowPublishModal(true), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isPublished]);
+
+  const handlePublish = async (isPublic: boolean) => {
+    try {
+      const response = await fetch("/api/ledger/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ resultId: result.id, isPublic }),
+      });
+
+      if (!response.ok) throw new Error("Failed to publish");
+
+      setIsPublished(isPublic);
+    } catch (error) {
+      console.error("Failed to publish result:", error);
+    }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-[slide-up_0.5s_ease-out]">
@@ -155,6 +182,15 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
         <div className="fixed -left-[9999px] top-0 pointer-events-none" aria-hidden="true">
           <ShareCard ref={shareCardRef} result={result} />
         </div>
+      )}
+
+      {/* Publish Modal - Ask user to share publicly */}
+      {showPublishModal && !isPublished && (
+        <PublishModal
+          result={result}
+          onPublish={handlePublish}
+          onClose={() => setShowPublishModal(false)}
+        />
       )}
     </div>
   );

@@ -17,6 +17,8 @@ export interface Result {
     recipientName: string;
     senderName?: string;
   };
+  /** Whether this result is publicly visible in the ledger. Defaults to false. */
+  isPublic?: boolean;
 }
 
 // In-memory fallback — attached to global so all route modules share the same instance
@@ -199,5 +201,126 @@ export async function getResultMetrics(
   } catch (error) {
     console.error("[db] Error fetching metrics:", error);
     return { likes: 0, shares: 0, affiliateClicks: 0 };
+  }
+}
+
+/**
+ * Mark a result as public in the ledger
+ */
+export async function setResultPublic(resultId: string, isPublic: boolean): Promise<void> {
+  const kv = await getKV();
+  if (!kv) return;
+
+  try {
+    // Get the result to update it
+    const result = await getResult(resultId);
+    if (!result) throw new Error(`Result ${resultId} not found`);
+
+    // Update the result object
+    result.isPublic = isPublic;
+    const serialized = JSON.stringify(result);
+
+    // Save updated result
+    await kv.set(`result:${resultId}`, serialized, { ex: 60 * 60 * 24 * 90 });
+
+    // Add/remove from public ledger list
+    if (isPublic) {
+      // Add to public ledger (sorted by creation date, newest first)
+      const timestamp = new Date(result.createdAt).getTime();
+      await kv.zadd("ledger:public:zset", { score: timestamp, member: resultId });
+    } else {
+      // Remove from public ledger
+      await kv.zrem("ledger:public:zset", resultId);
+    }
+  } catch (error) {
+    console.error("[db] Error updating result public status:", error);
+  }
+}
+
+/**
+ * Get public results for the ledger (paginated)
+ */
+export async function getPublicLedgerResults(
+  page = 0,
+  perPage = 12,
+  sortBy: "fresh" | "trending" = "fresh"
+): Promise<{ results: Result[]; total: number }> {
+  const kv = await getKV();
+
+  if (!kv) return { results: [], total: 0 };
+
+  try {
+    let zsetKey = "ledger:public:zset";
+
+    // If trending, use likes-based ranking
+    if (sortBy === "trending") {
+      // This would require a separate trending sort — for now, default to fresh
+      // TODO: implement trending sort using likes + recency
+    }
+
+    // Get total count
+    const total = await kv.zcard(zsetKey);
+
+    // Get IDs in reverse order (newest first) with pagination
+    const start = page * perPage;
+    const ids = await kv.zrange(zsetKey, -(start + perPage), -start - 1 || -1, { rev: true }) as string[];
+
+    // Fetch full results
+    const results: Result[] = [];
+    for (const id of ids) {
+      const raw = await kv.get<string>(`result:${id}`);
+      if (raw) {
+        const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+        if (parsed.isPublic) {
+          results.push(parsed as Result);
+        }
+      }
+    }
+
+    return { results, total };
+  } catch (error) {
+    console.error("[db] Error fetching public ledger:", error);
+    return { results: [], total: 0 };
+  }
+}
+
+/**
+ * Get public results by category
+ */
+export async function getPublicLedgerByCategory(
+  category: string,
+  page = 0,
+  perPage = 12
+): Promise<{ results: Result[]; total: number }> {
+  const kv = await getKV();
+
+  if (!kv) return { results: [], total: 0 };
+
+  try {
+    const zsetKey = `ledger:public:category:${category}:zset`;
+
+    // Get total
+    const total = await kv.zcard(zsetKey);
+
+    // Get paginated results (newest first)
+    const start = page * perPage;
+    const ids = await kv.zrange(zsetKey, -(start + perPage), -start - 1 || -1, { rev: true }) as string[];
+
+    // Fetch full results
+    const results: Result[] = [];
+    for (const id of ids) {
+      const raw = await kv.get<string>(`result:${id}`);
+      if (raw) {
+        const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+        if (parsed.isPublic) {
+          results.push(parsed as Result);
+        }
+      }
+    }
+
+    return { results, total };
+  } catch (error) {
+    console.error("[db] Error fetching public ledger by category:", error);
+    return { results: [], total: 0 };
   }
 }
