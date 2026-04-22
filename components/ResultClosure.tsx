@@ -7,6 +7,13 @@ import type { Result } from "@/lib/db";
 
 const FEELINGS = ["Relief", "Pride", "Comfort", "Connection"] as const;
 
+const AFFIRM: Record<(typeof FEELINGS)[number], string> = {
+  Relief: "Good. You needed that exhale.",
+  Pride: "Let yourself feel it—that work was real.",
+  Comfort: "Soft counts. Rest is part of the win.",
+  Connection: "Love and friendship are achievements too.",
+};
+
 interface ResultClosureProps {
   result: Result;
 }
@@ -41,13 +48,13 @@ export default function ResultClosure({ result }: ResultClosureProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-[var(--color-accent)]/30 bg-[var(--color-accent)]/5 dark:bg-[var(--color-dark-bg)] p-5 sm:p-6 space-y-5">
+    <div className="rounded-2xl border border-[var(--color-accent)]/30 bg-gradient-to-b from-[var(--color-accent)]/8 to-transparent dark:from-[var(--color-accent)]/10 dark:to-transparent p-5 sm:p-6 space-y-5">
       <div>
         <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-2">
-          Before you go
+          Land softly
         </p>
         <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] leading-relaxed">
-          What feeling is this mostly about? (Optional—helps us know what landed.)
+          If something shifted for you, you can name it here. Totally optional—and only for you.
         </p>
         <div className="flex flex-wrap gap-2 mt-3" role="group" aria-label="How this result felt">
           {FEELINGS.map((f) => (
@@ -65,13 +72,18 @@ export default function ResultClosure({ result }: ResultClosureProps) {
             </button>
           ))}
         </div>
+        {picked && (
+          <p className="mt-3 text-sm text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] font-medium leading-relaxed" role="status">
+            {AFFIRM[picked]}
+          </p>
+        )}
       </div>
 
       <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
 
       <div>
         <p className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] font-semibold mb-3">
-          Next step
+          When you are ready
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <Link
@@ -86,7 +98,7 @@ export default function ResultClosure({ result }: ResultClosureProps) {
             onClick={copyLink}
             className="inline-flex justify-center items-center px-4 py-3 rounded-xl border-2 border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-sm font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)]/50 transition-colors"
           >
-            {copied ? "Copied link" : "Copy share link"}
+            {copied ? "Link copied—share whenever" : "Copy share link"}
           </button>
           <Link
             href="/#institute-diagnosis"

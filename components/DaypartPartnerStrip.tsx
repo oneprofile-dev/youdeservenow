@@ -18,20 +18,24 @@ const COPY: Record<
   { headline: string; supporting: string }
 > = {
   morning: {
-    headline: "Start the day with receipts",
-    supporting: "Your small wins already qualify—let the Institute say so before your calendar does.",
+    headline: "You already did something worth naming",
+    supporting:
+      "Coffee, commute, courage—whatever it was, you deserve a moment that feels like a win. Let us put it into words.",
   },
   afternoon: {
-    headline: "Midday counts",
-    supporting: "Progress does not wait for evenings. Name what you pushed through—we will prescribe proportionally.",
+    headline: "The middle of the day counts too",
+    supporting:
+      "You do not need a dramatic headline to earn a treat. Tell us what you pushed through—we will meet you with warmth.",
   },
   evening: {
-    headline: "Wind down like it was peer-reviewed",
-    supporting: "End-of-day brains deserve honest recognition, not guilt for resting.",
+    headline: "Let the day soften a little",
+    supporting:
+      "If you showed up for anything today—even quietly—that is enough. This is permission, not pressure.",
   },
   night: {
-    headline: "Still up? Science has opinions.",
-    supporting: "Late nights are still lived hours. Tell us what you carried—we will justify the decompress.",
+    headline: "Still here? That takes energy too",
+    supporting:
+      "Late hours can feel lonely. Share what you carried; we will answer with something kind you can keep.",
   },
 };
 
@@ -53,7 +57,7 @@ export default function DaypartPartnerStrip() {
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
           <div className="min-w-0 flex-1">
             <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-2">
-              Right now
+              You belong here
             </p>
             <h2
               id="daypart-strip-heading"
@@ -69,15 +73,15 @@ export default function DaypartPartnerStrip() {
           <div className="flex flex-col gap-2 sm:flex-shrink-0 sm:w-auto w-full">
             <Link
               href="/#institute-diagnosis"
-              className="inline-flex justify-center items-center px-5 py-3 rounded-xl bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 transition-opacity text-center"
+              className="inline-flex justify-center items-center px-5 py-3 rounded-xl bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 transition-opacity text-center shadow-sm"
             >
-              Get your diagnosis
+              Tell us your win
             </Link>
             <Link
               href="/gift"
               className="inline-flex justify-center items-center px-5 py-3 rounded-xl border-2 border-[var(--color-accent)] text-[var(--color-accent)] text-sm font-semibold hover:bg-[var(--color-accent)]/10 transition-colors text-center"
             >
-              Treat someone you love →
+              Celebrate someone you love →
             </Link>
           </div>
         </div>

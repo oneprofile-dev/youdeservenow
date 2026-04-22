@@ -127,7 +127,7 @@ function ProductRecommendationInner({ product }: ProductRecommendationProps) {
         }}
         className="flex-shrink-0 px-4 py-2.5 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 transition-all whitespace-nowrap"
       >
-        Claim Reward →
+        Claim your treat →
       </a>
     </div>
   );

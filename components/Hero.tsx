@@ -373,6 +373,9 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
           <p className="text-center text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
             {t.heroDisclaimer}
           </p>
+          <p className="text-center text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] max-w-md mx-auto leading-relaxed border border-[var(--color-card-border)]/80 dark:border-[var(--color-dark-border)] rounded-xl px-3 py-2.5 bg-[var(--color-bg-secondary)]/50 dark:bg-[var(--color-dark-bg)]/40">
+            No account needed. Your words are only used to generate this moment—then you choose what to keep or share.
+          </p>
 
           {error && (
             <div className="text-center text-sm text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-xl px-4 py-3">
@@ -388,6 +391,9 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
       {/* Result */}
       {result && !isLoading && (
         <div className="space-y-6">
+          <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            Your prescription is ready. You can read it below, share it, or start another whenever you like.
+          </p>
           <ResultCard result={result} />
           <EmailCapture />
           <div className="text-center">

@@ -50,8 +50,8 @@ export default function VoiceToggle({ value, onChange, variant = "default" }: Vo
           Plain and warm
         </button>
       </div>
-      <p className="text-[11px] text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mt-1.5 text-center sm:text-left">
-        Same science—warmer sentences, less “protocol” energy.
+      <p className="text-[11px] text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mt-1.5 text-center sm:text-left leading-snug">
+        Same playful science—pick the tone that feels kindest in your body right now.
       </p>
     </div>
   );

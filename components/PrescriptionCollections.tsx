@@ -29,6 +29,9 @@ export default function PrescriptionCollections() {
           Every reward here still flows through your story. Themes help you see what “deserve” can look like
           for couples, recovery, and momentum—then we match you properly from the same catalogue.
         </p>
+        <p className="text-sm text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] mt-3 font-medium leading-relaxed">
+          You are not browsing—you are choosing language that treats you kindly.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

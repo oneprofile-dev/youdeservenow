@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react";
 
 const STEPS = [
-  "Analyzing your accomplishment...",
-  "Cross-referencing 847 peer-reviewed studies...",
-  "Consulting the Institute of Deserved Rewards...",
-  "Calculating your reward coefficient...",
-  "Verifying statistical significance (p < 0.001)...",
-  "Finalizing prescription...",
+  "Taking your win seriously…",
+  "Finding the right words to match what you did…",
+  "Almost there—your receipt is printing…",
+  "Cross-checking the universe's opinion (sample size: you)…",
+  "Tuning the prescription to fit your story…",
+  "Finishing up something worth sharing…",
 ];
 
 export default function LoadingAnimation() {
@@ -32,13 +32,9 @@ export default function LoadingAnimation() {
 
   return (
     <div className="flex flex-col items-center gap-6 py-12 px-4 text-center animate-[fade-in_0.3s_ease-out]">
-      {/* Spinner */}
-      <div className="relative w-16 h-16">
+      <div className="relative w-16 h-16" aria-hidden>
         <div className="absolute inset-0 rounded-full border-2 border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]" />
-        <div
-          className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--color-accent)]"
-          style={{ animation: "spin 0.8s linear infinite" }}
-        />
+        <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--color-accent)] animate-spin motion-reduce:animate-none motion-reduce:border-solid motion-reduce:border-[var(--color-accent)]/35" />
       </div>
 
       <div>
@@ -46,19 +42,13 @@ export default function LoadingAnimation() {
           className="text-lg text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] mb-2"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          THE SCIENCE IS IN PROGRESS
+          Hang tight—we&apos;re almost there
           <span className="text-[var(--color-accent)]">{dots}</span>
         </p>
-        <p className="text-sm text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] font-mono min-h-[20px] transition-all duration-300">
+        <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] min-h-[22px] transition-opacity duration-300 max-w-sm mx-auto leading-relaxed">
           {STEPS[stepIndex]}
         </p>
       </div>
-
-      <style jsx>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
     </div>
   );
 }

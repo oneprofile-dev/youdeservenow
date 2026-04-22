@@ -79,6 +79,11 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
         >
           {result.gift ? `${result.gift.recipientName} Deserves This.` : "You Deserve This."}
         </h2>
+        <p className="mt-3 text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] max-w-md mx-auto leading-relaxed">
+          {result.gift
+            ? "What they did mattered. This is a little ceremony to say it out loud."
+            : "Whatever you did today counted. Consider this your official receipt."}
+        </p>
       </div>
 
       {/* Card */}
