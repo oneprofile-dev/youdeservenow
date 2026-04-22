@@ -1,8 +1,33 @@
 import type { Product } from "./products";
 import { LANG_PROMPT_SUFFIX, type Lang } from "./i18n";
 
-export function buildGiftPrompt(input: string, product: Product, recipientName: string, lang: Lang = "en"): string {
+export type PromptVoice = "classic" | "warm";
+
+function warmVoiceAppendix(): string {
+  return `
+
+WARM VOICE MODE (mandatory overrides to the RULES above):
+- Use shorter, clearer sentences; avoid stacking jargon in a single sentence.
+- Keep exactly one fictional study or institute name (not a list).
+- Sound genuinely affirming—permission and pride—not mockery of the reader.
+- The final line should read like benevolent encouragement ("You've earned this.") rather than aggressive commands ("protocol," "non-negotiable," "medically necessary").
+- Still no emojis; still include one plausible-sounding fake statistic.
+`;
+}
+
+function voiceSuffix(voice: PromptVoice): string {
+  return voice === "warm" ? warmVoiceAppendix() : "";
+}
+
+export function buildGiftPrompt(
+  input: string,
+  product: Product,
+  recipientName: string,
+  lang: Lang = "en",
+  voice: PromptVoice = "classic"
+): string {
   const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
+  const v = voiceSuffix(voice);
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
 
 ${recipientName} accomplished something today: "${input}"
@@ -23,12 +48,18 @@ RULES:
 EXAMPLE OUTPUT:
 "Peer-reviewed data from the Cambridge Institute of Relational Gratitude confirms: ${recipientName}'s achievement places them in the 96th percentile of gift-worthiness. Your instinct to reward them is clinically sound. Delay would constitute a measurable act of scientific negligence. Proceed immediately."
 
-Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${v}${langSuffix}`;
 }
 
 /** Pair / household win — justification addresses "you two", "together", joint treat. */
-export function buildSharedPrompt(userInput: string, product: Product, lang: Lang = "en"): string {
+export function buildSharedPrompt(
+  userInput: string,
+  product: Product,
+  lang: Lang = "en",
+  voice: PromptVoice = "classic"
+): string {
   const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
+  const v = voiceSuffix(voice);
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
 
 Together, these people accomplished something shared: "${userInput}"
@@ -46,11 +77,17 @@ RULES:
 - Do NOT break character — never wink at the joke
 - Keep the entire response under 300 characters if possible (for tweet shareability)
 
-Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${v}${langSuffix}`;
 }
 
-export function buildPrompt(userInput: string, product: Product, lang: Lang = "en"): string {
+export function buildPrompt(
+  userInput: string,
+  product: Product,
+  lang: Lang = "en",
+  voice: PromptVoice = "classic"
+): string {
   const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
+  const v = voiceSuffix(voice);
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
 
 The user accomplished something today: "${userInput}"
@@ -71,5 +108,5 @@ RULES:
 EXAMPLE OUTPUT:
 "A 2024 study in the Journal of Corporate Endurance found that 92.7% of meeting survivors experience acute justification-for-comfort events. The recommended intervention? Immediate noise-canceling therapy. Your brain has earned silence. This is not optional."
 
-Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${v}${langSuffix}`;
 }

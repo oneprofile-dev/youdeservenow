@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useVoicePreference } from "@/lib/useVoicePreference";
+import VoiceToggle from "@/components/VoiceToggle";
 import { track } from "@vercel/analytics/react";
 import Link from "next/link";
 import type { Result } from "@/lib/db";
@@ -38,6 +40,7 @@ export default function GiftHero() {
   const [result, setResult] = useState<Result | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [placeholderIdx] = useState(() => Math.floor(Math.random() * RECIPIENT_PLACEHOLDERS.length));
+  const [voice, setVoice] = useVoicePreference();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -60,6 +63,7 @@ export default function GiftHero() {
             senderName: senderName.trim() || undefined,
             language: lang,
             audience: "loved_one",
+            voice,
           }),
         });
 
@@ -96,7 +100,7 @@ export default function GiftHero() {
         setIsLoading(false);
       }
     },
-    [input, recipientName, senderName, isLoading]
+    [input, recipientName, senderName, isLoading, voice]
   );
 
   function reset() {
@@ -245,6 +249,8 @@ export default function GiftHero() {
             }}
           />
         </div>
+
+        <VoiceToggle value={voice} onChange={setVoice} variant="compact" />
 
         {error && (
           <p className="text-sm text-red-500 text-center">{error}</p>

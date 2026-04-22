@@ -11,6 +11,8 @@ export interface Result {
   ogImageUrl?: string; // Vercel Blob CDN URL — undefined for pre-Sprint-2 results
   /** Present when generated from homepage audience selector or gift flow (metadata + share copy). */
   audience?: "self" | "loved_one" | "we";
+  /** Generation tone: deadpan institute vs warmer permission-focused copy. */
+  voice?: "classic" | "warm";
   gift?: {
     recipientName: string;
     senderName?: string;
@@ -129,6 +131,7 @@ export async function storeResultMetadata(
     category?: string;
     isGift?: boolean;
     giftType?: string;
+    voice?: string;
     createdAt: string;
   }
 ): Promise<void> {

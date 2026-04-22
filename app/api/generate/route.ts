@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const BadWordsFilter = require("bad-words");
 import { sanitizeInput, generateId, getSiteUrl } from "@/lib/utils";
 import { matchProduct } from "@/lib/products";
-import { buildPrompt, buildGiftPrompt, buildSharedPrompt } from "@/lib/prompt";
+import { buildPrompt, buildGiftPrompt, buildSharedPrompt, type PromptVoice } from "@/lib/prompt";
 import { SUPPORTED_LANGS, type Lang } from "@/lib/i18n";
 import { generateJustification, getFallback } from "@/lib/gemini";
 import { checkRateLimit, trackAiCall } from "@/lib/rate-limit";
@@ -45,6 +45,12 @@ export async function POST(req: NextRequest) {
     return AUDIENCES.includes(raw as Audience) ? (raw as Audience) : undefined;
   }
 
+  const VOICES = ["classic", "warm"] as const;
+  function parseVoice(raw: unknown): PromptVoice {
+    if (typeof raw !== "string") return "classic";
+    return VOICES.includes(raw as PromptVoice) ? (raw as PromptVoice) : "classic";
+  }
+
   // Parse body
   let body: {
     input?: unknown;
@@ -52,6 +58,7 @@ export async function POST(req: NextRequest) {
     senderName?: unknown;
     language?: unknown;
     audience?: unknown;
+    voice?: unknown;
   };
   try {
     body = await req.json();
@@ -91,6 +98,7 @@ export async function POST(req: NextRequest) {
   const audienceFromBody = parseAudience(body.audience);
   // Legacy gift page sends recipientName only — always treat as loved_one
   const audience: Audience = recipientName ? "loved_one" : audienceFromBody ?? "self";
+  const voice = parseVoice(body.voice);
 
   if (audience === "loved_one" && !recipientName) {
     return NextResponse.json(
@@ -110,10 +118,10 @@ export async function POST(req: NextRequest) {
     console.warn("[CircuitBreaker] Served static fallback, AI calls suspended");
   } else {
     const prompt = recipientName
-      ? buildGiftPrompt(safeInput, product, recipientName, language)
+      ? buildGiftPrompt(safeInput, product, recipientName, language, voice)
       : audience === "we"
-        ? buildSharedPrompt(safeInput, product, language)
-        : buildPrompt(safeInput, product, language);
+        ? buildSharedPrompt(safeInput, product, language, voice)
+        : buildPrompt(safeInput, product, language, voice);
     justification = await generateJustification(prompt);
 
     // Quality gate: reject placeholder-contaminated or truncated outputs
@@ -139,6 +147,7 @@ export async function POST(req: NextRequest) {
     shareUrl,
     createdAt,
     audience,
+    voice,
     ...(recipientName ? { gift: { recipientName, ...(senderName ? { senderName } : {}) } } : {}),
   };
 
@@ -150,6 +159,7 @@ export async function POST(req: NextRequest) {
     category: product.category,
     isGift: !!recipientName,
     giftType: audience,
+    voice,
     createdAt: result.createdAt,
   });
 

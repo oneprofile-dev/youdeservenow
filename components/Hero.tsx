@@ -10,6 +10,8 @@ import StreakBadge from "./StreakBadge";
 import { useLanguage } from "@/lib/useLanguage";
 import { getT } from "@/lib/i18n";
 import { getAudienceCopy, type HeroAudience } from "@/lib/hero-audience-copy";
+import { useVoicePreference } from "@/lib/useVoicePreference";
+import VoiceToggle from "@/components/VoiceToggle";
 
 interface HeroContext {
   label: string;
@@ -78,6 +80,7 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
   const [audience, setAudience] = useState<HeroAudience>(initialAudience ?? "self");
   const [recipientName, setRecipientName] = useState("");
   const audienceCopy = getAudienceCopy(lang);
+  const [voice, setVoice] = useVoicePreference();
   const placeholderPool = t.heroPlaceholders && t.heroPlaceholders.length > 0 ? t.heroPlaceholders : ["Tell us what you accomplished today..."];
   const [placeholder, setPlaceholder] = useState(placeholderPool[0]);
   const [isLoading, setIsLoading] = useState(false);
@@ -142,6 +145,7 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
             input: trimmed,
             language: lang,
             audience,
+            voice,
             ...(audience === "loved_one" && recipientName.trim()
               ? { recipientName: recipientName.trim().slice(0, 50) }
               : {}),
@@ -166,6 +170,7 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
           category: data.product.category,
           product_id: data.product.id,
           audience: data.audience ?? audience,
+          voice: data.voice ?? voice,
         });
 
         // TikTok: ViewContent event (funnel middle)
@@ -197,7 +202,7 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
         setIsLoading(false);
       }
     },
-    [input, isLoading, lang, audience, recipientName, audienceCopy.lovedOneValidation, t.rateLimit]
+    [input, isLoading, lang, audience, recipientName, voice, audienceCopy.lovedOneValidation, t.rateLimit]
   );
 
   function reset() {
@@ -322,6 +327,10 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
                 />
               </div>
             )}
+          </div>
+
+          <div className="rounded-2xl border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] p-4">
+            <VoiceToggle value={voice} onChange={setVoice} />
           </div>
 
           <div className="relative">

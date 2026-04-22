@@ -7,6 +7,7 @@ import ShareCard from "./ShareCard";
 import { RankingBadge } from "./RankingBadge";
 import { getPersonalityType } from "@/lib/personality";
 import LikeButton from "./LikeButton";
+import ResultClosure from "./ResultClosure";
 
 // Lazy load heavy components (below the fold)
 const RealtimeMetrics = dynamic(() => import("./RealtimeMetrics").then((m) => ({ default: m.RealtimeMetrics })), {
@@ -140,6 +141,8 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
             <CertificateDownload result={result} />
           </div>
         </div>
+
+        <ResultClosure result={result} />
       </div>
 
       {/* Off-screen share card for image download */}
