@@ -10,6 +10,7 @@ import { useLanguage } from "@/lib/useLanguage";
 import { getT } from "@/lib/i18n";
 
 const USE_CASES = [
+  { emoji: "💕", label: "Your partner" },
   { emoji: "💼", label: "A colleague" },
   { emoji: "💛", label: "Your mum" },
   { emoji: "🌍", label: "A stranger" },

@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useEffect } from "react";
+import { useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
 import { resolveAffiliateUrl, isHighCommission, getCountryFromCookie } from "@/lib/affiliate";
@@ -12,7 +13,10 @@ interface ProductRecommendationProps {
   product: Product;
 }
 
-export default function ProductRecommendation({ product }: ProductRecommendationProps) {
+function ProductRecommendationInner({ product }: ProductRecommendationProps) {
+  const searchParams = useSearchParams();
+  const refParam = searchParams.get("ref");
+
   useEffect(() => {
     initLinkCache();
   }, []);
@@ -48,8 +52,12 @@ export default function ProductRecommendation({ product }: ProductRecommendation
       url: affiliateUrl,
     });
 
+    if (refParam) {
+      params.set("ref", refParam);
+    }
+
     return `/api/products/replacement?${params.toString()}`;
-  }, [affiliateUrl, amazonAsin]);
+  }, [affiliateUrl, amazonAsin, refParam]);
 
   const linkStatus = useMemo(() => {
     if (amazonAsin) {
@@ -122,5 +130,17 @@ export default function ProductRecommendation({ product }: ProductRecommendation
         Claim Reward →
       </a>
     </div>
+  );
+}
+
+export default function ProductRecommendation(props: ProductRecommendationProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] h-[7.5rem] animate-pulse" />
+      }
+    >
+      <ProductRecommendationInner {...props} />
+    </Suspense>
   );
 }

@@ -188,7 +188,7 @@ export default function Hero({ referralResult }: HeroProps) {
   }
 
   return (
-    <section className="w-full max-w-3xl mx-auto px-4 sm:px-6">
+    <section id="institute-diagnosis" className="w-full max-w-3xl mx-auto px-4 sm:px-6 scroll-mt-24">
       {/* Headline — hydrated with time/day context on the client */}
       {!result && (
         <div className="text-center mb-10 pt-12 sm:pt-16 animate-[fade-in_0.5s_ease-out]">

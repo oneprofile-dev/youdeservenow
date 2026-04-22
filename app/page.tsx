@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import DaypartPartnerStrip from "@/components/DaypartPartnerStrip";
+import PrescriptionCollections from "@/components/PrescriptionCollections";
 import { TrendingSection } from "@/components/TrendingSection";
 import { getRecentResults, getResult } from "@/lib/db";
 import type { Result } from "@/lib/db";
@@ -53,6 +55,8 @@ export default async function Home({ searchParams }: HomeProps) {
         )}
         <Hero referralResult={referralResult} />
 
+        <DaypartPartnerStrip />
+
         {/* Video — "See the science in action" */}
         <section className="max-w-3xl mx-auto px-4 sm:px-6 mt-16 mb-4">
           <div className="text-center mb-5">
@@ -76,6 +80,8 @@ export default async function Home({ searchParams }: HomeProps) {
             />
           </div>
         </section>
+
+        <PrescriptionCollections />
 
         {/* Trending section */}
         <Suspense fallback={null}>
