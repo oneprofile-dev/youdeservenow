@@ -7,11 +7,11 @@ import LoadingAnimation from "./LoadingAnimation";
 import ResultCard from "./ResultCard";
 import EmailCapture from "./EmailCapture";
 import StreakBadge from "./StreakBadge";
+import SettingsAccordion from "./SettingsAccordion";
 import { useLanguage } from "@/lib/useLanguage";
 import { getT } from "@/lib/i18n";
 import { getAudienceCopy, type HeroAudience } from "@/lib/hero-audience-copy";
 import { useVoicePreference } from "@/lib/useVoicePreference";
-import VoiceToggle from "@/components/VoiceToggle";
 
 interface HeroContext {
   label: string;
@@ -265,73 +265,19 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
       {/* Form */}
       {!result && !isLoading && (
         <form onSubmit={handleSubmit} className="space-y-4 animate-[slide-up_0.5s_ease-out]">
-          <div className="rounded-2xl border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] p-4 space-y-3">
-            <div>
-              <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-1">
-                {audienceCopy.label}
-              </p>
-              <p className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-3">
-                {audienceCopy.hint}
-              </p>
-              <div
-                role="radiogroup"
-                aria-label={audienceCopy.ariaGroup}
-                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
-              >
-                {(
-                  [
-                    { id: "self" as const, label: audienceCopy.justMe },
-                    { id: "loved_one" as const, label: audienceCopy.lovedOne },
-                    { id: "we" as const, label: audienceCopy.bothOfUs },
-                  ]
-                ).map(({ id, label }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    role="radio"
-                    aria-checked={audience === id}
-                    onClick={() => {
-                      setAudience(id);
-                      if (id !== "loved_one") setRecipientName("");
-                      setError(null);
-                    }}
-                    className={`rounded-xl px-3 py-3 text-sm font-semibold transition-colors border-2 text-center ${
-                      audience === id
-                        ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]"
-                        : "border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)]/50"
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {audience === "loved_one" && (
-              <div>
-                <label
-                  htmlFor="ydn-recipient-name"
-                  className="block text-xs font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-1.5"
-                >
-                  {audienceCopy.theirName}
-                </label>
-                <input
-                  id="ydn-recipient-name"
-                  type="text"
-                  autoComplete="given-name"
-                  maxLength={50}
-                  value={recipientName}
-                  onChange={(e) => setRecipientName(e.target.value)}
-                  placeholder={audienceCopy.theirNamePlaceholder}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] text-base focus:outline-none focus:border-[var(--color-accent)] transition-colors"
-                />
-              </div>
-            )}
-          </div>
-
-          <div className="rounded-2xl border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] p-4">
-            <VoiceToggle value={voice} onChange={setVoice} />
-          </div>
+          {/* Settings Accordion - combines audience selector + voice toggle */}
+          <SettingsAccordion
+            audience={audience}
+            onAudienceChange={(id) => {
+              setAudience(id);
+              setError(null);
+            }}
+            recipientName={recipientName}
+            onRecipientNameChange={setRecipientName}
+            voice={voice}
+            onVoiceChange={setVoice}
+            audienceCopy={audienceCopy}
+          />
 
           <div className="relative">
             <textarea
