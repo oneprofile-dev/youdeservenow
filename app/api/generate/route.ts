@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const BadWordsFilter = require("bad-words");
 import { sanitizeInput, generateId, getSiteUrl } from "@/lib/utils";
 import { matchProduct } from "@/lib/products";
-import { buildPrompt, buildGiftPrompt } from "@/lib/prompt";
+import { buildPrompt, buildGiftPrompt, buildSharedPrompt } from "@/lib/prompt";
 import { SUPPORTED_LANGS, type Lang } from "@/lib/i18n";
 import { generateJustification, getFallback } from "@/lib/gemini";
 import { checkRateLimit, trackAiCall } from "@/lib/rate-limit";
@@ -37,8 +37,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const AUDIENCES = ["self", "loved_one", "we"] as const;
+  type Audience = (typeof AUDIENCES)[number];
+
+  function parseAudience(raw: unknown): Audience | undefined {
+    if (typeof raw !== "string") return undefined;
+    return AUDIENCES.includes(raw as Audience) ? (raw as Audience) : undefined;
+  }
+
   // Parse body
-  let body: { input?: unknown; recipientName?: unknown; senderName?: unknown; language?: unknown };
+  let body: {
+    input?: unknown;
+    recipientName?: unknown;
+    senderName?: unknown;
+    language?: unknown;
+    audience?: unknown;
+  };
   try {
     body = await req.json();
   } catch {
@@ -49,8 +63,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Input is required." }, { status: 400 });
   }
 
-  const recipientName = typeof body.recipientName === "string" ? body.recipientName.trim().slice(0, 50) : undefined;
-  const senderName = typeof body.senderName === "string" ? body.senderName.trim().slice(0, 50) : undefined;
+  const recipientName =
+    typeof body.recipientName === "string" ? body.recipientName.trim().slice(0, 50) : undefined;
+  const senderName =
+    typeof body.senderName === "string" ? body.senderName.trim().slice(0, 50) : undefined;
   const language: Lang = typeof body.language === "string" && (SUPPORTED_LANGS as readonly string[]).includes(body.language)
     ? (body.language as Lang)
     : "en";
@@ -72,6 +88,17 @@ export async function POST(req: NextRequest) {
   // Match product
   const product = matchProduct(safeInput);
 
+  const audienceFromBody = parseAudience(body.audience);
+  // Legacy gift page sends recipientName only — always treat as loved_one
+  const audience: Audience = recipientName ? "loved_one" : audienceFromBody ?? "self";
+
+  if (audience === "loved_one" && !recipientName) {
+    return NextResponse.json(
+      { error: "Add their first name so we can prescribe for someone you love." },
+      { status: 400 }
+    );
+  }
+
   // Circuit breaker: check daily AI call budget BEFORE hitting any AI API
   const { tripped } = await trackAiCall();
 
@@ -84,7 +111,9 @@ export async function POST(req: NextRequest) {
   } else {
     const prompt = recipientName
       ? buildGiftPrompt(safeInput, product, recipientName, language)
-      : buildPrompt(safeInput, product, language);
+      : audience === "we"
+        ? buildSharedPrompt(safeInput, product, language)
+        : buildPrompt(safeInput, product, language);
     justification = await generateJustification(prompt);
 
     // Quality gate: reject placeholder-contaminated or truncated outputs
@@ -109,6 +138,7 @@ export async function POST(req: NextRequest) {
     product,
     shareUrl,
     createdAt,
+    audience,
     ...(recipientName ? { gift: { recipientName, ...(senderName ? { senderName } : {}) } } : {}),
   };
 
@@ -119,7 +149,7 @@ export async function POST(req: NextRequest) {
   await storeResultMetadata(result.id, {
     category: product.category,
     isGift: !!recipientName,
-    giftType: recipientName ? "loved_one" : "self",
+    giftType: audience,
     createdAt: result.createdAt,
   });
 

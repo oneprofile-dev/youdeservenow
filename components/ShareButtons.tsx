@@ -22,7 +22,9 @@ export default function ShareButtons({ result, shareCardRef }: ShareButtonsProps
     `${baseUrl}?ref=${result.id}&utm_source=${source}&utm_medium=social&utm_campaign=share`;
   const shareText = result.gift
     ? `I used science to prove ${result.gift.recipientName} deserves ${result.product.name}. The evidence is overwhelming. 🔬 #YouDeserveNow`
-    : `Science says I deserve ${result.product.name} after what I accomplished today. Get your scientific justification 👇 #YouDeserveNow`;
+    : result.audience === "we"
+      ? `Science says WE deserve ${result.product.name} after what we pulled off. The Institute agrees. 🔬 #YouDeserveNow`
+      : `Science says I deserve ${result.product.name} after what I accomplished today. Get your scientific justification 👇 #YouDeserveNow`;
 
   async function copyLink() {
     track("share_click", { method: "copy" });

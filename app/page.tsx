@@ -10,6 +10,8 @@ import { getRecentResults, getResult } from "@/lib/db";
 import type { Result } from "@/lib/db";
 import Link from "next/link";
 import PageViewTracker from "@/components/PageViewTracker";
+import HomeFaqJsonLd from "@/components/HomeFaqJsonLd";
+import type { HeroAudience } from "@/lib/hero-audience-copy";
 
 // Lazy load Gallery - heavy component with many images
 const Gallery = dynamic(() => import("@/components/Gallery"), {
@@ -18,11 +20,16 @@ const Gallery = dynamic(() => import("@/components/Gallery"), {
 });
 
 interface HomeProps {
-  searchParams: Promise<{ ref?: string }>;
+  searchParams: Promise<{ ref?: string; audience?: string }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { ref } = await searchParams;
+  const { ref, audience: audienceParam } = await searchParams;
+
+  let initialAudience: HeroAudience | undefined;
+  if (audienceParam === "loved_one" || audienceParam === "we") {
+    initialAudience = audienceParam;
+  }
   const { results } = await getRecentResults(0, 4);
 
   // Fetch the referral result (best-effort — never blocks render on failure)
@@ -53,7 +60,8 @@ export default async function Home({ searchParams }: HomeProps) {
         {ref && referralResult && (
           <PageViewTracker event="referral_landed" props={{ ref_id: ref, category: referralResult.product.category }} />
         )}
-        <Hero referralResult={referralResult} />
+        <HomeFaqJsonLd />
+        <Hero referralResult={referralResult} initialAudience={initialAudience} />
 
         <DaypartPartnerStrip />
 

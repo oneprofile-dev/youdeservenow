@@ -59,6 +59,7 @@ export default function GiftHero() {
             recipientName: trimmedName,
             senderName: senderName.trim() || undefined,
             language: lang,
+            audience: "loved_one",
           }),
         });
 

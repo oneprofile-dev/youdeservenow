@@ -26,6 +26,29 @@ EXAMPLE OUTPUT:
 Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
 }
 
+/** Pair / household win — justification addresses "you two", "together", joint treat. */
+export function buildSharedPrompt(userInput: string, product: Product, lang: Lang = "en"): string {
+  const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
+  return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.
+
+Together, these people accomplished something shared: "${userInput}"
+
+Based on this joint achievement, write a SHORT (3-4 sentences max) pseudo-scientific justification for why they BOTH absolutely MUST reward themselves together with: ${product.name} (${product.price}) — one shared ritual, not two separate guilt trips.
+
+RULES:
+- Speak to "you two," "both of you," or "the household unit" — never single recipient only
+- Invent a fake couples/teams study, journal name, or institute when appropriate
+- Use scientific-sounding language but make it absurd and funny
+- Include a fake specific statistic about pairs, solidarity, or joint deservingness (e.g. "dyadic reward affinity", "92.6% co-regulation spike")
+- The tone is DEADPAN and completely authoritative — you are a serious scientist prescribing for two
+- End with a dramatic one-liner that reads like a joint prescription co-signed for both
+- Do NOT use emojis
+- Do NOT break character — never wink at the joke
+- Keep the entire response under 300 characters if possible (for tweet shareability)
+
+Generate the justification now (3-4 sentences, deadpan, specific fake stat, dramatic final line):${langSuffix}`;
+}
+
 export function buildPrompt(userInput: string, product: Product, lang: Lang = "en"): string {
   const langSuffix = LANG_PROMPT_SUFFIX[lang] ? `\n\n${LANG_PROMPT_SUFFIX[lang]}` : "";
   return `You are the world's most prestigious (and entirely fictional) Institute for Deserved Rewards, Science Division.

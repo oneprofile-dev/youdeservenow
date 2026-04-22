@@ -9,6 +9,8 @@ export interface Result {
   shareUrl: string;
   createdAt: string;
   ogImageUrl?: string; // Vercel Blob CDN URL — undefined for pre-Sprint-2 results
+  /** Present when generated from homepage audience selector or gift flow (metadata + share copy). */
+  audience?: "self" | "loved_one" | "we";
   gift?: {
     recipientName: string;
     senderName?: string;

@@ -9,6 +9,7 @@ import EmailCapture from "./EmailCapture";
 import StreakBadge from "./StreakBadge";
 import { useLanguage } from "@/lib/useLanguage";
 import { getT } from "@/lib/i18n";
+import { getAudienceCopy, type HeroAudience } from "@/lib/hero-audience-copy";
 
 interface HeroContext {
   label: string;
@@ -66,12 +67,17 @@ function getContextualHero(): HeroContext {
 
 interface HeroProps {
   referralResult?: Result;
+  /** Deep link ?audience=loved_one | we */
+  initialAudience?: HeroAudience;
 }
 
-export default function Hero({ referralResult }: HeroProps) {
+export default function Hero({ referralResult, initialAudience }: HeroProps) {
   const { lang } = useLanguage();
   const t = getT(lang);
   const [input, setInput] = useState("");
+  const [audience, setAudience] = useState<HeroAudience>(initialAudience ?? "self");
+  const [recipientName, setRecipientName] = useState("");
+  const audienceCopy = getAudienceCopy(lang);
   const placeholderPool = t.heroPlaceholders && t.heroPlaceholders.length > 0 ? t.heroPlaceholders : ["Tell us what you accomplished today..."];
   const [placeholder, setPlaceholder] = useState(placeholderPool[0]);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,6 +120,11 @@ export default function Hero({ referralResult }: HeroProps) {
       const trimmed = input.trim();
       if (!trimmed || isLoading) return;
 
+      if (audience === "loved_one" && !recipientName.trim()) {
+        setError(audienceCopy.lovedOneValidation);
+        return;
+      }
+
       setIsLoading(true);
       setError(null);
       setResult(null);
@@ -127,7 +138,14 @@ export default function Hero({ referralResult }: HeroProps) {
         const res = await fetch("/api/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ input: trimmed, language: lang }),
+          body: JSON.stringify({
+            input: trimmed,
+            language: lang,
+            audience,
+            ...(audience === "loved_one" && recipientName.trim()
+              ? { recipientName: recipientName.trim().slice(0, 50) }
+              : {}),
+          }),
         });
 
         if (res.status === 429) {
@@ -147,6 +165,7 @@ export default function Hero({ referralResult }: HeroProps) {
         track("generate_success", {
           category: data.product.category,
           product_id: data.product.id,
+          audience: data.audience ?? audience,
         });
 
         // TikTok: ViewContent event (funnel middle)
@@ -178,13 +197,15 @@ export default function Hero({ referralResult }: HeroProps) {
         setIsLoading(false);
       }
     },
-    [input, isLoading]
+    [input, isLoading, lang, audience, recipientName, audienceCopy.lovedOneValidation, t.rateLimit]
   );
 
   function reset() {
     setResult(null);
     setError(null);
     setInput("");
+    setAudience(initialAudience ?? "self");
+    setRecipientName("");
   }
 
   return (
@@ -239,6 +260,70 @@ export default function Hero({ referralResult }: HeroProps) {
       {/* Form */}
       {!result && !isLoading && (
         <form onSubmit={handleSubmit} className="space-y-4 animate-[slide-up_0.5s_ease-out]">
+          <div className="rounded-2xl border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] p-4 space-y-3">
+            <div>
+              <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-1">
+                {audienceCopy.label}
+              </p>
+              <p className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-3">
+                {audienceCopy.hint}
+              </p>
+              <div
+                role="radiogroup"
+                aria-label={audienceCopy.ariaGroup}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-2"
+              >
+                {(
+                  [
+                    { id: "self" as const, label: audienceCopy.justMe },
+                    { id: "loved_one" as const, label: audienceCopy.lovedOne },
+                    { id: "we" as const, label: audienceCopy.bothOfUs },
+                  ]
+                ).map(({ id, label }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    role="radio"
+                    aria-checked={audience === id}
+                    onClick={() => {
+                      setAudience(id);
+                      if (id !== "loved_one") setRecipientName("");
+                      setError(null);
+                    }}
+                    className={`rounded-xl px-3 py-3 text-sm font-semibold transition-colors border-2 text-center ${
+                      audience === id
+                        ? "border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]"
+                        : "border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:border-[var(--color-accent)]/50"
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {audience === "loved_one" && (
+              <div>
+                <label
+                  htmlFor="ydn-recipient-name"
+                  className="block text-xs font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-1.5"
+                >
+                  {audienceCopy.theirName}
+                </label>
+                <input
+                  id="ydn-recipient-name"
+                  type="text"
+                  autoComplete="given-name"
+                  maxLength={50}
+                  value={recipientName}
+                  onChange={(e) => setRecipientName(e.target.value)}
+                  placeholder={audienceCopy.theirNamePlaceholder}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-bg-primary)] dark:bg-[var(--color-dark-bg)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] text-base focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                />
+              </div>
+            )}
+          </div>
+
           <div className="relative">
             <textarea
               value={input}
