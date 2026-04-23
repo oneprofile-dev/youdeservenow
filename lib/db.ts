@@ -81,53 +81,95 @@ export interface TeamChallenge {
 
 export async function createTeam(team: Team): Promise<void> {
   const kv = await getKV();
-  if (!kv) return;
 
-  await kv.set(`team:${team.id}`, JSON.stringify(team), { ex: 60 * 60 * 24 * 365 });
-  await kv.lpush("teams:list", team.id);
-  if (team.isPublic) {
-    await kv.lpush("teams:public", team.id);
+  if (kv) {
+    await kv.set(`team:${team.id}`, JSON.stringify(team), { ex: 60 * 60 * 24 * 365 });
+    await kv.lpush("teams:list", team.id);
+    if (team.isPublic) {
+      await kv.lpush("teams:public", team.id);
+    }
+    await kv.incr("teams:total");
+  } else {
+    memoryTeams.set(team.id, JSON.stringify(team));
+    memoryTeamsList.push(team.id);
+    if (team.isPublic) {
+      memoryTeamsPublic.push(team.id);
+    }
   }
-  await kv.incr("teams:total");
 }
 
 export async function getTeam(teamId: string): Promise<Team | null> {
   const kv = await getKV();
-  if (!kv) return null;
 
-  const data = await kv.get<string>(`team:${teamId}`);
+  if (kv) {
+    const data = await kv.get<string>(`team:${teamId}`);
+    if (!data) return null;
+    return JSON.parse(data);
+  }
+
+  const data = memoryTeams.get(teamId);
   if (!data) return null;
   return JSON.parse(data);
 }
 
 export async function addTeamMember(member: TeamMember): Promise<void> {
   const kv = await getKV();
-  if (!kv) return;
-
   const key = `team:${member.teamId}:members:${member.userId}`;
-  await kv.set(key, JSON.stringify(member), { ex: 60 * 60 * 24 * 365 });
-  await kv.lpush(`team:${member.teamId}:members:list`, member.userId);
 
-  // Update member count
-  const team = await getTeam(member.teamId);
-  if (team) {
-    const count = await kv.llen(`team:${member.teamId}:members:list`);
-    team.memberCount = count;
-    await kv.set(`team:${member.teamId}`, JSON.stringify(team), { ex: 60 * 60 * 24 * 365 });
+  if (kv) {
+    await kv.set(key, JSON.stringify(member), { ex: 60 * 60 * 24 * 365 });
+    await kv.lpush(`team:${member.teamId}:members:list`, member.userId);
+
+    // Update member count
+    const team = await getTeam(member.teamId);
+    if (team) {
+      const count = await kv.llen(`team:${member.teamId}:members:list`);
+      team.memberCount = count;
+      await kv.set(`team:${member.teamId}`, JSON.stringify(team), { ex: 60 * 60 * 24 * 365 });
+    }
+  } else {
+    // In-memory fallback
+    memoryStore.set(key, JSON.stringify(member));
+    const listKey = `team:${member.teamId}:members:list`;
+    const currentList = memoryStore.get(listKey) || "[]";
+    const members = JSON.parse(currentList);
+    if (!members.includes(member.userId)) {
+      members.push(member.userId);
+      memoryStore.set(listKey, JSON.stringify(members));
+    }
+
+    // Update member count
+    const team = await getTeam(member.teamId);
+    if (team) {
+      const memberList = JSON.parse(memoryStore.get(`team:${member.teamId}:members:list`) || "[]");
+      team.memberCount = memberList.length;
+      memoryTeams.set(member.teamId, JSON.stringify(team));
+    }
   }
 }
 
 export async function getTeamMembers(teamId: string): Promise<TeamMember[]> {
   const kv = await getKV();
-  if (!kv) return [];
-
-  const userIds = await kv.lrange<string>(`team:${teamId}:members:list`, 0, -1);
   const members: TeamMember[] = [];
 
-  for (const userId of userIds) {
-    const data = await kv.get<string>(`team:${teamId}:members:${userId}`);
-    if (data) {
-      members.push(JSON.parse(data));
+  if (kv) {
+    const userIds = await kv.lrange<string>(`team:${teamId}:members:list`, 0, -1);
+    for (const userId of userIds) {
+      const data = await kv.get<string>(`team:${teamId}:members:${userId}`);
+      if (data) {
+        members.push(JSON.parse(data));
+      }
+    }
+  } else {
+    // In-memory fallback
+    const listData = memoryStore.get(`team:${teamId}:members:list`);
+    if (!listData) return [];
+    const userIds = JSON.parse(listData) as string[];
+    for (const userId of userIds) {
+      const data = memoryStore.get(`team:${teamId}:members:${userId}`);
+      if (data) {
+        members.push(JSON.parse(data));
+      }
     }
   }
 
@@ -136,27 +178,46 @@ export async function getTeamMembers(teamId: string): Promise<TeamMember[]> {
 
 export async function recordTeamWin(win: TeamWin): Promise<void> {
   const kv = await getKV();
-  if (!kv) return;
 
-  await kv.set(`team:win:${win.id}`, JSON.stringify(win), { ex: 60 * 60 * 24 * 90 });
-  await kv.lpush(`team:${win.teamId}:wins`, win.id);
-  await kv.zadd(`team:${win.teamId}:wins:ranked`, {
-    score: new Date(win.createdAt).getTime(),
-    member: win.id,
-  });
+  if (kv) {
+    await kv.set(`team:win:${win.id}`, JSON.stringify(win), { ex: 60 * 60 * 24 * 90 });
+    await kv.lpush(`team:${win.teamId}:wins`, win.id);
+    await kv.zadd(`team:${win.teamId}:wins:ranked`, {
+      score: new Date(win.createdAt).getTime(),
+      member: win.id,
+    });
+  } else {
+    // In-memory fallback
+    memoryStore.set(`team:win:${win.id}`, JSON.stringify(win));
+    const listData = memoryStore.get(`team:${win.teamId}:wins`) || "[]";
+    const wins = JSON.parse(listData) as string[];
+    wins.push(win.id);
+    memoryStore.set(`team:${win.teamId}:wins`, JSON.stringify(wins));
+  }
 }
 
 export async function getTeamWins(teamId: string, limit = 20): Promise<TeamWin[]> {
   const kv = await getKV();
-  if (!kv) return [];
-
-  const winIds = await kv.lrange<string>(`team:${teamId}:wins`, 0, limit - 1);
   const wins: TeamWin[] = [];
 
-  for (const winId of winIds) {
-    const data = await kv.get<string>(`team:win:${winId}`);
-    if (data) {
-      wins.push(JSON.parse(data));
+  if (kv) {
+    const winIds = await kv.lrange<string>(`team:${teamId}:wins`, 0, limit - 1);
+    for (const winId of winIds) {
+      const data = await kv.get<string>(`team:win:${winId}`);
+      if (data) {
+        wins.push(JSON.parse(data));
+      }
+    }
+  } else {
+    // In-memory fallback
+    const listData = memoryStore.get(`team:${teamId}:wins`);
+    if (!listData) return [];
+    const winIds = JSON.parse(listData) as string[];
+    for (const winId of winIds.slice(0, limit)) {
+      const data = memoryStore.get(`team:win:${winId}`);
+      if (data) {
+        wins.push(JSON.parse(data));
+      }
     }
   }
 
@@ -165,23 +226,42 @@ export async function getTeamWins(teamId: string, limit = 20): Promise<TeamWin[]
 
 export async function createNomination(nomination: Nomination): Promise<void> {
   const kv = await getKV();
-  if (!kv) return;
 
-  await kv.set(`nomination:${nomination.id}`, JSON.stringify(nomination), { ex: 60 * 60 * 24 * 30 });
-  await kv.lpush(`team:${nomination.teamId}:nominations`, nomination.id);
+  if (kv) {
+    await kv.set(`nomination:${nomination.id}`, JSON.stringify(nomination), { ex: 60 * 60 * 24 * 30 });
+    await kv.lpush(`team:${nomination.teamId}:nominations`, nomination.id);
+  } else {
+    // In-memory fallback
+    memoryStore.set(`nomination:${nomination.id}`, JSON.stringify(nomination));
+    const listData = memoryStore.get(`team:${nomination.teamId}:nominations`) || "[]";
+    const nominations = JSON.parse(listData) as string[];
+    nominations.push(nomination.id);
+    memoryStore.set(`team:${nomination.teamId}:nominations`, JSON.stringify(nominations));
+  }
 }
 
 export async function getTeamNominations(teamId: string): Promise<Nomination[]> {
   const kv = await getKV();
-  if (!kv) return [];
-
-  const nominationIds = await kv.lrange<string>(`team:${teamId}:nominations`, 0, -1);
   const nominations: Nomination[] = [];
 
-  for (const nomId of nominationIds) {
-    const data = await kv.get<string>(`nomination:${nomId}`);
-    if (data) {
-      nominations.push(JSON.parse(data));
+  if (kv) {
+    const nominationIds = await kv.lrange<string>(`team:${teamId}:nominations`, 0, -1);
+    for (const nomId of nominationIds) {
+      const data = await kv.get<string>(`nomination:${nomId}`);
+      if (data) {
+        nominations.push(JSON.parse(data));
+      }
+    }
+  } else {
+    // In-memory fallback
+    const listData = memoryStore.get(`team:${teamId}:nominations`);
+    if (!listData) return [];
+    const nominationIds = JSON.parse(listData) as string[];
+    for (const nomId of nominationIds) {
+      const data = memoryStore.get(`nomination:${nomId}`);
+      if (data) {
+        nominations.push(JSON.parse(data));
+      }
     }
   }
 
@@ -190,30 +270,50 @@ export async function getTeamNominations(teamId: string): Promise<Nomination[]> 
 
 export async function getPublicTeams(page = 0, perPage = 12): Promise<{ teams: Team[]; total: number }> {
   const kv = await getKV();
-  if (!kv) return { teams: [], total: 0 };
 
-  const total = await kv.llen("teams:public");
-  const start = page * perPage;
-  const teamIds = await kv.lrange<string>("teams:public", start, start + perPage - 1);
+  if (kv) {
+    const total = await kv.llen("teams:public");
+    const start = page * perPage;
+    const teamIds = await kv.lrange<string>("teams:public", start, start + perPage - 1);
 
-  const teams: Team[] = [];
-  for (const teamId of teamIds) {
-    const team = await getTeam(teamId);
-    if (team) teams.push(team);
+    const teams: Team[] = [];
+    for (const teamId of teamIds) {
+      const team = await getTeam(teamId);
+      if (team) teams.push(team);
+    }
+
+    return { teams, total };
+  } else {
+    // In-memory fallback
+    const start = page * perPage;
+    const teamIds = memoryTeamsPublic.slice(start, start + perPage);
+    const teams: Team[] = [];
+    for (const teamId of teamIds) {
+      const team = await getTeam(teamId);
+      if (team) teams.push(team);
+    }
+    return { teams, total: memoryTeamsPublic.length };
   }
-
-  return { teams, total };
 }
 
 // In-memory fallback — attached to global so all route modules share the same instance
 const globalRef = global as typeof global & {
   __ydnStore?: Map<string, string>;
   __ydnList?: string[];
+  __ydnTeams?: Map<string, string>;
+  __ydnTeamsList?: string[];
+  __ydnTeamsPublic?: string[];
 };
 if (!globalRef.__ydnStore) globalRef.__ydnStore = new Map<string, string>();
 if (!globalRef.__ydnList) globalRef.__ydnList = [];
+if (!globalRef.__ydnTeams) globalRef.__ydnTeams = new Map<string, string>();
+if (!globalRef.__ydnTeamsList) globalRef.__ydnTeamsList = [];
+if (!globalRef.__ydnTeamsPublic) globalRef.__ydnTeamsPublic = [];
 const memoryStore = globalRef.__ydnStore;
 const memoryList = globalRef.__ydnList;
+const memoryTeams = globalRef.__ydnTeams;
+const memoryTeamsList = globalRef.__ydnTeamsList;
+const memoryTeamsPublic = globalRef.__ydnTeamsPublic;
 
 export async function saveResult(result: Result): Promise<void> {
   const kv = await getKV();
