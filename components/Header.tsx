@@ -79,6 +79,14 @@ export default function Header() {
             Ledger
           </Link>
           <Link
+            href="/wall-of-fame"
+            className="text-sm font-medium text-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors min-h-11 px-2 flex items-center gap-1"
+            title="View the funniest diagnoses"
+          >
+            <span>🏆</span>
+            <span>Wall of Fame</span>
+          </Link>
+          <Link
             href="/shop"
             className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] transition-colors min-h-11 px-2 flex items-center"
           >
@@ -172,6 +180,14 @@ export default function Header() {
               className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] hover:text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-surface)] transition-colors px-3 py-3 rounded-lg"
             >
               Ledger
+            </Link>
+            <Link
+              href="/wall-of-fame"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-sm font-medium text-[var(--color-accent)] hover:bg-[var(--color-bg-secondary)] dark:hover:bg-[var(--color-dark-surface)] transition-colors px-3 py-3 rounded-lg flex items-center gap-2"
+            >
+              <span>🏆</span>
+              <span>Wall of Fame</span>
             </Link>
             <Link
               href="/shop"
