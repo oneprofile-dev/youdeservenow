@@ -21,6 +21,190 @@ export interface Result {
   isPublic?: boolean;
 }
 
+// ===== ENTERPRISE TEAMS =====
+
+export interface Team {
+  id: string;
+  name: string;
+  industry: string; // "tech", "sales", "marketing", "non-profit", "open-source", etc.
+  description: string;
+  createdBy: string; // user ID
+  createdAt: string;
+  memberCount: number;
+  isPublic: boolean; // publicly visible in team gallery
+  tone: "playful" | "warm"; // team's preferred tone
+  logoUrl?: string;
+}
+
+export interface TeamMember {
+  teamId: string;
+  userId: string;
+  role: "founder" | "member"; // just need founder for deletion rights
+  joinedAt: string;
+  displayName: string;
+}
+
+export interface TeamWin {
+  id: string;
+  teamId: string;
+  description: string;
+  category: string; // "shipped", "survived", "collaboration", "recovery", "learning"
+  product?: Product;
+  createdAt: string;
+  createdBy: string;
+  shares: number;
+}
+
+export interface Nomination {
+  id: string;
+  teamId: string;
+  nomineeId: string;
+  nominerName: string;
+  reason: string;
+  product?: Product;
+  createdAt: string;
+  approved: boolean;
+}
+
+export interface TeamChallenge {
+  id: string;
+  name: string;
+  description: string;
+  industry: string; // "all", "tech", "sales", etc.
+  theme: string; // "Survived Monday", "Fixed at 3am", "Shipped Something"
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+}
+
+// ===== TEAM STORAGE FUNCTIONS =====
+
+export async function createTeam(team: Team): Promise<void> {
+  const kv = await getKV();
+  if (!kv) return;
+
+  await kv.set(`team:${team.id}`, JSON.stringify(team), { ex: 60 * 60 * 24 * 365 });
+  await kv.lpush("teams:list", team.id);
+  if (team.isPublic) {
+    await kv.lpush("teams:public", team.id);
+  }
+  await kv.incr("teams:total");
+}
+
+export async function getTeam(teamId: string): Promise<Team | null> {
+  const kv = await getKV();
+  if (!kv) return null;
+
+  const data = await kv.get<string>(`team:${teamId}`);
+  if (!data) return null;
+  return JSON.parse(data);
+}
+
+export async function addTeamMember(member: TeamMember): Promise<void> {
+  const kv = await getKV();
+  if (!kv) return;
+
+  const key = `team:${member.teamId}:members:${member.userId}`;
+  await kv.set(key, JSON.stringify(member), { ex: 60 * 60 * 24 * 365 });
+  await kv.lpush(`team:${member.teamId}:members:list`, member.userId);
+
+  // Update member count
+  const team = await getTeam(member.teamId);
+  if (team) {
+    const count = await kv.llen(`team:${member.teamId}:members:list`);
+    team.memberCount = count;
+    await kv.set(`team:${member.teamId}`, JSON.stringify(team), { ex: 60 * 60 * 24 * 365 });
+  }
+}
+
+export async function getTeamMembers(teamId: string): Promise<TeamMember[]> {
+  const kv = await getKV();
+  if (!kv) return [];
+
+  const userIds = await kv.lrange<string>(`team:${teamId}:members:list`, 0, -1);
+  const members: TeamMember[] = [];
+
+  for (const userId of userIds) {
+    const data = await kv.get<string>(`team:${teamId}:members:${userId}`);
+    if (data) {
+      members.push(JSON.parse(data));
+    }
+  }
+
+  return members;
+}
+
+export async function recordTeamWin(win: TeamWin): Promise<void> {
+  const kv = await getKV();
+  if (!kv) return;
+
+  await kv.set(`team:win:${win.id}`, JSON.stringify(win), { ex: 60 * 60 * 24 * 90 });
+  await kv.lpush(`team:${win.teamId}:wins`, win.id);
+  await kv.zadd(`team:${win.teamId}:wins:ranked`, {
+    score: new Date(win.createdAt).getTime(),
+    member: win.id,
+  });
+}
+
+export async function getTeamWins(teamId: string, limit = 20): Promise<TeamWin[]> {
+  const kv = await getKV();
+  if (!kv) return [];
+
+  const winIds = await kv.lrange<string>(`team:${teamId}:wins`, 0, limit - 1);
+  const wins: TeamWin[] = [];
+
+  for (const winId of winIds) {
+    const data = await kv.get<string>(`team:win:${winId}`);
+    if (data) {
+      wins.push(JSON.parse(data));
+    }
+  }
+
+  return wins;
+}
+
+export async function createNomination(nomination: Nomination): Promise<void> {
+  const kv = await getKV();
+  if (!kv) return;
+
+  await kv.set(`nomination:${nomination.id}`, JSON.stringify(nomination), { ex: 60 * 60 * 24 * 30 });
+  await kv.lpush(`team:${nomination.teamId}:nominations`, nomination.id);
+}
+
+export async function getTeamNominations(teamId: string): Promise<Nomination[]> {
+  const kv = await getKV();
+  if (!kv) return [];
+
+  const nominationIds = await kv.lrange<string>(`team:${teamId}:nominations`, 0, -1);
+  const nominations: Nomination[] = [];
+
+  for (const nomId of nominationIds) {
+    const data = await kv.get<string>(`nomination:${nomId}`);
+    if (data) {
+      nominations.push(JSON.parse(data));
+    }
+  }
+
+  return nominations;
+}
+
+export async function getPublicTeams(page = 0, perPage = 12): Promise<{ teams: Team[]; total: number }> {
+  const kv = await getKV();
+  if (!kv) return { teams: [], total: 0 };
+
+  const total = await kv.llen("teams:public");
+  const start = page * perPage;
+  const teamIds = await kv.lrange<string>("teams:public", start, start + perPage - 1);
+
+  const teams: Team[] = [];
+  for (const teamId of teamIds) {
+    const team = await getTeam(teamId);
+    if (team) teams.push(team);
+  }
+
+  return { teams, total };
+}
+
 // In-memory fallback — attached to global so all route modules share the same instance
 const globalRef = global as typeof global & {
   __ydnStore?: Map<string, string>;
