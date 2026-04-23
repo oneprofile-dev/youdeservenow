@@ -102,9 +102,9 @@ export async function getTeam(teamId: string): Promise<Team | null> {
   const kv = await getKV();
 
   if (kv) {
-    const data = await kv.get<string>(`team:${teamId}`);
+    const data = await kv.get<any>(`team:${teamId}`);
     if (!data) return null;
-    return JSON.parse(data);
+    return typeof data === "string" ? JSON.parse(data) : (data as Team);
   }
 
   const data = memoryTeams.get(teamId);
@@ -155,9 +155,9 @@ export async function getTeamMembers(teamId: string): Promise<TeamMember[]> {
   if (kv) {
     const userIds = await kv.lrange<string>(`team:${teamId}:members:list`, 0, -1);
     for (const userId of userIds) {
-      const data = await kv.get<string>(`team:${teamId}:members:${userId}`);
+      const data = await kv.get<any>(`team:${teamId}:members:${userId}`);
       if (data) {
-        members.push(JSON.parse(data));
+        members.push(typeof data === "string" ? JSON.parse(data) : (data as TeamMember));
       }
     }
   } else {
@@ -203,9 +203,9 @@ export async function getTeamWins(teamId: string, limit = 20): Promise<TeamWin[]
   if (kv) {
     const winIds = await kv.lrange<string>(`team:${teamId}:wins`, 0, limit - 1);
     for (const winId of winIds) {
-      const data = await kv.get<string>(`team:win:${winId}`);
+      const data = await kv.get<any>(`team:win:${winId}`);
       if (data) {
-        wins.push(JSON.parse(data));
+        wins.push(typeof data === "string" ? JSON.parse(data) : (data as TeamWin));
       }
     }
   } else {
