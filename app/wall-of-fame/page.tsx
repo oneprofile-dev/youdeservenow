@@ -35,8 +35,11 @@ export default function WallOfFamePage() {
             >
               The Wall of Fame
             </h1>
-            <p className="text-lg text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] max-w-2xl mx-auto leading-relaxed mb-6">
               The internet&apos;s most legendary—and most questioned—reward justifications. Vote whether each diagnosis is <span className="font-semibold text-rose-600">genuinely legit</span> or <span className="font-semibold text-amber-600">absolutely ridiculous</span>.
+            </p>
+            <p className="text-sm text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] max-w-lg mx-auto">
+              💡 <strong>Pro tip:</strong> Being the <span className="text-amber-600 font-semibold">Most Challenged</span> justification is arguably more prestigious than being the most legit one. Embrace the chaos.
             </p>
           </div>
 
@@ -45,19 +48,28 @@ export default function WallOfFamePage() {
             <div className="rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] p-4 text-center">
               <p className="text-2xl font-bold text-[var(--color-accent)] mb-1">1K+</p>
               <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] uppercase tracking-widest">
-                Diagnoses
+                Creative Minds
+              </p>
+              <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mt-1 italic">
+                aren't alone
               </p>
             </div>
             <div className="rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] p-4 text-center">
-              <p className="text-2xl font-bold text-rose-600 mb-1">👍</p>
+              <p className="text-2xl font-bold text-rose-600 mb-1">❤️</p>
               <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] uppercase tracking-widest">
-                Votes
+                Vindications
+              </p>
+              <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mt-1 italic">
+                earned
               </p>
             </div>
             <div className="rounded-xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] p-4 text-center">
               <p className="text-2xl font-bold text-amber-600 mb-1">🔥</p>
               <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] uppercase tracking-widest">
-                Challenges
+                Chaos Points
+              </p>
+              <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mt-1 italic">
+                accumulated
               </p>
             </div>
           </div>
@@ -66,6 +78,48 @@ export default function WallOfFamePage() {
         {/* Feed */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 pb-16">
           <AbsurdityFeed limit={30} showFilters={true} />
+        </section>
+
+        {/* How It Works */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-16">
+          <div className="rounded-2xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] p-8">
+            <h3 className="text-xl font-bold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)] mb-6" style={{ fontFamily: "var(--font-display)" }}>
+              How the Verdict Works
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-2xl flex-shrink-0">❤️</span>
+                  <div>
+                    <p className="font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+                      Vote "Legit"
+                    </p>
+                    <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                      When a justification makes genuine sense. Defend what you believe.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-2xl flex-shrink-0">🔥</span>
+                  <div>
+                    <p className="font-semibold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text)]">
+                      "Challenge" It
+                    </p>
+                    <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                      When it's absurd but hilarious. Call out the creative nonsense.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6 pt-6 border-t border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
+              <p className="text-xs text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
+                💡 Each verdict becomes a debate. The community decides what you truly deserve.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* CTA */}

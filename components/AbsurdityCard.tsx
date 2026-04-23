@@ -9,22 +9,30 @@ import type { Result } from "@/lib/db";
 interface AbsurdityCardProps {
   result: Result;
   rank?: number;
+  rankType?: "legit" | "challenged";
 }
 
-export default function AbsurdityCard({ result, rank }: AbsurdityCardProps) {
+export default function AbsurdityCard({ result, rank, rankType = "legit" }: AbsurdityCardProps) {
   // Fetch vote counts (these would come from props in real implementation)
   // For now, we'll let UpvoteButton and GaslightButton handle their own state
 
+  const rankEmoji = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
+
   return (
-    <Link href={`/result/${result.id}`}>
+    <Link href={`/verdict/${result.id}`}>
       <div className="group cursor-pointer rounded-2xl border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)] overflow-hidden transition-all duration-300 hover:border-[var(--color-accent)] hover:shadow-lg dark:hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]">
         {/* Header with rank and product */}
         <div className="p-5 border-b border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
           <div className="flex items-start justify-between mb-3">
             {rank && (
-              <span className="text-2xl font-bold text-[var(--color-accent)]">
-                {rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`}
-              </span>
+              <div className="flex flex-col items-center gap-1 mr-2">
+                <span className="text-2xl font-bold text-[var(--color-accent)]">
+                  {rankEmoji}
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)]">
+                  {rankType === "challenged" ? "Most Challenged" : "Most Legit"}
+                </span>
+              </div>
             )}
             {result.product && (
               <div className="flex-1 ml-3 flex items-center gap-2">
@@ -72,7 +80,7 @@ export default function AbsurdityCard({ result, rank }: AbsurdityCardProps) {
         {/* Voting footer */}
         <div className="p-4 border-t border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] bg-[var(--color-card-bg)] dark:bg-[var(--color-dark-surface)]">
           <p className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mb-3 font-semibold">
-            Is this legit?
+            Community Verdict
           </p>
           <div className="flex items-center gap-2">
             <div className="flex-1" onClick={(e) => e.preventDefault()}>
@@ -82,6 +90,9 @@ export default function AbsurdityCard({ result, rank }: AbsurdityCardProps) {
               <GaslightButton resultId={result.id} initialGaslights={0} />
             </div>
           </div>
+          <p className="text-xs text-center text-[var(--color-text-tertiary)] dark:text-[var(--color-dark-text)] mt-3">
+            Click to see full verdict ➜
+          </p>
         </div>
       </div>
     </Link>
