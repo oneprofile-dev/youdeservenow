@@ -1,25 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useEffect, Suspense } from "react";
+import { useMemo, useEffect, Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { track } from "@vercel/analytics/react";
 import type { Product } from "@/lib/products";
 import { resolveAffiliateUrl, isHighCommission, getCountryFromCookie } from "@/lib/affiliate";
 import { useLinkHealth } from "@/lib/useLink";
 import { initLinkCache } from "@/lib/client-link-cache";
+import { getPersonaContext, getPersonaSatire } from "@/lib/persona-recommendations";
 
 interface ProductRecommendationProps {
   product: Product;
+  justification?: string;
+  input?: string;
 }
 
-function ProductRecommendationInner({ product }: ProductRecommendationProps) {
+function ProductRecommendationInner({ product, justification = "", input = "" }: ProductRecommendationProps) {
   const searchParams = useSearchParams();
   const refParam = searchParams.get("ref");
+  const [personaMessage, setPersonaMessage] = useState<string>("You deserve this.");
 
   useEffect(() => {
     initLinkCache();
   }, []);
+
+  // Compute persona context for satirical messaging
+  useEffect(() => {
+    try {
+      const personaContext = getPersonaContext(justification, input);
+      const satire = getPersonaSatire(personaContext);
+      setPersonaMessage(satire);
+    } catch (e) {
+      setPersonaMessage("You deserve this.");
+    }
+  }, [justification, input]);
 
   const affiliateUrl = useMemo(() => {
     return resolveAffiliateUrl(
@@ -94,7 +109,7 @@ function ProductRecommendationInner({ product }: ProductRecommendationProps) {
           {product.name}
         </h3>
         <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mt-0.5">
-          {product.price}
+          {personaMessage}
         </p>
       </div>
 

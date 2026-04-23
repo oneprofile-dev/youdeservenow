@@ -6,6 +6,7 @@ import {
   type LeaderboardSort,
   type LeaderboardCategory,
 } from "@/lib/leaderboards";
+import { getKV } from "@/lib/kv";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic"; // This route uses query params, must be dynamic
@@ -13,7 +14,9 @@ export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export async function GET(req: NextRequest) {
   try {
-    const sort = (req.nextUrl.searchParams.get("sort") as LeaderboardSort) || "likes";
+    // Support "legit" (maps to "likes") and "challenged" (custom sort by gaslights)
+    const sortParam = (req.nextUrl.searchParams.get("sort") as string) || "legit";
+    const sort: LeaderboardSort = sortParam === "challenged" ? "likes" : "likes"; // Map both to likes for now, we'll handle challenged separately
     const category = (req.nextUrl.searchParams.get("category") as LeaderboardCategory) || "all";
     const limit = Math.min(parseInt(req.nextUrl.searchParams.get("limit") || "100"), 500); // Max 500
     const action = req.nextUrl.searchParams.get("action");
@@ -39,8 +42,28 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // Get full leaderboard first
-    const leaderboard = await getLeaderboard(sort, category, 500); // Fetch more to find the result
+    // Main leaderboard query - handle challenged sort
+    let leaderboard = await getLeaderboard(sort, category, 500);
+
+    // If "challenged" sort, fetch gaslights and re-sort
+    if (sortParam === "challenged") {
+      const kv = await getKV();
+      if (kv) {
+        // Enrich with gaslight counts and re-sort
+        const enrichedLeaderboard = await Promise.all(
+          leaderboard.map(async (entry) => {
+            const gaslights = (await kv.get<number>(`result:${entry.id}:gaslights`)) || 0;
+            return {
+              ...entry,
+              gaslightCount: gaslights,
+            };
+          })
+        );
+
+        // Sort by gaslight count (descending)
+        leaderboard = enrichedLeaderboard.sort((a, b) => (b.gaslightCount || 0) - (a.gaslightCount || 0));
+      }
+    }
 
     // If resultId is provided, find its rank and return
     if (resultId) {
@@ -84,7 +107,7 @@ export async function GET(req: NextRequest) {
         success: true,
         data: paginatedLeaderboard,
         metadata: {
-          sort,
+          sort: sortParam,
           category,
           limit,
           count: paginatedLeaderboard.length,

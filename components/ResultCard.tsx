@@ -139,7 +139,7 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
         </div>
 
         {/* Product */}
-        <ProductRecommendation product={result.product} />
+        <ProductRecommendation product={result.product} justification={result.justification} input={result.input} />
 
         {/* Divider */}
         <div className="h-px bg-[var(--color-card-border)] dark:bg-[var(--color-dark-border)]" />
