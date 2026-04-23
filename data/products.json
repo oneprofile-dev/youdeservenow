@@ -2544,5 +2544,125 @@
       "wellness",
       "calm"
     ]
+  },
+  {
+    "id": "levoit-air-purifier-mini",
+    "name": "LEVOIT Air Purifier Core Mini-P (White)",
+    "category": "home",
+    "price": "$39.97",
+    "affiliateUrl": "https://www.amazon.com/dp/B09GTRVJQM?tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/airpurifier/400/400",
+    "keywords": [
+      "allergies",
+      "clean",
+      "air",
+      "dust",
+      "pet dander",
+      "odor",
+      "bedroom",
+      "home",
+      "dorm",
+      "fresh"
+    ]
+  },
+  {
+    "id": "jackery-explorer-1000-v2",
+    "name": "Jackery Explorer 1000 v2 Portable Power Station",
+    "category": "tech",
+    "price": "$428.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B0D7PPG25F?tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/jackery/400/400",
+    "keywords": [
+      "camping",
+      "travel",
+      "outdoor",
+      "adventure",
+      "emergency",
+      "power",
+      "generator",
+      "off-grid",
+      "rv",
+      "portable"
+    ]
+  },
+  {
+    "id": "deep-pocket-sheet-set",
+    "name": "Extra Deep Queen Sheet Set - 6 Piece (White)",
+    "category": "comfort",
+    "price": "$33.93",
+    "affiliateUrl": "https://www.amazon.com/dp/B07F946VMJ?tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/sheets/400/400",
+    "keywords": [
+      "slept",
+      "comfortable",
+      "bedding",
+      "hotel quality",
+      "soft",
+      "luxury",
+      "sleep",
+      "rest",
+      "cozy",
+      "breathable"
+    ]
+  },
+  {
+    "id": "samsung-galaxy-a17",
+    "name": "Samsung Galaxy A17 5G Smart Phone (128GB, Black)",
+    "category": "tech",
+    "price": "$174.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B0FXY18C1J?tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/samsung/400/400",
+    "keywords": [
+      "phone",
+      "mobile",
+      "smartphone",
+      "5g",
+      "upgrade",
+      "technology",
+      "camera",
+      "battery",
+      "fast charging",
+      "new"
+    ]
+  },
+  {
+    "id": "anker-solix-c1000",
+    "name": "Anker SOLIX C1000 Gen 2 Portable Power Station",
+    "category": "tech",
+    "price": "$428.99",
+    "affiliateUrl": "https://www.amazon.com/dp/B0FN7MSY4L?tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/anker/400/400",
+    "keywords": [
+      "power station",
+      "portable",
+      "camping",
+      "outdoor",
+      "backup",
+      "emergency",
+      "solar",
+      "rv",
+      "off-grid",
+      "travel"
+    ]
+  },
+  {
+    "id": "rove-r2-dash-cam",
+    "name": "ROVE R2-4K DUAL Dash Camera (Front & Rear)",
+    "category": "tech",
+    "price": "$109.98",
+    "affiliateUrl": "https://www.amazon.com/dp/B0D6J5B98H?tag=youdeserven07-20",
+    "imageUrl": "https://picsum.photos/seed/dashcam/400/400",
+    "keywords": [
+      "car",
+      "driving",
+      "safety",
+      "security",
+      "protection",
+      "accident",
+      "recording",
+      "video",
+      "4k",
+      "parking"
+    ]
   }
 ]
