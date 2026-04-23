@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPublicLedgerResults, getResultMetrics } from "@/lib/db";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic"; // This route uses dynamic search params
 export const revalidate = 60; // Revalidate every 60 seconds for freshness
 
 interface LedgerResponse {

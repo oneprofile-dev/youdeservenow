@@ -10,6 +10,7 @@ import LikeButton from "./LikeButton";
 import UpvoteButton from "./UpvoteButton";
 import ResultClosure from "./ResultClosure";
 import PublishModal from "./PublishModal";
+import GiftSharePrompt from "./GiftSharePrompt";
 
 // Lazy load heavy components (below the fold)
 const RealtimeMetrics = dynamic(() => import("./RealtimeMetrics").then((m) => ({ default: m.RealtimeMetrics })), {
@@ -178,6 +179,11 @@ export default function ResultCard({ result, showShareCard = true }: ResultCardP
         </div>
 
         <ResultClosure result={result} />
+      </div>
+
+      {/* Gift/Share prompt - encourage viral loop */}
+      <div className="mt-8">
+        <GiftSharePrompt recipientName={result.gift?.recipientName} />
       </div>
 
       {/* Off-screen share card for image download */}

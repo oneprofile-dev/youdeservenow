@@ -11,7 +11,7 @@ export default function EmailCapture() {
     e.preventDefault();
     if (!email.trim() || status === "loading") return;
 
-    track("email_subscribe_attempt");
+    track("daily_reminder_signup_attempt");
     setStatus("loading");
 
     try {
@@ -22,14 +22,14 @@ export default function EmailCapture() {
       });
 
       if (res.ok) {
-        track("email_subscribe_success");
+        track("daily_reminder_signup_success");
         setStatus("success");
       } else {
-        track("email_subscribe_failure", { status: res.status });
+        track("daily_reminder_signup_failure", { status: res.status });
         setStatus("error");
       }
     } catch {
-      track("email_subscribe_failure", { status: 0 });
+      track("daily_reminder_signup_failure", { status: 0 });
       setStatus("error");
     }
   }
@@ -38,10 +38,10 @@ export default function EmailCapture() {
     return (
       <div className="text-center py-4 px-5 rounded-2xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)] animate-[fade-in_0.4s_ease-out]">
         <p className="text-sm font-semibold text-[var(--color-accent)] mb-0.5">
-          Prescription on file.
+          Tomorrow's diagnosis is locked in.
         </p>
         <p className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
-          The Institute will notify you of future reward authorizations.
+          We'll send you a fresh justification tomorrow at 9 AM. Come back anytime to keep your streak alive.
         </p>
       </div>
     );
@@ -50,10 +50,10 @@ export default function EmailCapture() {
   return (
     <div className="py-6 px-5 rounded-2xl bg-[var(--color-bg-secondary)] dark:bg-[var(--color-dark-surface)] border border-[var(--color-card-border)] dark:border-[var(--color-dark-border)]">
       <p className="text-xs uppercase tracking-widest text-[var(--color-accent)] font-semibold mb-1">
-        Institute Mailing List
+        🔔 Daily Reward Reminder
       </p>
       <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] mb-4">
-        Get your next scientific justification delivered. No spam — only peer-reviewed rewards.
+        Get tomorrow's science-backed diagnosis emailed to you at 9 AM. Keep your streak alive and stay accountable to your daily rewards.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -80,9 +80,9 @@ export default function EmailCapture() {
               className="flex-shrink-0 px-6 py-2.5 min-h-11 rounded-lg bg-[var(--color-cta-bg)] dark:bg-[var(--color-accent)] text-[var(--color-cta-text)] dark:text-[var(--color-dark-bg)] text-sm font-semibold hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
             >
               {status === "loading" ? (
-                <span className="inline-block">Subscribing…</span>
+                <span className="inline-block">Signing up…</span>
               ) : (
-                "Subscribe"
+                "Remind me daily"
               )}
             </button>
           </div>
