@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import DailyRitual from "@/components/DailyRitual";
 import DaypartPartnerStrip from "@/components/DaypartPartnerStrip";
 import PrescriptionCollections from "@/components/PrescriptionCollections";
 import { TrendingSection } from "@/components/TrendingSection";
@@ -62,6 +63,8 @@ export default async function Home({ searchParams }: HomeProps) {
         )}
         <HomeFaqJsonLd />
         <Hero referralResult={referralResult} initialAudience={initialAudience} />
+
+        <DailyRitual highlightProduct={results[0]?.product?.name} />
 
         <DaypartPartnerStrip />
 

@@ -239,6 +239,9 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
           <p suppressHydrationWarning className="text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] text-base sm:text-lg max-w-lg mx-auto">
             {lang !== "en" ? t.heroSub : heroCtx.sub}
           </p>
+          <p className="text-sm text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)] max-w-xl mx-auto mt-4">
+            This is your daily reward ritual: come back tomorrow for another science-backed justification, keep your streak alive, and turn feeling good into a real treat.
+          </p>
         </div>
       )}
 
