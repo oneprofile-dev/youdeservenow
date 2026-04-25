@@ -283,6 +283,11 @@ export default function Hero({ referralResult, initialAudience }: HeroProps) {
           />
 
           <div className="relative">
+            <div className="mb-2 flex items-center gap-2 px-1">
+              <span className="text-xs font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text)]">
+                🌐 {LANG_NAMES[lang] || lang}
+              </span>
+            </div>
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
