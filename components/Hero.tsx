@@ -9,7 +9,7 @@ import EmailCapture from "./EmailCapture";
 import StreakBadge from "./StreakBadge";
 import SettingsAccordion from "./SettingsAccordion";
 import { useLanguage } from "@/lib/useLanguage";
-import { getT } from "@/lib/i18n";
+import { getT, LANG_NAMES } from "@/lib/i18n";
 import { getAudienceCopy, type HeroAudience } from "@/lib/hero-audience-copy";
 import { useVoicePreference } from "@/lib/useVoicePreference";
 
