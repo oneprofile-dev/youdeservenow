@@ -36,9 +36,9 @@ export default function SettingsAccordion({
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
 
-  // Auto-open on desktop
+  // Keep collapsed by default on both mobile and desktop
   useEffect(() => {
-    setIsOpen(isDesktop);
+    setIsOpen(false);
   }, [isDesktop]);
 
   // Get current selections for compact view
