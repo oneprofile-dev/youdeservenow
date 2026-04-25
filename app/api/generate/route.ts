@@ -10,6 +10,7 @@ import { checkRateLimit, trackAiCall } from "@/lib/rate-limit";
 import { saveResult, updateResult, storeResultMetadata } from "@/lib/db";
 import type { Result } from "@/lib/db";
 import { generateAndUploadOgImage } from "@/lib/og-generator";
+import { checkContentModerationStatus, getModerationErrorMessage, logModerationDecision } from "@/lib/moderation";
 
 const filter = new BadWordsFilter();
 
@@ -82,6 +83,19 @@ export async function POST(req: NextRequest) {
   const clean = sanitizeInput(body.input);
   if (clean.length < 3) {
     return NextResponse.json({ error: "Please tell us more about what you accomplished!" }, { status: 400 });
+  }
+
+  // Content moderation check — flag violent, harmful, or inappropriate content
+  const modStatus = await checkContentModerationStatus(clean);
+  if (modStatus.flagged) {
+    // Log the moderation decision
+    const tempId = generateId();
+    await logModerationDecision(tempId, clean, true, modStatus.categories);
+
+    return NextResponse.json(
+      { error: getModerationErrorMessage(modStatus.categories) },
+      { status: 400 }
+    );
   }
 
   // Profanity filter

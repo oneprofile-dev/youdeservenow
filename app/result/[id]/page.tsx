@@ -4,6 +4,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ResultCard from "@/components/ResultCard";
+import ResultShareButtons from "@/components/ResultShareButtons";
 import { getResult } from "@/lib/db";
 import { getSiteUrl, truncate } from "@/lib/utils";
 import PageViewTracker from "@/components/PageViewTracker";
@@ -24,6 +25,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `Science says I deserve ${result.product.name}`;
   const description = truncate(result.justification, 160);
 
+  // OG card URLs for each size
+  const ogCardUrls = {
+    og: `${siteUrl}/api/og-card?id=${id}&size=og`,
+    square: `${siteUrl}/api/og-card?id=${id}&size=square`,
+  };
+
   return {
     title,
     description,
@@ -32,13 +39,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: `${siteUrl}/result/${id}`,
       type: "article",
-      images: [{ url: result.ogImageUrl ?? `${siteUrl}/api/og?id=${id}`, width: 1200, height: 630, alt: title }],
+      images: [
+        { url: ogCardUrls.og, width: 1200, height: 630, alt: title },
+        { url: ogCardUrls.square, width: 1080, height: 1080, alt: title },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [result.ogImageUrl ?? `${siteUrl}/api/og?id=${id}`],
+      images: [ogCardUrls.og],
     },
   };
 }
@@ -60,6 +70,14 @@ export default async function ResultPage({ params }: Props) {
             props={{ product_id: result.product.id, category: result.product.category }}
           />
           <ResultCard result={result} showShareCard />
+
+          {/* Share Buttons */}
+          <ResultShareButtons
+            resultId={result.id}
+            productName={result.product.name}
+            userInput={result.input}
+            justification={result.justification}
+          />
 
           {/* JSON-LD structured data — escape </ to prevent script injection */}
           <script
