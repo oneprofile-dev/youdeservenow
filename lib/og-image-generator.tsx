@@ -95,6 +95,9 @@ export async function generatePrescriptionCard(
           {/* Header: Institute Badge */}
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: config.headerSize,
               fontWeight: '700',
               color: '#6b4423',
@@ -110,6 +113,9 @@ export async function generatePrescriptionCard(
           {/* Main Title: User Achievement */}
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: config.titleSize,
               fontWeight: '700',
               color: '#2c2c2c',
@@ -125,6 +131,9 @@ export async function generatePrescriptionCard(
           {/* Verdict: The Scientific Justification */}
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: config.verdictSize,
               color: '#4a4a4a',
               marginBottom: size === 'mobile' ? '40px' : size === 'square' ? '28px' : '20px',
@@ -169,6 +178,8 @@ export async function generatePrescriptionCard(
               {/* Product Name */}
               <div
                 style={{
+                  display: 'flex',
+                  alignItems: 'center',
                   fontSize: config.productFontSize,
                   fontWeight: '700',
                   color: '#2c2c2c',
@@ -184,6 +195,8 @@ export async function generatePrescriptionCard(
               {/* Product Price */}
               <div
                 style={{
+                  display: 'flex',
+                  alignItems: 'center',
                   fontSize: config.priceFontSize,
                   color: '#6b4423',
                   fontWeight: '600',
@@ -197,6 +210,9 @@ export async function generatePrescriptionCard(
           {/* Footer: Site URL */}
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: size === 'mobile' ? '14px' : size === 'square' ? '12px' : '10px',
               color: '#999',
               textAlign: 'center',

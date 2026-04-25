@@ -12,9 +12,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getResult } from '@/lib/db';
 import { generatePrescriptionCard, type CardSize } from '@/lib/og-image-generator';
 
-// Run on Edge for faster response times
-export const runtime = 'edge';
-
 // Cache config for CDN and browser
 const CACHE_HEADERS = {
   'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400', // 1h cache, 24h stale
@@ -69,17 +66,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Generate OG image
+    // Generate OG image (returns ImageResponse)
     const imageResponse = await generatePrescriptionCard(result, size);
     
-    // Convert to buffer if needed
-    const buffer = await imageResponse.arrayBuffer();
-
-    // Return with aggressive caching
-    return new NextResponse(buffer, {
-      status: 200,
-      headers: CACHE_HEADERS,
-    });
+    // Return ImageResponse directly (Vercel handles response conversion)
+    return imageResponse;
   } catch (error) {
     console.error('🔴 OG card generation error:', {
       error: error instanceof Error ? error.message : String(error),
