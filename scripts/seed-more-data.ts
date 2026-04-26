@@ -11,7 +11,28 @@
  * Usage: npx tsx scripts/seed-more-data.ts
  */
 
-import { saveResult, storeResultMetadata, createTeam } from '../lib/db';
+import fs from 'fs';
+import path from 'path';
+
+// Load .env.local manually before importing anything else
+const envPath = path.resolve(process.cwd(), '.env.local');
+if (fs.existsSync(envPath)) {
+  const envContent = fs.readFileSync(envPath, 'utf-8');
+  envContent.split('\n').forEach((line) => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const [key, ...valueParts] = trimmed.split('=');
+      let value = valueParts.join('=').trim();
+      // Remove quotes if present
+      if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.slice(1, -1);
+      }
+      process.env[key.trim()] = value;
+    }
+  });
+}
+
+import { saveResult, storeResultMetadata, createTeam, setResultPublic } from '../lib/db';
 import { getKV } from '../lib/kv';
 import type { Result, Team } from '../lib/db';
 
@@ -490,6 +511,7 @@ async function seedMoreData() {
     for (const entry of langEntry.entries) {
       try {
         const resultId = `seed_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+        const isPublic = Math.random() > 0.3; // 70% public
         const result: Result = {
           id: resultId,
           input: entry.input!,
@@ -497,12 +519,22 @@ async function seedMoreData() {
           product: entry.product!,
           shareUrl: `https://youdeservenow.com/result/${resultId}`,
           createdAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(), // Random date within last 7 days
-          isPublic: Math.random() > 0.3, // 70% public
+          isPublic: isPublic,
           audience: ['self', 'loved_one', 'we'][Math.floor(Math.random() * 3)] as 'self' | 'loved_one' | 'we',
           voice: Math.random() > 0.5 ? 'classic' : 'warm',
         };
 
         await saveResult(result);
+        
+        // Add to public ledger if marked public
+        if (isPublic) {
+          try {
+            await setResultPublic(resultId, true);
+            console.log(`    ✅ Added to ledger`);
+          } catch (err) {
+            console.error(`    ⚠️  Failed to add to ledger:`, err instanceof Error ? err.message : err);
+          }
+        }
         
         // Store metadata for ranking
         await storeResultMetadata(resultId, {
